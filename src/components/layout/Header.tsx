@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LogOut, Settings, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
@@ -11,7 +11,8 @@ const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const location = useLocation();
-  const { user, signOut, isAdmin } = useAuth();
+  const navigate = useNavigate();
+  const { user, signOut, isAdmin, loading } = useAuth();
   const { addToast } = useToast();
 
   const handleSearch = (query: string) => {
@@ -34,6 +35,8 @@ const Header: React.FC = () => {
         title: 'Signed Out',
         message: 'You have been successfully signed out.'
       });
+      // Redirect to login page after successful sign out
+      navigate('/login');
     } catch {
       // Error signing out
       addToast({
@@ -243,13 +246,22 @@ const Header: React.FC = () => {
                       </div>
                     ) : (
                       <>
-                        <Link to="/login" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-                          Login
-                        </Link>
-                        <span className="text-gray-600 dark:text-gray-400">/</span>
-                        <Link to="/register" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-                          Register
-                        </Link>
+                        {loading ? (
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                            <span className="text-gray-600 dark:text-gray-400 text-sm">Loading...</span>
+                          </div>
+                        ) : (
+                          <>
+                            <Link to="/login" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                              Login
+                            </Link>
+                            <span className="text-gray-600 dark:text-gray-400">/</span>
+                            <Link to="/register" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                              Register
+                            </Link>
+                          </>
+                        )}
                       </>
                     )}
                     {/* Search Form */}
@@ -387,26 +399,40 @@ const Header: React.FC = () => {
                     </div>
                   ) : (
                     <>
-                      {[
-                        { to: '/login', label: 'Login' },
-                        { to: '/register', label: 'Register' }
-                      ].map((item, index) => (
+                      {loading ? (
                         <motion.div
-                          key={item.to}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
+                          transition={{ duration: 0.3, delay: 0.5 }}
+                          className="flex items-center space-x-2 py-3 px-2"
                         >
-                          <Link
-                            to={item.to}
-                            className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {item.label}
-                          </Link>
+                          <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                          <span className="text-gray-600 dark:text-gray-400 text-sm">Loading...</span>
                         </motion.div>
-                      ))}
+                      ) : (
+                        <>
+                          {[
+                            { to: '/login', label: 'Login' },
+                            { to: '/register', label: 'Register' }
+                          ].map((item, index) => (
+                            <motion.div
+                              key={item.to}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
+                            >
+                              <Link
+                                to={item.to}
+                                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                                {item.label}
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </>
+                      )}
                     </>
                   )}
                   {/* Mobile Search */}

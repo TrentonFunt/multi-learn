@@ -102,16 +102,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Sign in function
   const signIn = async (email: string, password: string): Promise<void> => {
     try {
+      setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error: unknown) {
       const errorCode = (error as { code?: string })?.code || 'unknown';
       throw new Error(getAuthErrorMessage(errorCode));
+    } finally {
+      setLoading(false);
     }
   };
 
   // Sign up function
   const signUp = async (email: string, password: string, displayName: string): Promise<void> => {
     try {
+      setLoading(true);
       const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
       
       // Update the user's display name
@@ -133,16 +137,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error: unknown) {
       const errorCode = (error as { code?: string })?.code || 'unknown';
       throw new Error(getAuthErrorMessage(errorCode));
+    } finally {
+      setLoading(false);
     }
   };
 
   // Sign out function
   const signOutUser = async (): Promise<void> => {
     try {
+      setLoading(true);
+      // Optimistically clear user state
+      setUser(null);
       await signOut(auth);
     } catch (error: unknown) {
       const errorCode = (error as { code?: string })?.code || 'unknown';
       throw new Error(getAuthErrorMessage(errorCode));
+    } finally {
+      setLoading(false);
     }
   };
 
