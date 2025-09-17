@@ -249,4 +249,5 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 };
 
 
+export { AuthContext, type AuthContextType };
 export default AuthContext;
