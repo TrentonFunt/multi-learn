@@ -62,7 +62,7 @@ const Login: React.FC = () => {
   return (
     <div className="min-h-screen bg-bg-secondary">
       {/* Hero Section */}
-      <section className="bg-bg-secondary py-16">
+      <section className="bg-bg-secondary py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4">
@@ -72,12 +72,12 @@ const Login: React.FC = () => {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Breadcrumb */}
         <Breadcrumb items={breadcrumbItems} />
 
         {/* Login Form */}
-        <div className="max-w-md mx-auto mt-12">
+        <div className="max-w-md mx-auto mt-8">
           <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-8">
             <h2 className="text-2xl font-exo font-semibold text-text-primary mb-6 text-center">
               Welcome Back

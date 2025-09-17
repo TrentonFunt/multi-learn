@@ -105,9 +105,10 @@ const Home: React.FC = () => {
             </motion.div>
             <Link
               to="/categories"
-              className="bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-colors"
+              className="group relative bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
             >
-              All Categories
+              <span className="relative z-10">All Categories</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
             </Link>
           </motion.div>
 
@@ -119,18 +120,18 @@ const Home: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
           >
             {[
-              { name: 'Art & Design', icon: '🎨', courses: 38 },
-              { name: 'Development', icon: '⚙️', courses: 42 },
-              { name: 'Communication', icon: '💬', courses: 25 },
-              { name: 'Videography', icon: '🎥', courses: 18 },
-              { name: 'Photography', icon: '📸', courses: 35 },
-              { name: 'Marketing', icon: '📈', courses: 28 },
-              { name: 'Content Writing', icon: '✍️', courses: 22 },
-              { name: 'Finance', icon: '💰', courses: 31 },
+              { name: 'Art & Design', icon: '🎨', courses: 38, color: 'from-pink-500 to-rose-500', bgColor: 'bg-pink-50 dark:bg-pink-900/20' },
+              { name: 'Development', icon: '⚙️', courses: 42, color: 'from-blue-500 to-cyan-500', bgColor: 'bg-blue-50 dark:bg-blue-900/20' },
+              { name: 'Communication', icon: '💬', courses: 25, color: 'from-green-500 to-emerald-500', bgColor: 'bg-green-50 dark:bg-green-900/20' },
+              { name: 'Videography', icon: '🎥', courses: 18, color: 'from-purple-500 to-violet-500', bgColor: 'bg-purple-50 dark:bg-purple-900/20' },
+              { name: 'Photography', icon: '📸', courses: 35, color: 'from-orange-500 to-amber-500', bgColor: 'bg-orange-50 dark:bg-orange-900/20' },
+              { name: 'Marketing', icon: '📈', courses: 28, color: 'from-red-500 to-pink-500', bgColor: 'bg-red-50 dark:bg-red-900/20' },
+              { name: 'Content Writing', icon: '✍️', courses: 22, color: 'from-indigo-500 to-blue-500', bgColor: 'bg-indigo-50 dark:bg-indigo-900/20' },
+              { name: 'Finance', icon: '💰', courses: 31, color: 'from-yellow-500 to-orange-500', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
             ].map((category, index) => (
               <motion.div 
                 key={index} 
-                className="bg-bg-secondary rounded-lg p-6 text-center hover:bg-bg-tertiary transition-colors cursor-pointer"
+                className="group relative bg-bg-secondary border border-border-primary rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -140,13 +141,43 @@ const Home: React.FC = () => {
                 }}
                 viewport={{ once: true, margin: "-50px" }}
                 whileHover={{ 
-                  y: -5,
-                  transition: { duration: 0.2 }
+                  y: -8,
+                  scale: 1.02,
+                  transition: { duration: 0.3, ease: "easeOut" }
                 }}
               >
-                <div className="text-4xl mb-4">{category.icon}</div>
-                <h3 className="font-semibold text-text-primary mb-2">{category.name}</h3>
-                <p className="text-sm text-text-secondary">{category.courses} Courses</p>
+                {/* Gradient overlay on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                
+                {/* Icon with animated background */}
+                <div className="relative mb-4">
+                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${category.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                    <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{category.icon}</span>
+                  </div>
+                  {/* Floating particles effect */}
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300"></div>
+                </div>
+                
+                <h3 className="font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors duration-300">
+                  {category.name}
+                </h3>
+                <p className="text-sm text-text-secondary group-hover:text-text-primary transition-colors duration-300">
+                  {category.courses} Courses
+                </p>
+                
+                {/* Progress bar animation */}
+                <div className="mt-4 w-full bg-bg-tertiary rounded-full h-1 overflow-hidden">
+                  <motion.div 
+                    className={`h-1 bg-gradient-to-r ${category.color} rounded-full`}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${Math.min((category.courses / 50) * 100, 100)}%` }}
+                    transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
+                    viewport={{ once: true }}
+                  />
+                </div>
+                
+                {/* Hover effect border */}
+                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-primary/20 transition-colors duration-300"></div>
               </motion.div>
             ))}
           </motion.div>
