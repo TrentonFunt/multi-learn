@@ -1,23 +1,71 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Breadcrumb from '../components/ui/Breadcrumb';
+import { useAuth } from '../contexts/AuthContext';
 
 const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   const breadcrumbItems = [
     { label: 'Homepage', href: '/' },
     { label: 'Register' }
   ];
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Register form submitted');
+    setError('');
+    setLoading(true);
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await signUp(formData.email, formData.password, formData.fullName);
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/email-verification');
+      }, 2000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,25 +95,46 @@ const Register: React.FC = () => {
               Join MultiLearn today and start your learning journey with thousands of courses.
             </p>
             
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2"
+              >
+                <AlertCircle className="h-5 w-5" />
+                <span className="text-sm">{error}</span>
+              </motion.div>
+            )}
+
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center space-x-2"
+              >
+                <CheckCircle className="h-5 w-5" />
+                <span className="text-sm">Account created successfully! Redirecting...</span>
+              </motion.div>
+            )}
+            
             <form onSubmit={handleRegister} className="space-y-6">
               <Input
                 label="Full Name"
                 type="text"
+                name="fullName"
                 placeholder="Enter your full name*"
+                value={formData.fullName}
+                onChange={handleInputChange}
                 required
               />
 
               <Input
                 label="Email"
                 type="email"
+                name="email"
                 placeholder="Enter your email*"
-                required
-              />
-              
-              <Input
-                label="Username"
-                type="text"
-                placeholder="Choose a username*"
+                value={formData.email}
+                onChange={handleInputChange}
                 required
               />
               
@@ -73,7 +142,10 @@ const Register: React.FC = () => {
                 <Input
                   label="Password"
                   type={showPassword ? 'text' : 'password'}
+                  name="password"
                   placeholder="Create a password*"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   required
                 />
                 <button
@@ -89,7 +161,10 @@ const Register: React.FC = () => {
                 <Input
                   label="Confirm Password"
                   type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmPassword"
                   placeholder="Confirm your password*"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
                   required
                 />
                 <button
@@ -131,8 +206,14 @@ const Register: React.FC = () => {
                 </label>
               </div>
 
-              <Button type="submit" variant="fill" size="large" className="w-full">
-                Create Account
+              <Button 
+                type="submit" 
+                variant="fill" 
+                size="large" 
+                className="w-full"
+                disabled={loading || success}
+              >
+                {loading ? 'Creating Account...' : success ? 'Account Created!' : 'Create Account'}
               </Button>
             </form>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaArrowUp } from 'react-icons/fa';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import NewsletterSubscription from '../ui/NewsletterSubscription';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -118,6 +119,18 @@ const Footer: React.FC = () => {
                   <FaLinkedin className="w-5 h-5" />
                 </a>
               </div>
+            </div>
+
+            {/* Newsletter */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Stay Updated</h3>
+              <NewsletterSubscription
+                title=""
+                description="Get the latest courses and updates delivered to your inbox."
+                placeholder="Enter your email"
+                buttonText="Subscribe"
+                className="bg-gray-800 border-gray-700"
+              />
             </div>
           </div>
 

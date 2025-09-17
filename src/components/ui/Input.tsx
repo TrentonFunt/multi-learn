@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   size?: 'large' | 'small';
@@ -19,8 +19,9 @@ const Input: React.FC<InputProps> = ({
   };
   
   const baseClasses = `
-    w-full border rounded-input transition-colors
+    w-full border rounded-input transition-all duration-300
     focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+    hover:border-primary/50 focus:scale-[1.02]
     ${sizeClasses[size]}
   `;
   

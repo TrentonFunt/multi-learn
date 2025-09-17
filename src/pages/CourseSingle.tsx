@@ -8,6 +8,8 @@ import InstructorTab from '../components/course/tabs/InstructorTab';
 import FAQTab from '../components/course/tabs/FAQTab';
 import ReviewsTab from '../components/course/tabs/ReviewsTab';
 import CommentSection from '../components/course/CommentSection';
+import useScrollToTop from '../hooks/useScrollToTop';
+// import { useEnrollmentStore } from '../store/enrollmentStore';
 
 interface Course {
   id: string;
@@ -30,6 +32,7 @@ interface Course {
   modules: Array<{
     id: string;
     title: string;
+    isExpanded: boolean;
     lessons: Array<{
       id: string;
       title: string;
@@ -64,6 +67,11 @@ interface Course {
 const CourseSingle: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState('overview');
+  // Enrollment store for future use
+  // const { getEnrolledCourse, updateCourseProgress } = useEnrollmentStore();
+
+  // Ensure page scrolls to top
+  useScrollToTop();
 
   // Dummy course data
   const course: Course = {
@@ -87,6 +95,7 @@ const CourseSingle: React.FC = () => {
       {
         id: '1',
         title: 'Introduction to WordPress LMS',
+        isExpanded: false,
         lessons: [
           {
             id: '1',
@@ -117,6 +126,7 @@ const CourseSingle: React.FC = () => {
       {
         id: '2',
         title: 'Advanced LMS Features',
+        isExpanded: false,
         lessons: [
           {
             id: '4',
@@ -253,7 +263,18 @@ const CourseSingle: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <CourseHero title={course.title} image={course.heroImage} />
+      <CourseHero 
+        title={course.title} 
+        image={course.heroImage}
+        instructor={course.instructor.name}
+        category="Web Development"
+        duration="10 hours"
+        students={1234}
+        rating={course.averageRating}
+        lessons={course.modules.reduce((total, module) => total + module.lessons.length, 0)}
+        description={course.description}
+        courseId={course.id}
+      />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CourseTabs tabs={tabs} onTabChange={handleTabChange} />

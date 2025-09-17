@@ -35,7 +35,7 @@ export const useCourseStore = create<CourseState>((set, get) => ({
   isLoading: false,
   error: null,
 
-  fetchCourses: async (filters?: CourseFilters) => {
+  fetchCourses: async (_filters?: CourseFilters) => {
     set({ isLoading: true, error: null });
     
     try {
@@ -231,7 +231,7 @@ export const useCourseStore = create<CourseState>((set, get) => ({
     }
   },
 
-  updateProgress: async (courseId: string, lessonId: string, progress: number) => {
+  updateProgress: async (courseId: string, _lessonId: string, progress: number) => {
     set({ isLoading: true, error: null });
     
     try {

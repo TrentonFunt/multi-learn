@@ -1,22 +1,62 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Breadcrumb from '../components/ui/Breadcrumb';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [resetEmail, setResetEmail] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
+  
+  const { signIn, resetPassword } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const from = location.state?.from?.pathname || '/';
 
   const breadcrumbItems = [
     { label: 'Homepage', href: '/' },
     { label: 'Login' }
   ];
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login form submitted');
+    setError('');
+    setLoading(true);
+
+    try {
+      await signIn(email, password);
+      navigate(from, { replace: true });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await resetPassword(resetEmail);
+      setResetEmailSent(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,11 +86,24 @@ const Login: React.FC = () => {
               Sign in to your MultiLearn account to continue your learning journey.
             </p>
             
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2"
+              >
+                <AlertCircle className="h-5 w-5" />
+                <span className="text-sm">{error}</span>
+              </motion.div>
+            )}
+
             <form onSubmit={handleLogin} className="space-y-6">
               <Input
-                label="Email or username"
+                label="Email"
                 type="email"
-                placeholder="Email or username*"
+                placeholder="Email*"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               
@@ -59,6 +112,8 @@ const Login: React.FC = () => {
                   label="Password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password*"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 <button
@@ -81,18 +136,105 @@ const Login: React.FC = () => {
                     Remember me
                   </label>
                 </div>
-                <Link 
-                  to="/forgot-password" 
+                <button 
+                  type="button"
+                  onClick={() => setShowForgotPassword(!showForgotPassword)}
                   className="text-sm link-primary"
                 >
                   Forgot password?
-                </Link>
+                </button>
               </div>
 
-              <Button type="submit" variant="fill" size="large" className="w-full">
-                Sign In
+              <Button 
+                type="submit" 
+                variant="fill" 
+                size="large" 
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? 'Signing In...' : 'Sign In'}
               </Button>
             </form>
+
+            {/* Forgot Password Form */}
+            {showForgotPassword && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg"
+              >
+                <h3 className="text-lg font-semibold text-text-primary mb-3">Reset Password</h3>
+                <p className="text-sm text-text-secondary mb-4">
+                  Enter your email address and we'll send you a link to reset your password.
+                </p>
+                
+                <form onSubmit={handleForgotPassword} className="space-y-4">
+                  <div>
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      required
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  {resetEmailSent ? (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-center"
+                    >
+                      <div className="flex items-center justify-center space-x-2 text-green-600 mb-2">
+                        <CheckCircle className="h-5 w-5" />
+                        <span className="font-medium">Email Sent!</span>
+                      </div>
+                      <p className="text-sm text-text-secondary">
+                        Check your email for password reset instructions.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowForgotPassword(false);
+                          setResetEmailSent(false);
+                          setResetEmail('');
+                          setError('');
+                        }}
+                        className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mt-2"
+                      >
+                        Back to Login
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <div className="flex space-x-3">
+                      <Button
+                        type="submit"
+                        variant="fill"
+                        size="small"
+                        disabled={loading || !resetEmail}
+                        className="flex-1"
+                      >
+                        {loading ? 'Sending...' : 'Send Reset Link'}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="small"
+                        onClick={() => {
+                          setShowForgotPassword(false);
+                          setResetEmail('');
+                          setError('');
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+                </form>
+              </motion.div>
+            )}
 
             {/* Divider */}
             <div className="my-8">

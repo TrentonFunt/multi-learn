@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { validateField, ValidationRule } from '../../utils/validation';
+import { validateField } from '../../utils/validation';
+import type { ValidationRule } from '../../utils/validation';
 
 interface FormFieldProps {
   label: string;

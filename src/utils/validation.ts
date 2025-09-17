@@ -134,9 +134,9 @@ export const validationRules = {
   
   phone: {
     required: false,
-    pattern: /^[\+]?[1-9][\d]{0,15}$/,
+    pattern: /^[+]?[1-9][\d]{0,15}$/,
     custom: (value: string) => {
-      if (value && !/^[\+]?[1-9][\d]{0,15}$/.test(value)) {
+      if (value && !/^[+]?[1-9][\d]{0,15}$/.test(value)) {
         return 'Please enter a valid phone number';
       }
       return null;

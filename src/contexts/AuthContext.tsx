@@ -1,0 +1,274 @@
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  updatePassword,
+  updateEmail,
+  // type User
+} from 'firebase/auth';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
+
+// User role types
+export type UserRole = 'user' | 'admin';
+
+// Extended user interface
+export interface AppUser {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+  emailVerified: boolean;
+  role?: UserRole;
+  createdAt?: Date;
+  lastLoginAt?: Date;
+}
+
+// Authentication context interface
+interface AuthContextType {
+  user: AppUser | null;
+  loading: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  sendEmailVerification: () => Promise<void>;
+  updateUserProfile: (data: { displayName?: string; photoURL?: string }) => Promise<void>;
+  updateUserPassword: (newPassword: string) => Promise<void>;
+  updateUserEmail: (newEmail: string) => Promise<void>;
+  isAdmin: boolean;
+  isAuthenticated: boolean;
+  isEmailVerified: boolean;
+}
+
+// Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Auth provider component
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<AppUser | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // Get user data from Firestore
+        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+        const userData = userDoc.data();
+        
+        const appUser: AppUser = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+          emailVerified: firebaseUser.emailVerified,
+          role: userData?.role || 'user',
+          createdAt: userData?.createdAt?.toDate(),
+          lastLoginAt: new Date()
+        };
+
+        // Update last login time
+        await updateDoc(doc(db, 'users', firebaseUser.uid), {
+          lastLoginAt: new Date()
+        }).catch(() => {
+          // If user document doesn't exist, create it
+          setDoc(doc(db, 'users', firebaseUser.uid), {
+            role: 'user',
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email,
+            photoURL: firebaseUser.photoURL,
+            createdAt: new Date(),
+            lastLoginAt: new Date()
+          });
+        });
+
+        setUser(appUser);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Sign in function
+  const signIn = async (email: string, password: string): Promise<void> => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Sign up function
+  const signUp = async (email: string, password: string, displayName: string): Promise<void> => {
+    try {
+      const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
+      
+      // Update the user's display name
+      await updateProfile(firebaseUser, { displayName });
+      
+      // Send email verification
+      await sendEmailVerification(firebaseUser);
+      
+      // Create user document in Firestore
+      await setDoc(doc(db, 'users', firebaseUser.uid), {
+        role: 'user',
+        displayName,
+        email,
+        photoURL: null,
+        emailVerified: false,
+        createdAt: new Date(),
+        lastLoginAt: new Date()
+      });
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Sign out function
+  const signOutUser = async (): Promise<void> => {
+    try {
+      await signOut(auth);
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Reset password function
+  const resetPassword = async (email: string): Promise<void> => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Send email verification function
+  const sendEmailVerificationToUser = async (): Promise<void> => {
+    if (!user) throw new Error('No user logged in');
+    
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('No user logged in');
+      await sendEmailVerification(currentUser);
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Update user profile
+  const updateUserProfile = async (data: { displayName?: string; photoURL?: string }): Promise<void> => {
+    if (!user) throw new Error('No user logged in');
+    
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('No user logged in');
+      await updateProfile(currentUser, data);
+      
+      // Update Firestore document
+      await updateDoc(doc(db, 'users', user.uid), {
+        ...data,
+        updatedAt: new Date()
+      });
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Update user password
+  const updateUserPassword = async (newPassword: string): Promise<void> => {
+    if (!user) throw new Error('No user logged in');
+    
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('No user logged in');
+      await updatePassword(currentUser, newPassword);
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Update user email
+  const updateUserEmail = async (newEmail: string): Promise<void> => {
+    if (!user) throw new Error('No user logged in');
+    
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error('No user logged in');
+      await updateEmail(currentUser, newEmail);
+      
+      // Update Firestore document
+      await updateDoc(doc(db, 'users', user.uid), {
+        email: newEmail,
+        updatedAt: new Date()
+      });
+    } catch (error: any) {
+      throw new Error(getAuthErrorMessage(error.code));
+    }
+  };
+
+  // Helper function to get user-friendly error messages
+  const getAuthErrorMessage = (errorCode: string): string => {
+    switch (errorCode) {
+      case 'auth/user-not-found':
+        return 'No user found with this email address.';
+      case 'auth/wrong-password':
+        return 'Incorrect password.';
+      case 'auth/email-already-in-use':
+        return 'An account with this email already exists.';
+      case 'auth/weak-password':
+        return 'Password should be at least 6 characters long.';
+      case 'auth/invalid-email':
+        return 'Invalid email address.';
+      case 'auth/user-disabled':
+        return 'This account has been disabled.';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later.';
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your connection.';
+      default:
+        return 'An error occurred. Please try again.';
+    }
+  };
+
+  const value: AuthContextType = {
+    user,
+    loading,
+    signIn,
+    signUp,
+    signOut: signOutUser,
+    resetPassword,
+    sendEmailVerification: sendEmailVerificationToUser,
+    updateUserProfile,
+    updateUserPassword,
+    updateUserEmail,
+    isAdmin: user?.role === 'admin',
+    isAuthenticated: !!user,
+    isEmailVerified: user?.emailVerified || false
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+// Custom hook to use the auth context
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export default AuthContext;

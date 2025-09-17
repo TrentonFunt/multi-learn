@@ -1,116 +1,265 @@
 import React, { useState } from 'react';
+import { Send, CheckCircle, AlertCircle, User, Mail, MessageSquare } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface ContactFormData {
   name: string;
   email: string;
-  comment: string;
-  saveInfo: boolean;
+  subject: string;
+  message: string;
 }
 
-const ContactForm: React.FC = () => {
+interface ContactFormProps {
+  className?: string;
+}
+
+const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
-    comment: '',
-    saveInfo: false
+    subject: '',
+    message: ''
   });
+  
+  const [errors, setErrors] = useState<Partial<ContactFormData>>({});
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.name && formData.email && formData.comment) {
-      console.log('Contact form submitted:', formData);
-      // Reset form after submission
-      setFormData({ name: '', email: '', comment: '', saveInfo: false });
-      alert('Thank you for your message! We will get back to you soon.');
+  const validateForm = (): boolean => {
+    const newErrors: Partial<ContactFormData> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters long';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof ContactFormData]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-    });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setStatus('loading');
+    setMessage('');
+
+    try {
+      // Simulate API call - replace with actual implementation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock success response
+      setStatus('success');
+      setMessage('Thank you for your message! We\'ll get back to you soon.');
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+      
+      // Reset status after 5 seconds
+      setTimeout(() => {
+        setStatus('idle');
+        setMessage('');
+      }, 5000);
+      
+    } catch {
+      setStatus('error');
+      setMessage('Something went wrong. Please try again.');
+    }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6">Contact Us</h2>
-      
-      <p className="text-gray-600 mb-8">
-        Your email address will not be published. Required fields are marked *
-      </p>
+    <div className={`bg-bg-primary border border-border-primary rounded-xl shadow-lg p-8 ${className}`}>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-text-primary mb-2">Send us a Message</h2>
+        <p className="text-text-secondary">
+          Have a question or need help? We'd love to hear from you.
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-            Name *
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Name Field */}
+          <div className="space-y-2">
+            <label htmlFor="name" className="block text-sm font-medium text-text-primary">
+              Full Name *
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+                  errors.name ? 'border-red-500' : 'border-border-primary'
+                }`}
+                placeholder="Enter your full name"
+                disabled={status === 'loading'}
+              />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-tertiary" />
+            </div>
+            {errors.name && (
+              <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                {errors.name}
+              </p>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-medium text-text-primary">
+              Email Address *
+            </label>
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+                  errors.email ? 'border-red-500' : 'border-border-primary'
+                }`}
+                placeholder="Enter your email address"
+                disabled={status === 'loading'}
+              />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-tertiary" />
+            </div>
+            {errors.email && (
+              <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                {errors.email}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Subject Field */}
+        <div className="space-y-2">
+          <label htmlFor="subject" className="block text-sm font-medium text-text-primary">
+            Subject *
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            placeholder="Your name"
+            id="subject"
+            name="subject"
+            value={formData.subject}
+            onChange={handleInputChange}
+            className={`w-full px-4 py-3 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+              errors.subject ? 'border-red-500' : 'border-border-primary'
+            }`}
+            placeholder="What's this about?"
+            disabled={status === 'loading'}
           />
+          {errors.subject && (
+            <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" />
+              {errors.subject}
+            </p>
+          )}
         </div>
-        
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-            Email *
+
+        {/* Message Field */}
+        <div className="space-y-2">
+          <label htmlFor="message" className="block text-sm font-medium text-text-primary">
+            Message *
           </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            placeholder="Your email"
-          />
+          <div className="relative">
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
+              rows={5}
+              className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none ${
+                errors.message ? 'border-red-500' : 'border-border-primary'
+              }`}
+              placeholder="Tell us more about your inquiry..."
+              disabled={status === 'loading'}
+            />
+            <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-text-tertiary" />
+          </div>
+          {errors.message && (
+            <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" />
+              {errors.message}
+            </p>
+          )}
         </div>
-        
-        <div>
-          <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-2">
-            Comment *
-          </label>
-          <textarea
-            id="comment"
-            name="comment"
-            value={formData.comment}
-            onChange={handleChange}
-            required
-            rows={6}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            placeholder="Write your message here..."
-          />
-        </div>
-        
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="saveInfo"
-            name="saveInfo"
-            checked={formData.saveInfo}
-            onChange={handleChange}
-            className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-          />
-          <label htmlFor="saveInfo" className="ml-2 text-sm text-gray-700">
-            Save my name, email in this browser for the next time I comment
-          </label>
-        </div>
-        
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+          disabled={status === 'loading'}
+          className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
         >
-          Post Comment
+          {status === 'loading' ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" />
+              Send Message
+            </>
+          )}
         </button>
       </form>
+
+      {/* Status Message */}
+      {message && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`mt-6 p-4 rounded-lg flex items-center gap-2 ${
+            status === 'success' 
+              ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400' 
+              : 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+          }`}
+        >
+          {status === 'success' ? (
+            <CheckCircle className="w-5 h-5" />
+          ) : (
+            <AlertCircle className="w-5 h-5" />
+          )}
+          <span className="text-sm">{message}</span>
+        </motion.div>
+      )}
     </div>
   );
 };

@@ -1,27 +1,72 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut, Settings, Shield } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
+import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
+import SearchAutocomplete from '../ui/SearchAutocomplete';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const location = useLocation();
+  const { user, signOut, isAdmin } = useAuth();
+  const { addToast } = useToast();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
       // Redirect to courses page with search query
-      window.location.href = `/courses?search=${encodeURIComponent(searchQuery.trim())}`;
+      window.location.href = `/courses?search=${encodeURIComponent(query.trim())}`;
     }
   };
+
+  const handleSuggestionSelect = (suggestion: { title: string }) => {
+    handleSearch(suggestion.title);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setIsUserMenuOpen(false);
+      addToast({
+        type: 'info',
+        title: 'Signed Out',
+        message: 'You have been successfully signed out.'
+      });
+    } catch {
+      // Error signing out
+      addToast({
+        type: 'error',
+        title: 'Sign Out Failed',
+        message: 'There was an error signing out. Please try again.'
+      });
+    }
+  };
+
+  // Close user menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isUserMenuOpen) {
+        const target = event.target as Element;
+        if (!target.closest('.user-menu-container')) {
+          setIsUserMenuOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
 
   return (
     <header className="bg-bg-primary shadow-card border-b border-border-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 mr-4 -ml-4">
+          <Link to="/" className="flex items-center space-x-2 mr-6 -ml-4">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-black font-exo font-semibold text-xl">M</span>
             </div>
@@ -33,43 +78,68 @@ const Header: React.FC = () => {
           <nav className="hidden md:flex items-center space-x-6">
             <Link 
               to="/" 
-              className={`font-medium transition-colors px-3 py-2 rounded-md ${
+              className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/' 
                   ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
                   : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
-              Home
+              <span className="relative z-10">Home</span>
+              {location.pathname !== '/' && (
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+              )}
             </Link>
             <Link 
               to="/courses" 
-              className={`font-medium transition-colors px-3 py-2 rounded-md ${
+              className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/courses' 
                   ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
                   : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
-              Courses
+              <span className="relative z-10">Courses</span>
+              {location.pathname !== '/courses' && (
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+              )}
             </Link>
             <Link 
               to="/blog" 
-              className={`font-medium transition-colors px-3 py-2 rounded-md ${
+              className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/blog' 
                   ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
                   : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
-              Blog
+              <span className="relative z-10">Blog</span>
+              {location.pathname !== '/blog' && (
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+              )}
+            </Link>
+            <Link 
+              to="/favorites" 
+              className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
+                location.pathname === '/favorites' 
+                  ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
+                  : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
+              }`}
+            >
+              <span className="relative z-10">Favorites</span>
+              {location.pathname !== '/favorites' && (
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+              )}
             </Link>
             <Link 
               to="/contact" 
-              className={`font-medium transition-colors px-3 py-2 rounded-md ${
+              className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/contact' 
                   ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
                   : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
-              Contact
+              <span className="relative z-10">Contact</span>
+              {location.pathname !== '/contact' && (
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+              )}
             </Link>
             <div className="relative group">
               <button className="flex items-center space-x-1 text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
@@ -77,57 +147,119 @@ const Header: React.FC = () => {
                 <ChevronDown className="w-4 h-4" />
               </button>
               {/* Dropdown menu */}
-              <div className="absolute top-full left-0 mt-2 w-48 bg-bg-primary rounded-card shadow-card border border-border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-card shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="py-2">
                   <Link
                     to="/faqs"
-                    className="block px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary hover:text-primary transition-colors"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
                     FAQs
                   </Link>
                   <Link
                     to="/error"
-                    className="block px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary hover:text-primary transition-colors"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
                     Error Page
                   </Link>
                 </div>
               </div>
             </div>
-            <Link to="/addons" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-              MultiLearn Add-On
-            </Link>
-            <Link to="/premium" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-              Premium Theme
+            <Link to="/addons" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-4 py-2 rounded-md">
+              <span className="hidden lg:inline">MultiLearn Add-On</span>
+              <span className="lg:hidden">Add-On</span>
             </Link>
           </nav>
 
                   {/* User Actions - Desktop */}
                   <div className="hidden md:flex items-center space-x-4">
-                    <Link to="/login" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-                      Login
-                    </Link>
-                    <span className="text-text-secondary">/</span>
-                    <Link to="/register" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-                      Register
-                    </Link>
-                    {/* Search Form */}
-                    <div className="relative">
-                      <form onSubmit={handleSearch} className="flex items-center">
-                        <input
-                          type="text"
-                          placeholder="Search courses..."
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-56 px-4 py-2 pr-10 text-sm border border-border-primary rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        />
+                    {user ? (
+                      <div className="relative user-menu-container">
                         <button
-                          type="submit"
-                          className="absolute right-2 p-1 rounded-md hover:bg-bg-secondary transition-colors"
+                          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                          className="flex items-center space-x-2 text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md"
                         >
-                          <Search className="w-4 h-4 text-text-secondary" />
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <User className="h-4 w-4 text-white" />
+                          </div>
+                          <span className="hidden lg:inline">{user.displayName || 'User'}</span>
+                          <ChevronDown className="w-4 h-4" />
                         </button>
-                      </form>
+
+                        <AnimatePresence>
+                          {isUserMenuOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-card shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+                            >
+                              <div className="py-2">
+                                <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                                  <p className="text-sm font-medium text-gray-900 dark:text-white">{user.displayName}</p>
+                                  <p className="text-xs text-gray-600 dark:text-gray-300">{user.email}</p>
+                                  {isAdmin && (
+                                    <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full mt-1">
+                                      Admin
+                                    </span>
+                                  )}
+                                </div>
+                                <Link
+                                  to="/account"
+                                  className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                  onClick={() => setIsUserMenuOpen(false)}
+                                >
+                                  <Settings className="h-4 w-4" />
+                                  <span>Account Settings</span>
+                                </Link>
+                                <Link
+                                  to="/favorites"
+                                  className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                  onClick={() => setIsUserMenuOpen(false)}
+                                >
+                                  <User className="h-4 w-4" />
+                                  <span>My Favorites</span>
+                                </Link>
+                                {isAdmin && (
+                                  <Link
+                                    to="/admin"
+                                    className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    onClick={() => setIsUserMenuOpen(false)}
+                                  >
+                                    <Shield className="h-4 w-4" />
+                                    <span>Admin Dashboard</span>
+                                  </Link>
+                                )}
+                                <button
+                                  onClick={handleSignOut}
+                                  className="flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors w-full text-left"
+                                >
+                                  <LogOut className="h-4 w-4" />
+                                  <span>Sign Out</span>
+                                </button>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <>
+                        <Link to="/login" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                          Login
+                        </Link>
+                        <span className="text-text-secondary">/</span>
+                        <Link to="/register" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                          Register
+                        </Link>
+                      </>
+                    )}
+                    {/* Search Form */}
+                    <div className="w-52">
+                      <SearchAutocomplete
+                        placeholder="Search courses..."
+                        onSearch={handleSearch}
+                        onSuggestionSelect={handleSuggestionSelect}
+                        className="w-full"
+                      />
                     </div>
                     <ThemeToggle />
                   </div>
@@ -142,108 +274,172 @@ const Header: React.FC = () => {
         </div>
 
         {/* Mobile Navigation */}
-                {isMobileMenuOpen && (
-                  <div className="md:hidden border-t border-border-primary py-4">
-                    <nav className="flex flex-col space-y-4">
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="md:hidden border-t border-border-primary overflow-hidden"
+            >
+              <motion.div
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+                exit={{ y: -20 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                className="py-4"
+              >
+                <nav className="flex flex-col space-y-4">
+                  {[
+                    { to: '/', label: 'Home' },
+                    { to: '/courses', label: 'Courses' },
+                    { to: '/blog', label: 'Blog' },
+                    { to: '/contact', label: 'Contact' },
+                    { to: '/addons', label: 'MultiLearn Add-On' },
+                    { to: '/premium', label: 'Premium Theme' }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.to}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
+                    >
                       <Link
-                        to="/"
-                        className={`font-medium transition-colors ${
-                          location.pathname === '/'
-                            ? 'text-primary'
-                            : 'text-text-primary hover:text-primary'
+                        to={item.to}
+                        className={`font-medium transition-colors py-3 px-2 min-h-[44px] flex items-center ${
+                          location.pathname === item.to
+                            ? 'text-primary bg-primary/10'
+                            : 'text-text-primary hover:text-primary hover:bg-primary/5'
                         }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Home
+                        {item.label}
                       </Link>
-                      <Link
-                        to="/courses"
-                        className={`font-medium transition-colors ${
-                          location.pathname === '/courses'
-                            ? 'text-primary'
-                            : 'text-text-primary hover:text-primary'
-                        }`}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                    </motion.div>
+                  ))}
+                </nav>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="border-t border-border-primary pt-4 mt-4"
+                >
+                  {user ? (
+                    <div className="space-y-3">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.5 }}
+                        className="flex items-center space-x-3 mb-4"
                       >
-                        Courses
-                      </Link>
-                      <Link
-                        to="/blog"
-                        className={`font-medium transition-colors ${
-                          location.pathname === '/blog'
-                            ? 'text-primary'
-                            : 'text-text-primary hover:text-primary'
-                        }`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Blog
-                      </Link>
-                      <Link
-                        to="/contact"
-                        className={`font-medium transition-colors ${
-                          location.pathname === '/contact'
-                            ? 'text-primary'
-                            : 'text-text-primary hover:text-primary'
-                        }`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Contact
-                      </Link>
-                      <Link
-                        to="/addons"
-                        className="text-text-primary hover:text-primary font-medium"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        MultiLearn Add-On
-                      </Link>
-                      <Link
-                        to="/premium"
-                        className="text-text-primary hover:text-primary font-medium"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Premium Theme
-                      </Link>
-                      <div className="border-t border-border-primary pt-4 mt-4">
-                        <Link
-                          to="/login"
-                          className="text-text-primary hover:text-primary font-medium block mb-2"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          Login
-                        </Link>
-                        <Link
-                          to="/register"
-                          className="text-text-primary hover:text-primary font-medium block mb-4"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          Register
-                        </Link>
-                        {/* Mobile Search */}
-                        <div className="mb-4 relative">
-                          <form onSubmit={handleSearch} className="flex items-center">
-                            <input
-                              type="text"
-                              placeholder="Search courses..."
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                              className="flex-1 px-4 py-2 pr-10 text-sm border border-border-primary rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            />
-                            <button
-                              type="submit"
-                              className="absolute right-2 p-1 rounded-md hover:bg-bg-secondary transition-colors"
-                            >
-                              <Search className="w-4 h-4 text-text-secondary" />
-                            </button>
-                          </form>
+                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                          <User className="h-5 w-5 text-white" />
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-text-secondary">Theme:</span>
-                          <ThemeToggle />
+                        <div>
+                          <p className="text-sm font-medium text-text-primary">{user.displayName}</p>
+                          <p className="text-xs text-text-secondary">{user.email}</p>
+                          {isAdmin && (
+                            <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full mt-1">
+                              Admin
+                            </span>
+                          )}
                         </div>
-                      </div>
-                    </nav>
-                  </div>
-                )}
+                      </motion.div>
+                      {[
+                        { to: '/account', label: 'Account Settings', icon: Settings },
+                        { to: '/favorites', label: 'My Favorites', icon: User },
+                        ...(isAdmin ? [{ to: '/admin', label: 'Admin Dashboard', icon: Shield }] : [])
+                      ].map((item, index) => (
+                        <motion.div
+                          key={item.to}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.3, delay: 0.6 + index * 0.05 }}
+                        >
+                          <Link
+                            to={item.to}
+                            className="flex items-center space-x-2 text-text-primary hover:text-primary font-medium mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-primary/5 transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                          </Link>
+                        </motion.div>
+                      ))}
+                      <motion.button
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3, delay: 0.8 }}
+                        onClick={() => {
+                          handleSignOut();
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium mb-4 py-3 px-2 min-h-[44px] rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <>
+                      {[
+                        { to: '/login', label: 'Login' },
+                        { to: '/register', label: 'Register' }
+                      ].map((item, index) => (
+                        <motion.div
+                          key={item.to}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
+                        >
+                          <Link
+                            to={item.to}
+                            className="text-text-primary hover:text-primary font-medium block mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-primary/5 transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {item.label}
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </>
+                  )}
+                  {/* Mobile Search */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3, delay: 0.9 }}
+                    className="mb-4"
+                  >
+                    <SearchAutocomplete
+                      placeholder="Search courses..."
+                      onSearch={handleSearch}
+                      onSuggestionSelect={handleSuggestionSelect}
+                      className="w-full"
+                    />
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3, delay: 1.0 }}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm text-text-secondary">Theme:</span>
+                    <ThemeToggle />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

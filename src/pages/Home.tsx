@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, GraduationCap, Users, Clock, Star, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import EnrollmentButton from '../components/course/EnrollmentButton';
 
 const Home: React.FC = () => {
   return (
@@ -9,32 +11,71 @@ const Home: React.FC = () => {
       <section className="relative bg-gradient-to-r from-yellow-200 via-yellow-100 to-green-200 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight text-gray-900">
-                Build Skills With Online Course
-              </h1>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                We denounce with righteous indignation and dislike men who are so beguiled and demoralized that cannot trouble.
-              </p>
-              <Link
-                to="/courses"
-                className="inline-block bg-orange-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-orange-600 transition-colors"
+            <motion.div 
+              className="space-y-8"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <motion.h1 
+                className="text-4xl md:text-6xl font-bold leading-tight text-gray-900"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               >
-                Explore Course
-              </Link>
-            </div>
-            <div className="relative">
+                Build Skills With Online Course
+              </motion.h1>
+              <motion.p 
+                className="text-lg text-gray-600 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              >
+                We denounce with righteous indignation and dislike men who are so beguiled and demoralized that cannot trouble.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+              >
+                <Link
+                  to="/courses"
+                  className="inline-block bg-orange-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-orange-600 transition-colors"
+                >
+                  Explore Course
+                </Link>
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            >
               <div className="relative z-10">
-                <img
+                <motion.img
                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=600&fit=crop&crop=face"
                   alt="Student learning"
                   className="w-full h-auto rounded-lg shadow-2xl"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
                 />
               </div>
-              <div className="absolute top-10 right-10 text-6xl font-bold text-white opacity-30 z-0">
+              <motion.div 
+                className="absolute top-10 right-10 text-6xl font-bold text-white opacity-30 z-0"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  opacity: [0.3, 0.5, 0.3]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
                 ONE SCHOOL
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -42,24 +83,41 @@ const Home: React.FC = () => {
       {/* Top Categories Section */}
       <section className="py-20 bg-bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
-            <div>
+          <motion.div 
+            className="flex justify-between items-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
                 Top Categories
               </h2>
               <p className="text-lg text-text-secondary">
                 Explore our Popular Categories
               </p>
-            </div>
+            </motion.div>
             <Link
               to="/categories"
               className="bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-colors"
             >
               All Categories
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {[
               { name: 'Art & Design', icon: '🎨', courses: 38 },
               { name: 'Development', icon: '⚙️', courses: 42 },
@@ -70,13 +128,28 @@ const Home: React.FC = () => {
               { name: 'Content Writing', icon: '✍️', courses: 22 },
               { name: 'Finance', icon: '💰', courses: 31 },
             ].map((category, index) => (
-              <div key={index} className="bg-bg-secondary rounded-lg p-6 text-center hover:bg-bg-tertiary transition-colors cursor-pointer">
+              <motion.div 
+                key={index} 
+                className="bg-bg-secondary rounded-lg p-6 text-center hover:bg-bg-tertiary transition-colors cursor-pointer"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  ease: "easeOut"
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ 
+                  y: -5,
+                  transition: { duration: 0.2 }
+                }}
+              >
                 <div className="text-4xl mb-4">{category.icon}</div>
                 <h3 className="font-semibold text-text-primary mb-2">{category.name}</h3>
                 <p className="text-sm text-text-secondary">{category.courses} Courses</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -94,9 +167,10 @@ const Home: React.FC = () => {
             </div>
             <Link
               to="/courses"
-              className="bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-colors"
+              className="group relative bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
             >
-              All Courses
+              <span className="relative z-10">All Courses</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
             </Link>
           </div>
 
@@ -181,22 +255,31 @@ const Home: React.FC = () => {
                 isFree: false
               }
             ].map((course) => (
-              <div key={course.id} className="bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="relative">
+              <div key={course.id} className="group bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-2 hover:border-primary/20">
+                <div className="relative overflow-hidden">
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-500">
                     {course.category}
+                  </div>
+                  {/* Hover overlay with play button */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                      <svg className="w-6 h-6 text-primary ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2">
+                  <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
                     {course.title}
                   </h3>
-                  <p className="text-sm text-text-secondary mb-4">by {course.instructor}</p>
+                  <p className="text-sm text-text-secondary mb-4 group-hover:text-text-primary transition-colors duration-300">by {course.instructor}</p>
                   
                   <div className="flex items-center justify-between text-sm text-text-tertiary mb-4">
                     <div className="flex items-center space-x-1">
@@ -226,12 +309,19 @@ const Home: React.FC = () => {
                         </>
                       )}
                     </div>
-                    <Link
-                      to={`/courses/${course.id}`}
-                      className="bg-gray-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
-                    >
-                      View More
-                    </Link>
+                    <EnrollmentButton
+                      courseId={course.id.toString()}
+                      courseTitle={course.title}
+                      instructor={course.instructor}
+                      thumbnail={course.image}
+                      totalLessons={course.weeks * 4} // Estimate 4 lessons per week
+                      estimatedDuration={`${course.weeks} weeks`}
+                      difficulty="intermediate"
+                      category={course.category}
+                      rating={course.rating}
+                      description=""
+                      variant="card"
+                    />
                   </div>
                 </div>
               </div>
@@ -291,9 +381,15 @@ const Home: React.FC = () => {
               { value: '158', label: 'Instructor' },
               { value: '100%', label: 'Satisfaction Rate' }
             ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-text-primary mb-2">{stat.value}</div>
-                <div className="text-lg text-text-secondary">{stat.label}</div>
+              <div key={index} className="group text-center p-6 rounded-xl hover:bg-bg-secondary transition-all duration-300 hover:scale-105 cursor-pointer">
+                <div className="text-4xl md:text-5xl font-bold text-text-primary mb-2 group-hover:text-primary transition-colors duration-300">
+                  <span className="inline-block group-hover:animate-pulse">{stat.value}</span>
+                </div>
+                <div className="text-lg text-text-secondary group-hover:text-text-primary transition-colors duration-300">
+                  {stat.label}
+                </div>
+                {/* Decorative element */}
+                <div className="mt-4 mx-auto w-0 h-1 bg-gradient-to-r from-primary to-secondary rounded-full group-hover:w-16 transition-all duration-500"></div>
               </div>
             ))}
           </div>
@@ -463,9 +559,10 @@ const Home: React.FC = () => {
             </div>
             <Link
               to="/blog"
-              className="bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-colors"
+              className="group relative bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
             >
-              All Articles
+              <span className="relative z-10">All Articles</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
             </Link>
           </div>
 
@@ -490,18 +587,21 @@ const Home: React.FC = () => {
                 image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&h=250&fit=crop"
               }
             ].map((article, index) => (
-              <div key={index} className="bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-48 object-cover"
-                />
+              <div key={index} className="group bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-2 hover:border-primary/20">
+                <div className="relative overflow-hidden">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2">
+                  <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
                     {article.title}
                   </h3>
                   <p className="text-sm text-text-tertiary mb-3">{article.date}</p>
-                  <p className="text-text-secondary leading-relaxed">
+                  <p className="text-text-secondary leading-relaxed group-hover:text-text-primary transition-colors duration-300">
                     {article.description}
                   </p>
                 </div>

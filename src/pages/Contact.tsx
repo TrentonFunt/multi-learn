@@ -2,7 +2,7 @@ import React from 'react';
 import ContactHero from '../components/contact/ContactHero';
 import ContactInfo from '../components/contact/ContactInfo';
 import ContactMap from '../components/contact/ContactMap';
-import ContactForm from '../components/contact/ContactForm';
+import LazyContactForm from '../components/contact/LazyContactForm';
 import Breadcrumb from '../components/ui/Breadcrumb';
 
 const Contact: React.FC = () => {
@@ -27,7 +27,7 @@ const Contact: React.FC = () => {
 
         {/* Contact Form Section */}
         <div className="max-w-4xl mx-auto">
-          <ContactForm />
+            <LazyContactForm />
         </div>
       </div>
     </div>
