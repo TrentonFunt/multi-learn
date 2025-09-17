@@ -53,11 +53,11 @@ const EmailVerification: React.FC = () => {
         title: 'Verification Email Sent',
         message: 'Please check your email and click the verification link.'
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       addToast({
         type: 'error',
         title: 'Failed to Send Email',
-        message: error.message || 'Please try again later.'
+        message: error instanceof Error ? error.message : 'Please try again later.'
       });
     } finally {
       setIsSending(false);

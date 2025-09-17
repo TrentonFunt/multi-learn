@@ -59,7 +59,7 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
         setMessage('');
       }, 3000);
       
-    } catch (error) {
+    } catch {
       setStatus('error');
       setMessage('Something went wrong. Please try again.');
     }

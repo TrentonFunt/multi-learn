@@ -35,12 +35,13 @@ export const useCourseStore = create<CourseState>((set, get) => ({
   isLoading: false,
   error: null,
 
-  fetchCourses: async (_filters?: CourseFilters) => {
+  fetchCourses: async (filters?: CourseFilters) => {
     set({ isLoading: true, error: null });
     
     try {
       // TODO: Replace with actual API call
       // const response = await courseApi.getCourses(filters);
+      console.log('Fetching courses with filters:', filters);
       
       // Mock courses data for now
       const mockCourses: Course[] = [

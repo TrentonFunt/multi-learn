@@ -104,8 +104,8 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 
 // Lazy load wrapper for components
 export const LazyComponent: React.FC<{
-  component: React.ComponentType<any>;
-  props?: any;
+  component: React.ComponentType<Record<string, unknown>>;
+  props?: Record<string, unknown>;
   fallback?: ReactNode;
   className?: string;
 }> = ({ component: Component, props = {}, fallback, className = '' }) => (

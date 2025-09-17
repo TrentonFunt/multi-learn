@@ -46,7 +46,7 @@ const Admin: React.FC = () => {
   // const [showUserModal, setShowUserModal] = useState(false);
   // const [selectedUser, setSelectedUser] = useState<any>(null);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<any>(null);
+  const [userToDelete, setUserToDelete] = useState<typeof users[0] | null>(null);
   
   // Course Management State
   const [courses, setCourses] = useState([
@@ -63,7 +63,7 @@ const Admin: React.FC = () => {
   // const [showCourseModal, setShowCourseModal] = useState(false);
   // const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
-  const [courseToDelete, setCourseToDelete] = useState<any>(null);
+  const [courseToDelete, setCourseToDelete] = useState<typeof courses[0] | null>(null);
   
   // Analytics State
   const [analyticsData] = useState({
@@ -204,7 +204,7 @@ const Admin: React.FC = () => {
     }
   };
   
-  const handleSettingsChange = (key: string, value: any) => {
+  const handleSettingsChange = (key: string, value: string | boolean | number | string[]) => {
     setSettings(prev => ({ ...prev, [key]: value }));
     addToast({
       type: 'success',

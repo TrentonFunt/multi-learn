@@ -116,8 +116,8 @@ const Account: React.FC = () => {
       });
       setSuccess('Profile updated successfully!');
       setIsEditing(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -148,8 +148,8 @@ const Account: React.FC = () => {
         newPassword: '',
         confirmPassword: ''
       }));
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -158,8 +158,8 @@ const Account: React.FC = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     }
   };
 
@@ -167,8 +167,8 @@ const Account: React.FC = () => {
     try {
       await sendEmailVerification();
       setSuccess('Verification email sent! Please check your inbox.');
-    } catch (error: any) {
-      setError(error.message || 'Failed to send verification email. Please try again.');
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Failed to send verification email. Please try again.');
     }
   };
 

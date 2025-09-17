@@ -102,8 +102,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signIn = async (email: string, password: string): Promise<void> => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -128,8 +129,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         createdAt: new Date(),
         lastLoginAt: new Date()
       });
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -137,8 +139,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signOutUser = async (): Promise<void> => {
     try {
       await signOut(auth);
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -146,8 +149,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const resetPassword = async (email: string): Promise<void> => {
     try {
       await sendPasswordResetEmail(auth, email);
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -159,8 +163,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('No user logged in');
       await sendEmailVerification(currentUser);
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -178,8 +183,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ...data,
         updatedAt: new Date()
       });
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -191,8 +197,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('No user logged in');
       await updatePassword(currentUser, newPassword);
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
@@ -210,13 +217,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         email: newEmail,
         updatedAt: new Date()
       });
-    } catch (error: any) {
-      throw new Error(getAuthErrorMessage(error.code));
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
     }
   };
 
-  // Helper function to get user-friendly error messages
-  const getAuthErrorMessage = (errorCode: string): string => {
+// Helper function to get user-friendly error messages
+// eslint-disable-next-line react-refresh/only-export-components
+const getAuthErrorMessage = (errorCode: string): string => {
     switch (errorCode) {
       case 'auth/user-not-found':
         return 'No user found with this email address.';

@@ -76,7 +76,7 @@ const EnrollmentButton: React.FC<EnrollmentButtonProps> = ({
       });
       
       onEnroll?.();
-    } catch (error) {
+    } catch {
       addToast({
         type: 'error',
         title: 'Enrollment Failed',
@@ -103,7 +103,7 @@ const EnrollmentButton: React.FC<EnrollmentButtonProps> = ({
       
       setShowUnenrollModal(false);
       onUnenroll?.();
-    } catch (error) {
+    } catch {
       addToast({
         type: 'error',
         title: 'Removal Failed',
