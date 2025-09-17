@@ -14,22 +14,22 @@ const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   const sizeClasses = {
-    large: 'text-input-lg px-6 py-2.5',
-    small: 'text-input-sm px-4 py-2.5'
+    large: 'text-lg px-6 py-2.5',
+    small: 'text-sm px-4 py-2.5'
   };
   
   const baseClasses = `
-    w-full border rounded-input transition-all duration-300
-    focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
-    hover:border-primary/50 focus:scale-[1.02]
+    w-full border rounded-lg transition-all duration-300
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+    hover:border-blue-500/50 focus:scale-[1.02]
     ${sizeClasses[size]}
   `;
   
   const stateClasses = error
-    ? 'border-status-danger text-status-danger focus:ring-status-danger'
-    : 'border-neutral-white-grey text-absolute-black focus:ring-primary';
+    ? 'border-red-500 text-red-600 focus:ring-red-500'
+    : 'border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 focus:ring-blue-500';
   
-  const placeholderClasses = 'placeholder-neutral-grey';
+  const placeholderClasses = 'placeholder-gray-500 dark:placeholder-gray-400';
   
   const classes = `
     ${baseClasses}
@@ -41,7 +41,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-absolute-black mb-2">
+        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
           {label}
         </label>
       )}
@@ -50,7 +50,7 @@ const Input: React.FC<InputProps> = ({
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-status-danger">
+        <p className="mt-1 text-sm text-red-600">
           {error}
         </p>
       )}

@@ -99,15 +99,15 @@ const PasswordReset: React.FC = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-bg-secondary">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
         {/* Hero Section */}
-        <section className="bg-bg-secondary py-16">
+        <section className="bg-gray-50 dark:bg-gray-700 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4"
+                className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4"
               >
                 Password Reset Complete
               </motion.h1>
@@ -123,7 +123,7 @@ const PasswordReset: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-bg-primary border border-border-primary rounded-card shadow-card p-8 text-center"
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-8 text-center"
             >
               <motion.div
                 initial={{ scale: 0 }}
@@ -134,10 +134,10 @@ const PasswordReset: React.FC = () => {
                 <CheckCircle className="h-10 w-10 text-green-600" />
               </motion.div>
 
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Success!
               </h2>
-              <p className="text-text-secondary mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Your password has been successfully updated. You can now log in with your new password.
               </p>
 
@@ -151,7 +151,7 @@ const PasswordReset: React.FC = () => {
                 </Button>
                 <Link
                   to="/"
-                  className="block text-center text-primary hover:text-primary-hover text-sm font-medium"
+                  className="block text-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
                 >
                   ← Back to Homepage
                 </Link>
@@ -164,15 +164,15 @@ const PasswordReset: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
       {/* Hero Section */}
-      <section className="bg-bg-secondary py-16">
+      <section className="bg-gray-50 dark:bg-gray-700 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4"
+              className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4"
             >
               Reset Password
             </motion.h1>
@@ -180,7 +180,7 @@ const PasswordReset: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-text-secondary"
+              className="text-lg text-gray-600 dark:text-gray-400"
             >
               Enter your new password below
             </motion.p>
@@ -196,7 +196,7 @@ const PasswordReset: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-bg-primary border border-border-primary rounded-card shadow-card p-8"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-8"
           >
             <div className="text-center mb-8">
               <motion.div
@@ -207,10 +207,10 @@ const PasswordReset: React.FC = () => {
               >
                 <Lock className="h-8 w-8 text-blue-600" />
               </motion.div>
-              <h2 className="text-2xl font-semibold text-text-primary mb-2">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 Create New Password
               </h2>
-              <p className="text-text-secondary">
+              <p className="text-gray-600 dark:text-gray-400">
                 Choose a strong password for your account
               </p>
             </div>
@@ -228,7 +228,7 @@ const PasswordReset: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">
+                <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                   New Password
                 </label>
                 <div className="relative">
@@ -243,7 +243,7 @@ const PasswordReset: React.FC = () => {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -252,7 +252,7 @@ const PasswordReset: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">
+                <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                   Confirm New Password
                 </label>
                 <div className="relative">
@@ -267,7 +267,7 @@ const PasswordReset: React.FC = () => {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -289,7 +289,7 @@ const PasswordReset: React.FC = () => {
             <div className="mt-6 text-center">
               <Link
                 to="/login"
-                className="text-primary hover:text-primary-hover text-sm font-medium"
+                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
               >
                 ← Back to Login
               </Link>

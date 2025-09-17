@@ -23,7 +23,7 @@ import {
   Bookmark,
   Share2
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useEnrollmentStore } from '../store/enrollmentStore';
 // import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
@@ -183,15 +183,15 @@ const Account: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
       {/* Hero Section */}
-      <section className="bg-bg-secondary py-16">
+      <section className="bg-gray-50 dark:bg-gray-700 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4"
+              className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4"
             >
               My Account
             </motion.h1>
@@ -199,7 +199,7 @@ const Account: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-text-secondary"
+              className="text-lg text-gray-600 dark:text-gray-400"
             >
               Manage your profile, courses, and preferences
             </motion.p>
@@ -219,11 +219,11 @@ const Account: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="lg:col-span-1"
           >
-            <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
               {/* User Info */}
               <div className="text-center mb-6">
                 <div className="relative w-20 h-20 mx-auto mb-4">
-                  <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center overflow-hidden">
+                  <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center overflow-hidden">
                     {profileImage ? (
                       <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
@@ -234,10 +234,10 @@ const Account: React.FC = () => {
                     <Camera className="h-3 w-3 text-white" />
                   </button>
                 </div>
-                <h3 className="text-lg font-semibold text-text-primary">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {user?.displayName || 'User'}
                 </h3>
-                <p className="text-text-secondary text-sm">
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
                   {user?.email}
                 </p>
                 <div className="flex items-center justify-center space-x-2 mt-2">
@@ -248,7 +248,7 @@ const Account: React.FC = () => {
                     {learningStats.totalHours}h learned
                   </span>
                 </div>
-                <p className="text-text-secondary text-xs mt-1">
+                <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
                   Member since {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently'}
                 </p>
               </div>
@@ -264,7 +264,7 @@ const Account: React.FC = () => {
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                         activeTab === tab.id
                           ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
                       }`}
                     >
                       <Icon className="h-5 w-5" />
@@ -292,7 +292,7 @@ const Account: React.FC = () => {
             transition={{ delay: 0.3 }}
             className="lg:col-span-3"
           >
-            <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-8">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-8">
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -317,7 +317,7 @@ const Account: React.FC = () => {
               {activeTab === 'profile' && (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold text-text-primary">Profile Information</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Profile Information</h2>
                     {!isEditing && (
                       <Button
                         variant="outline"
@@ -336,7 +336,7 @@ const Account: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                           Full Name
                         </label>
                         {isEditing ? (
@@ -347,18 +347,18 @@ const Account: React.FC = () => {
                             placeholder="Enter your full name"
                           />
                         ) : (
-                          <p className="text-text-secondary py-2">
+                          <p className="text-gray-600 dark:text-gray-400 py-2">
                             {user?.displayName || 'Not provided'}
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                           Email Address
                         </label>
                         <div className="flex items-center space-x-2">
-                          <p className="text-text-secondary py-2">
+                          <p className="text-gray-600 dark:text-gray-400 py-2">
                             {user?.email}
                           </p>
                           {isEmailVerified ? (
@@ -384,7 +384,7 @@ const Account: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                           Bio
                         </label>
                         {isEditing ? (
@@ -393,18 +393,18 @@ const Account: React.FC = () => {
                             value={formData.bio}
                             onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
                             placeholder="Tell us about yourself..."
-                            className="w-full px-3 py-2 border border-border-primary rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             rows={3}
                           />
                         ) : (
-                          <p className="text-text-secondary py-2">
+                          <p className="text-gray-600 dark:text-gray-400 py-2">
                             {formData.bio || 'No bio provided'}
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                           Location
                         </label>
                         {isEditing ? (
@@ -415,14 +415,14 @@ const Account: React.FC = () => {
                             placeholder="Your location"
                           />
                         ) : (
-                          <p className="text-text-secondary py-2">
+                          <p className="text-gray-600 dark:text-gray-400 py-2">
                             {formData.location || 'Not specified'}
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                           Website
                         </label>
                         {isEditing ? (
@@ -433,17 +433,17 @@ const Account: React.FC = () => {
                             placeholder="https://yourwebsite.com"
                           />
                         ) : (
-                          <p className="text-text-secondary py-2">
+                          <p className="text-gray-600 dark:text-gray-400 py-2">
                             {formData.website || 'Not provided'}
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                           Member Since
                         </label>
-                        <p className="text-text-secondary py-2">
+                        <p className="text-gray-600 dark:text-gray-400 py-2">
                           {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently'}
                         </p>
                       </div>
@@ -481,12 +481,12 @@ const Account: React.FC = () => {
               {/* Settings Tab */}
               {activeTab === 'settings' && (
                 <div>
-                  <h2 className="text-2xl font-semibold text-text-primary mb-6">Account Settings</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Account Settings</h2>
                   
                   <div className="space-y-8">
                     {/* Change Password */}
                     <div>
-                      <h3 className="text-lg font-medium text-text-primary mb-4">Change Password</h3>
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Change Password</h3>
                       <div className="space-y-4">
                         <div className="relative">
                           <Input
@@ -499,7 +499,7 @@ const Account: React.FC = () => {
                           />
                           <button
                             type="button"
-                            className="absolute right-3 top-9 text-text-secondary hover:text-text-primary transition-colors"
+                            className="absolute right-3 top-9 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                             onClick={() => setShowPassword(!showPassword)}
                           >
                             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -532,7 +532,7 @@ const Account: React.FC = () => {
               {activeTab === 'courses' && (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold text-text-primary">My Courses</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">My Courses</h2>
                     <Button variant="outline" size="small">
                       <BookOpen className="h-4 w-4 mr-2" />
                       Browse More
@@ -541,9 +541,9 @@ const Account: React.FC = () => {
                   
                   {enrolledCourses.length === 0 ? (
                     <div className="text-center py-12">
-                      <BookOpen className="h-16 w-16 text-text-secondary mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-text-primary mb-2">No courses enrolled yet</h3>
-                      <p className="text-text-secondary mb-6">Start your learning journey by enrolling in courses</p>
+                      <BookOpen className="h-16 w-16 text-gray-600 dark:text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No courses enrolled yet</h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-6">Start your learning journey by enrolling in courses</p>
                       <Button variant="fill" onClick={() => window.location.href = '/courses'}>
                         <BookOpen className="h-4 w-4 mr-2" />
                         Browse Courses
@@ -556,7 +556,7 @@ const Account: React.FC = () => {
                           key={course.id}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-bg-primary border border-border-primary rounded-card shadow-card overflow-hidden"
+                          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden"
                         >
                           <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600 relative">
                             <div className="absolute inset-0 bg-black/20"></div>
@@ -572,13 +572,13 @@ const Account: React.FC = () => {
                             </div>
                           </div>
                           <div className="p-6">
-                            <h3 className="text-lg font-semibold text-text-primary mb-2">{course.title}</h3>
-                            <p className="text-text-secondary text-sm mb-4">by {course.instructor}</p>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{course.title}</h3>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">by {course.instructor}</p>
                             
                             <div className="mb-4">
                               <div className="flex justify-between text-sm mb-1">
-                                <span className="text-text-secondary">Progress</span>
-                                <span className="text-text-primary font-medium">{course.progress}%</span>
+                                <span className="text-gray-600 dark:text-gray-400">Progress</span>
+                                <span className="text-gray-900 dark:text-gray-100 font-medium">{course.progress}%</span>
                               </div>
                               <div className="w-full bg-gray-200 rounded-full h-2">
                                 <div 
@@ -586,7 +586,7 @@ const Account: React.FC = () => {
                                   style={{ width: `${course.progress}%` }}
                                 ></div>
                               </div>
-                              <div className="flex justify-between text-xs text-text-secondary mt-1">
+                              <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-1">
                                 <span>{course.completedLessons} of {course.totalLessons} lessons</span>
                                 <span>{course.estimatedDuration}</span>
                               </div>
@@ -612,7 +612,7 @@ const Account: React.FC = () => {
               {activeTab === 'favorites' && (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold text-text-primary">My Favorites</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">My Favorites</h2>
                     <Button variant="outline" size="small">
                       <Star className="h-4 w-4 mr-2" />
                       Explore More
@@ -625,7 +625,7 @@ const Account: React.FC = () => {
                         key={course.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-bg-primary border border-border-primary rounded-card shadow-card overflow-hidden hover:shadow-lg transition-shadow"
+                        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden hover:shadow-lg transition-shadow"
                       >
                         <div className="h-32 bg-gradient-to-r from-green-500 to-blue-600 relative">
                           <div className="absolute inset-0 bg-black/20"></div>
@@ -634,15 +634,15 @@ const Account: React.FC = () => {
                           </button>
                         </div>
                         <div className="p-4">
-                          <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2">{course.title}</h3>
-                          <p className="text-text-secondary text-sm mb-3">by {course.instructor}</p>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">{course.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">by {course.instructor}</p>
                           
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center space-x-1">
                               <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                              <span className="text-sm text-text-primary">{course.rating}</span>
+                              <span className="text-sm text-gray-900 dark:text-gray-100">{course.rating}</span>
                             </div>
-                            <span className="text-sm text-text-secondary">{course.students} students</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">{course.students} students</span>
                           </div>
                           
                           <div className="flex space-x-2">
@@ -663,7 +663,7 @@ const Account: React.FC = () => {
               {/* Activity Tab */}
               {activeTab === 'activity' && (
                 <div>
-                  <h2 className="text-2xl font-semibold text-text-primary mb-6">Recent Activity</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Recent Activity</h2>
                   
                   <div className="space-y-4">
                     {recentActivity.map((activity, index) => {
@@ -674,14 +674,14 @@ const Account: React.FC = () => {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className="bg-bg-primary border border-border-primary rounded-lg p-4 flex items-center space-x-4"
+                          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center space-x-4"
                         >
                           <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
                             <Icon className="h-5 w-5 text-blue-600" />
                           </div>
                           <div className="flex-1">
-                            <p className="text-text-primary font-medium">{activity.title}</p>
-                            <p className="text-text-secondary text-sm">{activity.time}</p>
+                            <p className="text-gray-900 dark:text-gray-100 font-medium">{activity.title}</p>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">{activity.time}</p>
                           </div>
                         </motion.div>
                       );
@@ -693,19 +693,19 @@ const Account: React.FC = () => {
               {/* Notifications Tab */}
               {activeTab === 'notifications' && (
                 <div>
-                  <h2 className="text-2xl font-semibold text-text-primary mb-6">Notification Settings</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Notification Settings</h2>
                   
                   <div className="space-y-6">
-                    <div className="bg-bg-primary border border-border-primary rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-text-primary mb-4">Email Notifications</h3>
+                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Email Notifications</h3>
                       <div className="space-y-4">
                         {Object.entries(notifications).map(([key, value]) => (
                           <div key={key} className="flex items-center justify-between">
                             <div>
-                              <p className="text-text-primary font-medium capitalize">
+                              <p className="text-gray-900 dark:text-gray-100 font-medium capitalize">
                                 {key.replace(/([A-Z])/g, ' $1').trim()}
                               </p>
-                              <p className="text-text-secondary text-sm">
+                              <p className="text-gray-600 dark:text-gray-400 text-sm">
                                 {key === 'email' && 'Receive notifications via email'}
                                 {key === 'push' && 'Receive push notifications'}
                                 {key === 'marketing' && 'Receive marketing emails and promotions'}
@@ -736,20 +736,20 @@ const Account: React.FC = () => {
               {/* Privacy Tab */}
               {activeTab === 'privacy' && (
                 <div>
-                  <h2 className="text-2xl font-semibold text-text-primary mb-6">Privacy Settings</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Privacy Settings</h2>
                   
                   <div className="space-y-6">
-                    <div className="bg-bg-primary border border-border-primary rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-text-primary mb-4">Profile Visibility</h3>
+                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Profile Visibility</h3>
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-text-primary mb-2">
+                          <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                             Profile Visibility
                           </label>
                           <select
                             value={privacy.profileVisibility}
                             onChange={(e) => setPrivacy(prev => ({ ...prev, profileVisibility: e.target.value }))}
-                            className="w-full px-3 py-2 border border-border-primary rounded-lg bg-bg-primary text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                           >
                             <option value="public">Public</option>
                             <option value="friends">Friends Only</option>
@@ -760,8 +760,8 @@ const Account: React.FC = () => {
                         <div className="space-y-3">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-text-primary font-medium">Show Email Address</p>
-                              <p className="text-text-secondary text-sm">Allow others to see your email</p>
+                              <p className="text-gray-900 dark:text-gray-100 font-medium">Show Email Address</p>
+                              <p className="text-gray-600 dark:text-gray-400 text-sm">Allow others to see your email</p>
                             </div>
                             <button
                               onClick={() => setPrivacy(prev => ({ ...prev, showEmail: !prev.showEmail }))}
@@ -779,8 +779,8 @@ const Account: React.FC = () => {
                           
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-text-primary font-medium">Show Enrolled Courses</p>
-                              <p className="text-text-secondary text-sm">Display your course progress to others</p>
+                              <p className="text-gray-900 dark:text-gray-100 font-medium">Show Enrolled Courses</p>
+                              <p className="text-gray-600 dark:text-gray-400 text-sm">Display your course progress to others</p>
                             </div>
                             <button
                               onClick={() => setPrivacy(prev => ({ ...prev, showCourses: !prev.showCourses }))}

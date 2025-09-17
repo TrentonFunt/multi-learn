@@ -6,8 +6,7 @@ import EnrollmentButton from '../components/course/EnrollmentButton';
 
 const Home: React.FC = () => {
   return (
-    <div className="bg-bg-primary">
-      {/* Hero Section */}
+    <div className="bg-white dark:bg-gray-900">
       <section className="relative bg-gradient-to-r from-yellow-200 via-yellow-100 to-green-200 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -81,7 +80,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Top Categories Section */}
-      <section className="py-20 bg-bg-primary">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="flex justify-between items-center mb-12"
@@ -96,16 +95,16 @@ const Home: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 Top Categories
               </h2>
-              <p className="text-lg text-text-secondary">
+              <p className="text-lg text-gray-600 dark:text-gray-400">
                 Explore our Popular Categories
               </p>
             </motion.div>
             <Link
               to="/categories"
-              className="group relative bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
+              className="group relative bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
             >
               <span className="relative z-10">All Categories</span>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
@@ -131,7 +130,7 @@ const Home: React.FC = () => {
             ].map((category, index) => (
               <motion.div 
                 key={index} 
-                className="group relative bg-bg-secondary border border-border-primary rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10"
+                className="group relative bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -155,18 +154,18 @@ const Home: React.FC = () => {
                     <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{category.icon}</span>
                   </div>
                   {/* Floating particles effect */}
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300"></div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300"></div>
                 </div>
                 
-                <h3 className="font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors duration-300">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                   {category.name}
                 </h3>
-                <p className="text-sm text-text-secondary group-hover:text-text-primary transition-colors duration-300">
+                <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
                   {category.courses} Courses
                 </p>
                 
                 {/* Progress bar animation */}
-                <div className="mt-4 w-full bg-bg-tertiary rounded-full h-1 overflow-hidden">
+                <div className="mt-4 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1 overflow-hidden">
                   <motion.div 
                     className={`h-1 bg-gradient-to-r ${category.color} rounded-full`}
                     initial={{ width: 0 }}
@@ -177,7 +176,7 @@ const Home: React.FC = () => {
                 </div>
                 
                 {/* Hover effect border */}
-                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-primary/20 transition-colors duration-300"></div>
+                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-indigo-500/20 transition-colors duration-300"></div>
               </motion.div>
             ))}
           </motion.div>
@@ -185,20 +184,20 @@ const Home: React.FC = () => {
       </section>
 
       {/* Featured Courses Section */}
-      <section className="py-20 bg-bg-secondary">
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 Featured Courses
               </h2>
-              <p className="text-lg text-text-secondary">
+              <p className="text-lg text-gray-600 dark:text-gray-400">
                 Explore our Popular Courses
               </p>
             </div>
             <Link
               to="/courses"
-              className="group relative bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
+              className="group relative bg-text-indigo-600 dark:text-indigo-400 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
             >
               <span className="relative z-10">All Courses</span>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
@@ -286,7 +285,7 @@ const Home: React.FC = () => {
                 isFree: false
               }
             ].map((course) => (
-              <div key={course.id} className="group bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-2 hover:border-primary/20">
+              <div key={course.id} className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-2 hover:border-indigo-500/20">
                 <div className="relative overflow-hidden">
                   <img
                     src={course.image}
@@ -300,19 +299,19 @@ const Home: React.FC = () => {
                   {/* Hover overlay with play button */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                      <svg className="w-6 h-6 text-primary ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6 text-indigo-600 dark:text-indigo-400 ml-1" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z"/>
                       </svg>
                     </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                     {course.title}
                   </h3>
-                  <p className="text-sm text-text-secondary mb-4 group-hover:text-text-primary transition-colors duration-300">by {course.instructor}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">by {course.instructor}</p>
                   
-                  <div className="flex items-center justify-between text-sm text-text-tertiary mb-4">
+                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-500 mb-4">
                     <div className="flex items-center space-x-1">
                       <Clock className="w-4 h-4" />
                       <span>{course.weeks} Weeks</span>
@@ -333,9 +332,9 @@ const Home: React.FC = () => {
                         <span className="text-2xl font-bold text-green-600">Free</span>
                       ) : (
                         <>
-                        <span className="text-2xl font-bold text-text-primary">${course.price}</span>
+                        <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">${course.price}</span>
                         {course.originalPrice && (
-                          <span className="text-lg text-text-tertiary line-through">${course.originalPrice}</span>
+                          <span className="text-lg text-gray-500 dark:text-gray-500 line-through">${course.originalPrice}</span>
                         )}
                         </>
                       )}
@@ -403,7 +402,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-bg-primary">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -412,11 +411,11 @@ const Home: React.FC = () => {
               { value: '158', label: 'Instructor' },
               { value: '100%', label: 'Satisfaction Rate' }
             ].map((stat, index) => (
-              <div key={index} className="group text-center p-6 rounded-xl hover:bg-bg-secondary transition-all duration-300 hover:scale-105 cursor-pointer">
-                <div className="text-4xl md:text-5xl font-bold text-text-primary mb-2 group-hover:text-primary transition-colors duration-300">
+              <div key={index} className="group text-center p-6 rounded-xl hover:bg-gray-50 dark:bg-gray-700 transition-all duration-300 hover:scale-105 cursor-pointer">
+                <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                   <span className="inline-block group-hover:animate-pulse">{stat.value}</span>
                 </div>
-                <div className="text-lg text-text-secondary group-hover:text-text-primary transition-colors duration-300">
+                <div className="text-lg text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
                   {stat.label}
                 </div>
                 {/* Decorative element */}
@@ -428,7 +427,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Grow Your Skill Section */}
-      <section className="py-20 bg-bg-secondary">
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
@@ -439,10 +438,10 @@ const Home: React.FC = () => {
               />
             </div>
             <div className="space-y-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-text-primary">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
                 Grow Your Skill With MultiLearn LMS
               </h2>
-              <p className="text-lg text-text-secondary leading-relaxed">
+              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                 We denounce with righteous indignation and dislike men who are so beguiled and demoralized that cannot trouble.
               </p>
               <div className="space-y-4">
@@ -505,13 +504,13 @@ const Home: React.FC = () => {
       </section>
 
       {/* Student Feedbacks Section */}
-      <section className="py-20 bg-bg-primary">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Student Feedbacks
             </h2>
-            <p className="text-lg text-text-secondary">
+            <p className="text-lg text-gray-600 dark:text-gray-400">
               What Students Say About MultiLearn LMS
             </p>
           </div>
@@ -534,14 +533,14 @@ const Home: React.FC = () => {
                 title: "Marketer"
               }
             ].map((testimonial, index) => (
-              <div key={index} className="bg-bg-primary border border-border-primary rounded-lg shadow-lg p-8">
-                <div className="text-4xl text-primary mb-4">"</div>
-                <p className="text-text-secondary mb-6 leading-relaxed">
+              <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-8">
+                <div className="text-4xl text-indigo-600 dark:text-indigo-400 mb-4">"</div>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                   {testimonial.feedback}
                 </p>
                 <div>
-                  <h4 className="font-semibold text-text-primary">{testimonial.author}</h4>
-                  <p className="text-sm text-text-tertiary">{testimonial.title}</p>
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">{testimonial.author}</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-500">{testimonial.title}</p>
                 </div>
               </div>
             ))}
@@ -562,7 +561,7 @@ const Home: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/register?role=student"
-              className="bg-bg-primary text-primary px-8 py-4 rounded-lg font-semibold text-lg hover:bg-bg-secondary transition-colors"
+              className="bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               I'm A Student
             </Link>
@@ -577,20 +576,20 @@ const Home: React.FC = () => {
       </section>
 
       {/* Latest Articles Section */}
-      <section className="py-20 bg-bg-secondary">
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 Latest Articles
               </h2>
-              <p className="text-lg text-text-secondary">
+              <p className="text-lg text-gray-600 dark:text-gray-400">
                 Explore our Free Articles
               </p>
             </div>
             <Link
               to="/blog"
-              className="group relative bg-text-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
+              className="group relative bg-text-indigo-600 dark:text-indigo-400 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
             >
               <span className="relative z-10">All Articles</span>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
@@ -618,7 +617,7 @@ const Home: React.FC = () => {
                 image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&h=250&fit=crop"
               }
             ].map((article, index) => (
-              <div key={index} className="group bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-2 hover:border-primary/20">
+              <div key={index} className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-2 hover:border-indigo-500/20">
                 <div className="relative overflow-hidden">
                   <img
                     src={article.image}
@@ -628,11 +627,11 @@ const Home: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-text-tertiary mb-3">{article.date}</p>
-                  <p className="text-text-secondary leading-relaxed group-hover:text-text-primary transition-colors duration-300">
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mb-3">{article.date}</p>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
                     {article.description}
                   </p>
                 </div>

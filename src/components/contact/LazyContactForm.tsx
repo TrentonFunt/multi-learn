@@ -7,7 +7,7 @@ const ContactForm = lazy(() => import('./ContactForm'));
 
 // Loading skeleton for ContactForm
 const ContactFormSkeleton: React.FC = () => (
-  <div className="bg-bg-primary border border-border-primary rounded-xl shadow-lg p-8">
+  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-8">
     <div className="space-y-6">
       {/* Header skeleton */}
       <div className="space-y-2">

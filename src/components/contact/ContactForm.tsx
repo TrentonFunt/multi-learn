@@ -101,10 +101,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
   };
 
   return (
-    <div className={`bg-bg-primary border border-border-primary rounded-xl shadow-lg p-8 ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-8 ${className}`}>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-text-primary mb-2">Send us a Message</h2>
-        <p className="text-text-secondary">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Send us a Message</h2>
+        <p className="text-gray-600 dark:text-gray-400">
           Have a question or need help? We'd love to hear from you.
         </p>
       </div>
@@ -113,7 +113,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name Field */}
           <div className="space-y-2">
-            <label htmlFor="name" className="block text-sm font-medium text-text-primary">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
               Full Name *
             </label>
             <div className="relative">
@@ -123,13 +123,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
-                  errors.name ? 'border-red-500' : 'border-border-primary'
+                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+                  errors.name ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
                 }`}
                 placeholder="Enter your full name"
                 disabled={status === 'loading'}
               />
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-tertiary" />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-500" />
             </div>
             {errors.name && (
               <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
@@ -141,7 +141,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
 
           {/* Email Field */}
           <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium text-text-primary">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
               Email Address *
             </label>
             <div className="relative">
@@ -151,13 +151,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
-                  errors.email ? 'border-red-500' : 'border-border-primary'
+                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+                  errors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
                 }`}
                 placeholder="Enter your email address"
                 disabled={status === 'loading'}
               />
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-tertiary" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-500" />
             </div>
             {errors.email && (
               <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
@@ -170,7 +170,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
 
         {/* Subject Field */}
         <div className="space-y-2">
-          <label htmlFor="subject" className="block text-sm font-medium text-text-primary">
+          <label htmlFor="subject" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
             Subject *
           </label>
           <input
@@ -179,8 +179,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
             name="subject"
             value={formData.subject}
             onChange={handleInputChange}
-            className={`w-full px-4 py-3 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
-              errors.subject ? 'border-red-500' : 'border-border-primary'
+            className={`w-full px-4 py-3 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+              errors.subject ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
             }`}
             placeholder="What's this about?"
             disabled={status === 'loading'}
@@ -195,7 +195,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
 
         {/* Message Field */}
         <div className="space-y-2">
-          <label htmlFor="message" className="block text-sm font-medium text-text-primary">
+          <label htmlFor="message" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
             Message *
           </label>
           <div className="relative">
@@ -205,13 +205,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
               value={formData.message}
               onChange={handleInputChange}
               rows={5}
-              className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-bg-primary text-text-primary placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none ${
-                errors.message ? 'border-red-500' : 'border-border-primary'
+              className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none ${
+                errors.message ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
               }`}
               placeholder="Tell us more about your inquiry..."
               disabled={status === 'loading'}
             />
-            <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-text-tertiary" />
+            <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-gray-500 dark:text-gray-500" />
           </div>
           {errors.message && (
             <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
@@ -225,7 +225,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
+          className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
         >
           {status === 'loading' ? (
             <>

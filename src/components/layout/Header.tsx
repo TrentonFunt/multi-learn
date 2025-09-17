@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LogOut, Settings, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../contexts/ToastContext';
 import SearchAutocomplete from '../ui/SearchAutocomplete';
 
@@ -62,15 +62,15 @@ const Header: React.FC = () => {
   }, [isUserMenuOpen]);
 
   return (
-    <header className="bg-bg-primary shadow-card border-b border-border-primary">
+    <header className="bg-white dark:bg-gray-800 shadow-card border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 mr-6 -ml-4">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-black font-exo font-semibold text-xl">M</span>
             </div>
-            <span className="text-2xl font-exo font-semibold text-text-primary">MultiLearn</span>
+            <span className="text-2xl font-exo font-semibold text-gray-900 dark:text-gray-100">MultiLearn</span>
           </Link>
 
 
@@ -80,69 +80,69 @@ const Header: React.FC = () => {
               to="/" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/' 
-                  ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
               <span className="relative z-10">Home</span>
               {location.pathname !== '/' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/courses" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/courses' 
-                  ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
               <span className="relative z-10">Courses</span>
               {location.pathname !== '/courses' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/blog" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/blog' 
-                  ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
               <span className="relative z-10">Blog</span>
               {location.pathname !== '/blog' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/favorites" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/favorites' 
-                  ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
               <span className="relative z-10">Favorites</span>
               {location.pathname !== '/favorites' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/contact" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/contact' 
-                  ? 'text-primary bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
               }`}
             >
               <span className="relative z-10">Contact</span>
               {location.pathname !== '/contact' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <div className="relative group">
-              <button className="flex items-center space-x-1 text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+              <button className="flex items-center space-x-1 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
                 <span>Page</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
@@ -164,7 +164,7 @@ const Header: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Link to="/addons" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-4 py-2 rounded-md">
+            <Link to="/addons" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-4 py-2 rounded-md">
               <span className="hidden lg:inline">MultiLearn Add-On</span>
               <span className="lg:hidden">Add-On</span>
             </Link>
@@ -176,9 +176,9 @@ const Header: React.FC = () => {
                       <div className="relative user-menu-container">
                         <button
                           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                          className="flex items-center space-x-2 text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md"
+                          className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md"
                         >
-                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <User className="h-4 w-4 text-white" />
                           </div>
                           <span className="hidden lg:inline">{user.displayName || 'User'}</span>
@@ -243,11 +243,11 @@ const Header: React.FC = () => {
                       </div>
                     ) : (
                       <>
-                        <Link to="/login" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                        <Link to="/login" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
                           Login
                         </Link>
-                        <span className="text-text-secondary">/</span>
-                        <Link to="/register" className="text-text-primary hover:text-primary hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                        <span className="text-gray-600 dark:text-gray-400">/</span>
+                        <Link to="/register" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
                           Register
                         </Link>
                       </>
@@ -266,7 +266,7 @@ const Header: React.FC = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-md text-text-primary hover:text-primary"
+            className="md:hidden p-2 rounded-md text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -281,7 +281,7 @@ const Header: React.FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="md:hidden border-t border-border-primary overflow-hidden"
+              className="md:hidden border-t border-gray-200 dark:border-gray-700 overflow-hidden"
             >
               <motion.div
                 initial={{ y: -20 }}
@@ -310,8 +310,8 @@ const Header: React.FC = () => {
                         to={item.to}
                         className={`font-medium transition-colors py-3 px-2 min-h-[44px] flex items-center ${
                           location.pathname === item.to
-                            ? 'text-primary bg-primary/10'
-                            : 'text-text-primary hover:text-primary hover:bg-primary/5'
+                            ? 'text-blue-600 dark:text-blue-400 bg-blue-600/10'
+                            : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-600/5'
                         }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -325,7 +325,7 @@ const Header: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="border-t border-border-primary pt-4 mt-4"
+                  className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4"
                 >
                   {user ? (
                     <div className="space-y-3">
@@ -335,12 +335,12 @@ const Header: React.FC = () => {
                         transition={{ duration: 0.3, delay: 0.5 }}
                         className="flex items-center space-x-3 mb-4"
                       >
-                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                           <User className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-text-primary">{user.displayName}</p>
-                          <p className="text-xs text-text-secondary">{user.email}</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{user.displayName}</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
                           {isAdmin && (
                             <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full mt-1">
                               Admin
@@ -362,7 +362,7 @@ const Header: React.FC = () => {
                         >
                           <Link
                             to={item.to}
-                            className="flex items-center space-x-2 text-text-primary hover:text-primary font-medium mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-primary/5 transition-colors"
+                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             <item.icon className="h-4 w-4" />
@@ -400,7 +400,7 @@ const Header: React.FC = () => {
                         >
                           <Link
                             to={item.to}
-                            className="text-text-primary hover:text-primary font-medium block mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-primary/5 transition-colors"
+                            className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {item.label}
@@ -432,7 +432,7 @@ const Header: React.FC = () => {
                     transition={{ duration: 0.3, delay: 1.0 }}
                     className="flex items-center justify-between"
                   >
-                    <span className="text-sm text-text-secondary">Theme:</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>
                     <ThemeToggle />
                   </motion.div>
                 </motion.div>

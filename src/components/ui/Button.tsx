@@ -14,11 +14,11 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
-  const baseClasses = 'group relative font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 overflow-hidden';
+  const baseClasses = 'group relative font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 overflow-hidden';
   
   const sizeClasses = {
-    large: 'text-button-lg px-6 py-2.5',
-    small: 'text-button-sm px-4 py-2.5'
+    large: 'text-lg px-6 py-2.5',
+    small: 'text-sm px-4 py-2.5'
   };
   
   const variantClasses = {
@@ -31,8 +31,8 @@ const Button: React.FC<ButtonProps> = ({
       disabled: 'border border-gray-300 text-gray-400 bg-gray-50 cursor-not-allowed'
     },
     text: {
-      default: 'text-primary hover:underline active:text-primary-pressed hover:scale-105 active:scale-95',
-      disabled: 'text-neutral-grey cursor-not-allowed'
+      default: 'text-blue-600 hover:underline active:text-blue-800 hover:scale-105 active:scale-95',
+      disabled: 'text-gray-500 cursor-not-allowed'
     }
   };
   

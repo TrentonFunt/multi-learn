@@ -104,14 +104,14 @@ const FAQs: React.FC = () => {
                     onClick={() => toggleFAQ(item.id)}
                     className={`w-full p-6 text-left transition-colors ${
                       isOpen
-                        ? 'bg-absolute-white text-primary'
+                        ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400'
                         : 'bg-neutral-white-grey text-neutral-dark-grey hover:bg-neutral-light-grey'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="font-medium text-lg">{item.question}</h3>
                       {isOpen ? (
-                        <ChevronUp className="w-5 h-5 text-primary" />
+                        <ChevronUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       ) : (
                         <ChevronDown className="w-5 h-5" />
                       )}
@@ -174,19 +174,19 @@ const FAQs: React.FC = () => {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm">📧</span>
                     </div>
                     <span className="text-neutral-dark-grey">support@multilearn.com</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm">💬</span>
                     </div>
                     <span className="text-neutral-dark-grey">Live Chat Support</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm">📞</span>
                     </div>
                     <span className="text-neutral-dark-grey">+1 (555) 123-4567</span>

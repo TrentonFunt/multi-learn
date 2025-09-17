@@ -5,7 +5,7 @@ import { ShieldX, Home, ArrowLeft } from 'lucide-react';
 
 const Unauthorized: React.FC = () => {
   return (
-    <div className="min-h-screen bg-bg-secondary flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,7 +25,7 @@ const Unauthorized: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-4xl font-bold text-text-primary mb-4"
+          className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"
         >
           Access Denied
         </motion.h1>
@@ -34,7 +34,7 @@ const Unauthorized: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="text-lg text-text-secondary mb-8"
+          className="text-lg text-gray-600 dark:text-gray-400 mb-8"
         >
           You don't have permission to access this page. This area is restricted to administrators only.
         </motion.p>
@@ -47,7 +47,7 @@ const Unauthorized: React.FC = () => {
         >
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium"
+            className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             <Home className="h-5 w-5 mr-2" />
             Go Home
@@ -56,7 +56,7 @@ const Unauthorized: React.FC = () => {
           <div>
             <button
               onClick={() => window.history.back()}
-              className="inline-flex items-center text-text-secondary hover:text-text-primary transition-colors"
+              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Go Back

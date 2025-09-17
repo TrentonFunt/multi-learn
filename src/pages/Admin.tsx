@@ -20,7 +20,7 @@ import {
   Download,
   RefreshCw
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
 import Breadcrumb from '../components/ui/Breadcrumb';
@@ -229,15 +229,15 @@ const Admin: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-bg-secondary py-16">
+      <section className="bg-gray-50 dark:bg-gray-900 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4"
+              className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4"
             >
               Admin Dashboard
             </motion.h1>
@@ -245,7 +245,7 @@ const Admin: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-text-secondary"
+              className="text-lg text-gray-600 dark:text-gray-400"
             >
               Manage your MultiLearn platform
             </motion.p>
@@ -265,16 +265,16 @@ const Admin: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="lg:col-span-1"
           >
-            <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
               {/* Admin Info */}
               <div className="text-center mb-6">
                 <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-text-primary">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {user?.displayName || 'Admin'}
                 </h3>
-                <p className="text-text-secondary text-sm">
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
                   {user?.email}
                 </p>
                 <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full mt-2">
@@ -293,7 +293,7 @@ const Admin: React.FC = () => {
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                         activeTab === tab.id
                           ? 'bg-red-600 text-white shadow-md'
-                          : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
                       }`}
                     >
                       <Icon className="h-5 w-5" />
@@ -325,12 +325,12 @@ const Admin: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 * index }}
-                        className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6"
+                        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6"
                       >
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-text-secondary text-sm font-medium">{stat.label}</p>
-                            <p className="text-2xl font-bold text-text-primary mt-1">{stat.value}</p>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{stat.label}</p>
+                            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">{stat.value}</p>
                           </div>
                           <Icon className={`h-8 w-8 ${stat.color}`} />
                         </div>
@@ -340,9 +340,9 @@ const Admin: React.FC = () => {
                 </div>
 
                 {/* Recent Users */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold text-text-primary">Recent Users</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Users</h3>
                     <Button variant="outline" size="small">
                       <Plus className="h-4 w-4 mr-2" />
                       Add User
@@ -351,20 +351,20 @@ const Admin: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-border-primary">
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Name</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Email</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Join Date</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Status</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Actions</th>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Name</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Email</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Join Date</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {users.slice(0, 4).map((user) => (
-                          <tr key={user.id} className="border-b border-border-primary">
-                            <td className="py-3 px-4 text-text-primary">{user.name}</td>
-                            <td className="py-3 px-4 text-text-secondary">{user.email}</td>
-                            <td className="py-3 px-4 text-text-secondary">{user.joinDate}</td>
+                          <tr key={user.id} className="border-b border-gray-200 dark:border-gray-700">
+                            <td className="py-3 px-4 text-gray-900 dark:text-gray-100">{user.name}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{user.email}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{user.joinDate}</td>
                             <td className="py-3 px-4">
                               <span className={`px-2 py-1 rounded-full text-xs ${
                                 user.status === 'Active' 
@@ -376,7 +376,7 @@ const Admin: React.FC = () => {
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex space-x-2">
-                                <button className="text-primary hover:text-primary-hover">
+                                <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button className="text-blue-600 hover:text-blue-700">
@@ -395,9 +395,9 @@ const Admin: React.FC = () => {
                 </div>
 
                 {/* Recent Courses */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold text-text-primary">Recent Courses</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Courses</h3>
                     <Button variant="outline" size="small">
                       <BookPlus className="h-4 w-4 mr-2" />
                       Add Course
@@ -406,20 +406,20 @@ const Admin: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-border-primary">
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Title</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Instructor</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Students</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Status</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Actions</th>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Title</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Instructor</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Students</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {courses.slice(0, 4).map((course) => (
-                          <tr key={course.id} className="border-b border-border-primary">
-                            <td className="py-3 px-4 text-text-primary">{course.title}</td>
-                            <td className="py-3 px-4 text-text-secondary">{course.instructor}</td>
-                            <td className="py-3 px-4 text-text-secondary">{course.students}</td>
+                          <tr key={course.id} className="border-b border-gray-200 dark:border-gray-700">
+                            <td className="py-3 px-4 text-gray-900 dark:text-gray-100">{course.title}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{course.instructor}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{course.students}</td>
                             <td className="py-3 px-4">
                               <span className={`px-2 py-1 rounded-full text-xs ${
                                 course.status === 'Published' 
@@ -431,7 +431,7 @@ const Admin: React.FC = () => {
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex space-x-2">
-                                <button className="text-primary hover:text-primary-hover">
+                                <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                   <Eye className="h-4 w-4" />
                                 </button>
                                 <button className="text-blue-600 hover:text-blue-700">
@@ -455,9 +455,9 @@ const Admin: React.FC = () => {
             {activeTab === 'users' && (
               <div className="space-y-6">
                 {/* User Management Header */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <h2 className="text-2xl font-semibold text-text-primary">User Management</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">User Management</h2>
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button variant="outline" size="small">
                         <Download className="h-4 w-4 mr-2" />
@@ -473,19 +473,19 @@ const Admin: React.FC = () => {
                   {/* Search and Filter */}
                   <div className="flex flex-col sm:flex-row gap-4 mb-6">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-secondary" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-400" />
                       <input
                         type="text"
                         placeholder="Search users..."
                         value={userSearchTerm}
                         onChange={(e) => setUserSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     <select
                       value={userFilter}
                       onChange={(e) => setUserFilter(e.target.value)}
-                      className="px-4 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
                       <option value="all">All Users</option>
                       <option value="active">Active</option>
@@ -498,28 +498,28 @@ const Admin: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-border-primary">
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">User</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Role</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Status</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Courses</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Last Login</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Actions</th>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">User</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Role</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Courses</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Last Login</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {filteredUsers.map((user) => (
-                          <tr key={user.id} className="border-b border-border-primary hover:bg-bg-secondary">
+                          <tr key={user.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-700">
                             <td className="py-3 px-4">
                               <div className="flex items-center space-x-3">
-                                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                                   <span className="text-white font-medium text-sm">
                                     {user.name.split(' ').map(n => n[0]).join('')}
                                   </span>
                                 </div>
                                 <div>
-                                  <p className="text-text-primary font-medium">{user.name}</p>
-                                  <p className="text-text-secondary text-sm">{user.email}</p>
+                                  <p className="text-gray-900 dark:text-gray-100 font-medium">{user.name}</p>
+                                  <p className="text-gray-600 dark:text-gray-400 text-sm">{user.email}</p>
                                 </div>
                               </div>
                             </td>
@@ -543,13 +543,13 @@ const Admin: React.FC = () => {
                                 {user.status}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-text-secondary">{user.coursesEnrolled}</td>
-                            <td className="py-3 px-4 text-text-secondary">{user.lastLogin}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{user.coursesEnrolled}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{user.lastLogin}</td>
                             <td className="py-3 px-4">
                               <div className="flex space-x-2">
                                 <button 
                                   onClick={() => handleUserAction('view', user.id)}
-                                  className="text-primary hover:text-primary-hover p-1"
+                                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-1"
                                   title="View Details"
                                 >
                                   <Eye className="h-4 w-4" />
@@ -589,8 +589,8 @@ const Admin: React.FC = () => {
                   
                   {filteredUsers.length === 0 && (
                     <div className="text-center py-8">
-                      <Users className="h-12 w-12 text-text-secondary mx-auto mb-3" />
-                      <p className="text-text-secondary">No users found matching your criteria.</p>
+                      <Users className="h-12 w-12 text-gray-600 dark:text-gray-400 mx-auto mb-3" />
+                      <p className="text-gray-600 dark:text-gray-400">No users found matching your criteria.</p>
                     </div>
                   )}
                 </div>
@@ -601,9 +601,9 @@ const Admin: React.FC = () => {
             {activeTab === 'courses' && (
               <div className="space-y-6">
                 {/* Course Management Header */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <h2 className="text-2xl font-semibold text-text-primary">Course Management</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Course Management</h2>
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button variant="outline" size="small">
                         <Download className="h-4 w-4 mr-2" />
@@ -619,19 +619,19 @@ const Admin: React.FC = () => {
                   {/* Search and Filter */}
                   <div className="flex flex-col sm:flex-row gap-4 mb-6">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-secondary" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-400" />
                       <input
                         type="text"
                         placeholder="Search courses..."
                         value={courseSearchTerm}
                         onChange={(e) => setCourseSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     <select
                       value={courseFilter}
                       onChange={(e) => setCourseFilter(e.target.value)}
-                      className="px-4 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
                       <option value="all">All Courses</option>
                       <option value="published">Published</option>
@@ -644,27 +644,27 @@ const Admin: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-border-primary">
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Course</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Instructor</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Category</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Price</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Students</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Rating</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Status</th>
-                          <th className="text-left py-3 px-4 text-text-primary font-medium">Actions</th>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Course</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Instructor</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Category</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Price</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Students</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Rating</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Status</th>
+                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {filteredCourses.map((course) => (
-                          <tr key={course.id} className="border-b border-border-primary hover:bg-bg-secondary">
+                          <tr key={course.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-700">
                             <td className="py-3 px-4">
                               <div>
-                                <p className="text-text-primary font-medium">{course.title}</p>
-                                <p className="text-text-secondary text-sm">Created: {course.createdAt}</p>
+                                <p className="text-gray-900 dark:text-gray-100 font-medium">{course.title}</p>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm">Created: {course.createdAt}</p>
                               </div>
                             </td>
-                            <td className="py-3 px-4 text-text-secondary">{course.instructor}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{course.instructor}</td>
                             <td className="py-3 px-4">
                               <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
                                 {course.category}
@@ -674,14 +674,14 @@ const Admin: React.FC = () => {
                               {course.price === 0 ? (
                                 <span className="text-green-600 font-medium">Free</span>
                               ) : (
-                                <span className="text-text-primary font-medium">${course.price}</span>
+                                <span className="text-gray-900 dark:text-gray-100 font-medium">${course.price}</span>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-text-secondary">{course.students}</td>
+                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{course.students}</td>
                             <td className="py-3 px-4">
                               <div className="flex items-center space-x-1">
                                 <span className="text-yellow-400">★</span>
-                                <span className="text-text-secondary text-sm">{course.rating}</span>
+                                <span className="text-gray-600 dark:text-gray-400 text-sm">{course.rating}</span>
                               </div>
                             </td>
                             <td className="py-3 px-4">
@@ -699,7 +699,7 @@ const Admin: React.FC = () => {
                               <div className="flex space-x-2">
                                 <button 
                                   onClick={() => handleCourseAction('view', course.id)}
-                                  className="text-primary hover:text-primary-hover p-1"
+                                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-1"
                                   title="View Details"
                                 >
                                   <Eye className="h-4 w-4" />
@@ -739,8 +739,8 @@ const Admin: React.FC = () => {
                   
                   {filteredCourses.length === 0 && (
                     <div className="text-center py-8">
-                      <BookOpen className="h-12 w-12 text-text-secondary mx-auto mb-3" />
-                      <p className="text-text-secondary">No courses found matching your criteria.</p>
+                      <BookOpen className="h-12 w-12 text-gray-600 dark:text-gray-400 mx-auto mb-3" />
+                      <p className="text-gray-600 dark:text-gray-400">No courses found matching your criteria.</p>
                     </div>
                   )}
                 </div>
@@ -751,9 +751,9 @@ const Admin: React.FC = () => {
             {activeTab === 'analytics' && (
               <div className="space-y-6">
                 {/* Analytics Header */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <h2 className="text-2xl font-semibold text-text-primary">Analytics Dashboard</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Analytics Dashboard</h2>
                     <div className="flex gap-3">
                       <Button variant="outline" size="small">
                         <Download className="h-4 w-4 mr-2" />
@@ -805,16 +805,16 @@ const Admin: React.FC = () => {
                   {/* Charts Section */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     {/* Revenue Chart */}
-                    <div className="bg-bg-secondary rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-text-primary mb-4">Monthly Revenue</h3>
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Monthly Revenue</h3>
                       <div className="h-64 flex items-end justify-between space-x-2">
                         {[12000, 15000, 18000, 14000, 16000, 19000, 15420].map((value, index) => (
                           <div key={index} className="flex flex-col items-center">
                             <div 
-                              className="bg-primary rounded-t w-8 transition-all duration-500 hover:bg-primary-hover"
+                              className="bg-blue-600 rounded-t w-8 transition-all duration-500 hover:bg-blue-700"
                               style={{ height: `${(value / 20000) * 200}px` }}
                             ></div>
-                            <span className="text-xs text-text-secondary mt-2">
+                            <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">
                               {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'][index]}
                             </span>
                           </div>
@@ -823,8 +823,8 @@ const Admin: React.FC = () => {
                     </div>
                     
                     {/* Enrollment Chart */}
-                    <div className="bg-bg-secondary rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-text-primary mb-4">Course Enrollments</h3>
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Course Enrollments</h3>
                       <div className="space-y-4">
                         {[
                           { name: 'React Fundamentals', enrollments: 234, percentage: 85 },
@@ -835,12 +835,12 @@ const Admin: React.FC = () => {
                         ].map((course, index) => (
                           <div key={index} className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-text-primary">{course.name}</span>
-                              <span className="text-text-secondary">{course.enrollments} students</span>
+                              <span className="text-gray-900 dark:text-gray-100">{course.name}</span>
+                              <span className="text-gray-600 dark:text-gray-400">{course.enrollments} students</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div 
-                                className="bg-primary h-2 rounded-full transition-all duration-500"
+                                className="bg-blue-600 h-2 rounded-full transition-all duration-500"
                                 style={{ width: `${course.percentage}%` }}
                               ></div>
                             </div>
@@ -852,36 +852,36 @@ const Admin: React.FC = () => {
                   
                   {/* Performance Metrics */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="bg-bg-secondary rounded-lg p-6 text-center">
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
                       <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <CheckCircle className="h-6 w-6 text-green-600" />
                       </div>
-                      <p className="text-2xl font-bold text-text-primary">{analyticsData.completionRate}%</p>
-                      <p className="text-text-secondary text-sm">Completion Rate</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analyticsData.completionRate}%</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">Completion Rate</p>
                     </div>
                     
-                    <div className="bg-bg-secondary rounded-lg p-6 text-center">
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <BookOpen className="h-6 w-6 text-blue-600" />
                       </div>
-                      <p className="text-2xl font-bold text-text-primary">{courses.length}</p>
-                      <p className="text-text-secondary text-sm">Total Courses</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{courses.length}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">Total Courses</p>
                     </div>
                     
-                    <div className="bg-bg-secondary rounded-lg p-6 text-center">
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
                       <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <Users className="h-6 w-6 text-purple-600" />
                       </div>
-                      <p className="text-2xl font-bold text-text-primary">{users.length}</p>
-                      <p className="text-text-secondary text-sm">Total Users</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{users.length}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">Total Users</p>
                     </div>
                     
-                    <div className="bg-bg-secondary rounded-lg p-6 text-center">
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
                       <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         <TrendingUp className="h-6 w-6 text-orange-600" />
                       </div>
-                      <p className="text-2xl font-bold text-text-primary">${analyticsData.monthlyRevenue.toLocaleString()}</p>
-                      <p className="text-text-secondary text-sm">This Month</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">${analyticsData.monthlyRevenue.toLocaleString()}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">This Month</p>
                     </div>
                   </div>
                 </div>
@@ -892,41 +892,41 @@ const Admin: React.FC = () => {
             {activeTab === 'settings' && (
               <div className="space-y-6">
                 {/* General Settings */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
-                  <h3 className="text-xl font-semibold text-text-primary mb-6">General Settings</h3>
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">General Settings</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-text-primary mb-2">Site Name</label>
+                      <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Site Name</label>
                       <input
                         type="text"
                         value={settings.siteName}
                         onChange={(e) => handleSettingsChange('siteName', e.target.value)}
-                        className="w-full px-3 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-text-primary mb-2">Site Description</label>
+                      <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Site Description</label>
                       <input
                         type="text"
                         value={settings.siteDescription}
                         onChange={(e) => handleSettingsChange('siteDescription', e.target.value)}
-                        className="w-full px-3 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                   </div>
                 </div>
                 
                 {/* User Settings */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
-                  <h3 className="text-xl font-semibold text-text-primary mb-6">User Settings</h3>
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">User Settings</h3>
                   
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="text-text-primary font-medium">Allow User Registration</h4>
-                        <p className="text-text-secondary text-sm">Allow new users to register on the platform</p>
+                        <h4 className="text-gray-900 dark:text-gray-100 font-medium">Allow User Registration</h4>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">Allow new users to register on the platform</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -941,8 +941,8 @@ const Admin: React.FC = () => {
                     
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="text-text-primary font-medium">Require Email Verification</h4>
-                        <p className="text-text-secondary text-sm">Users must verify their email before accessing the platform</p>
+                        <h4 className="text-gray-900 dark:text-gray-100 font-medium">Require Email Verification</h4>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">Users must verify their email before accessing the platform</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -958,14 +958,14 @@ const Admin: React.FC = () => {
                 </div>
                 
                 {/* System Settings */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
-                  <h3 className="text-xl font-semibold text-text-primary mb-6">System Settings</h3>
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">System Settings</h3>
                   
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="text-text-primary font-medium">Maintenance Mode</h4>
-                        <p className="text-text-secondary text-sm">Put the site in maintenance mode (only admins can access)</p>
+                        <h4 className="text-gray-900 dark:text-gray-100 font-medium">Maintenance Mode</h4>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">Put the site in maintenance mode (only admins can access)</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -980,22 +980,22 @@ const Admin: React.FC = () => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">Max File Size (MB)</label>
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Max File Size (MB)</label>
                         <input
                           type="number"
                           value={settings.maxFileSize}
                           onChange={(e) => handleSettingsChange('maxFileSize', parseInt(e.target.value))}
-                          className="w-full px-3 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">Allowed File Types</label>
+                        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Allowed File Types</label>
                         <input
                           type="text"
                           value={settings.allowedFileTypes.join(', ')}
                           onChange={(e) => handleSettingsChange('allowedFileTypes', e.target.value.split(', '))}
-                          className="w-full px-3 py-2 border border-border-primary rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                           placeholder="jpg, png, pdf, mp4"
                         />
                       </div>
@@ -1004,14 +1004,14 @@ const Admin: React.FC = () => {
                 </div>
                 
                 {/* Notification Settings */}
-                <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-6">
-                  <h3 className="text-xl font-semibold text-text-primary mb-6">Notification Settings</h3>
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Notification Settings</h3>
                   
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="text-text-primary font-medium">Email Notifications</h4>
-                        <p className="text-text-secondary text-sm">Send email notifications for important events</p>
+                        <h4 className="text-gray-900 dark:text-gray-100 font-medium">Email Notifications</h4>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">Send email notifications for important events</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -1026,8 +1026,8 @@ const Admin: React.FC = () => {
                     
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="text-text-primary font-medium">SMS Notifications</h4>
-                        <p className="text-text-secondary text-sm">Send SMS notifications for urgent events</p>
+                        <h4 className="text-gray-900 dark:text-gray-100 font-medium">SMS Notifications</h4>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">Send SMS notifications for urgent events</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input

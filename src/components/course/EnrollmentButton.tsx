@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Trash2, Loader2 } from 'lucide-react';
 import { useEnrollmentStore } from '../../store/enrollmentStore';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../contexts/ToastContext';
 import Button from '../ui/Button';
 import ConfirmationModal from '../ui/ConfirmationModal';
@@ -135,8 +135,8 @@ const EnrollmentButton: React.FC<EnrollmentButtonProps> = ({
         {enrolledCourse && (
           <div className="mb-3">
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-text-secondary">Progress</span>
-              <span className="text-text-primary font-medium">{enrolledCourse.progress}%</span>
+              <span className="text-gray-600 dark:text-gray-400">Progress</span>
+              <span className="text-gray-900 dark:text-gray-100 font-medium">{enrolledCourse.progress}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 

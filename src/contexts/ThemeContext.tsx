@@ -46,13 +46,25 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const applyTheme = (resolvedTheme: 'light' | 'dark') => {
     if (typeof document !== 'undefined') {
       const root = document.documentElement;
-      root.setAttribute('data-theme', resolvedTheme);
+      
+      // Remove existing theme classes
+      root.classList.remove('dark', 'light');
+      
+      // Add the appropriate class
+      if (resolvedTheme === 'dark') {
+        root.classList.add('dark');
+      } else {
+        root.classList.add('light');
+      }
       
       // Update meta theme-color for mobile browsers
       const metaThemeColor = document.querySelector('meta[name="theme-color"]');
       if (metaThemeColor) {
         metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#0F172A' : '#FFFFFF');
       }
+      
+      // Debug logging
+      console.log('Theme applied:', resolvedTheme, 'HTML classes:', root.className);
     }
   };
 
@@ -64,6 +76,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     } else {
       setTheme('system');
     }
+    
+    // Apply initial theme immediately
+    const initialTheme = savedTheme && ['light', 'dark', 'system'].includes(savedTheme) ? savedTheme : 'system';
+    const initialResolvedTheme = resolveTheme(initialTheme);
+    applyTheme(initialResolvedTheme);
   }, []);
 
   // Update resolved theme when theme changes

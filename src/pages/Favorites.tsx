@@ -18,7 +18,7 @@ const Favorites: React.FC = () => {
 
   if (favorites.length === 0) {
     return (
-      <div className="min-h-screen bg-bg-secondary">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Breadcrumb items={breadcrumbItems} />
           
@@ -26,21 +26,21 @@ const Favorites: React.FC = () => {
             <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
               <Heart className="w-12 h-12 text-gray-400" />
             </div>
-            <h1 className="text-3xl font-bold text-text-primary mb-4">No Favorites Yet</h1>
-            <p className="text-text-secondary mb-8 max-w-md mx-auto">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">No Favorites Yet</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
               Start exploring our courses and articles to build your personalized learning collection.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/courses"
-                className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
               >
                 <BookOpen className="w-5 h-5" />
                 Browse Courses
               </Link>
               <Link
                 to="/blog"
-                className="bg-bg-primary text-text-primary border border-border-primary px-6 py-3 rounded-lg font-semibold hover:bg-bg-secondary transition-colors flex items-center justify-center gap-2"
+                className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
               >
                 <FileText className="w-5 h-5" />
                 Read Articles
@@ -53,13 +53,13 @@ const Favorites: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={breadcrumbItems} />
         
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text-primary mb-2">My Favorites</h1>
-          <p className="text-text-secondary">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">My Favorites</h1>
+          <p className="text-gray-600 dark:text-gray-400">
             Your saved courses and articles ({favorites.length} items)
           </p>
         </div>
@@ -68,7 +68,7 @@ const Favorites: React.FC = () => {
           {favorites.map((item) => (
             <div
               key={item.id}
-              className="bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 group"
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 group"
             >
               <div className="relative">
                 {item.image && (
@@ -90,8 +90,8 @@ const Favorites: React.FC = () => {
                 <div className="absolute bottom-4 left-4">
                   <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                     item.type === 'course' 
-                      ? 'bg-primary text-white' 
-                      : 'bg-secondary text-white'
+                      ? 'bg-blue-600 text-white' 
+                      : 'bg-amber-600 text-white'
                   }`}>
                     {item.type === 'course' ? 'Course' : 'Article'}
                   </span>
@@ -99,11 +99,11 @@ const Favorites: React.FC = () => {
               </div>
               
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-text-primary mb-2 line-clamp-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
                   {item.title}
                 </h3>
                 
-                <div className="flex items-center text-sm text-text-secondary mb-4">
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-4">
                   <Clock className="w-4 h-4 mr-1" />
                   <span>Saved {new Date(item.addedAt).toLocaleDateString()}</span>
                 </div>
@@ -111,14 +111,14 @@ const Favorites: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <Link
                     to={item.type === 'course' ? `/courses/${item.id}` : `/blog/${item.id}`}
-                    className="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-hover transition-colors text-sm"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
                   >
                     {item.type === 'course' ? 'View Course' : 'Read Article'}
                   </Link>
                   
                   <button
                     onClick={() => handleRemoveFavorite(item.id)}
-                    className="text-text-secondary hover:text-red-600 transition-colors text-sm"
+                    className="text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors text-sm"
                   >
                     Remove
                   </button>

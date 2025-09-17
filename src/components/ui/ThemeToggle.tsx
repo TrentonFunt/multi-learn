@@ -24,7 +24,7 @@ const ThemeToggle: React.FC = () => {
     <div className="relative">
       <button
         onClick={handleThemeChange}
-        className="flex items-center justify-center w-10 h-10 rounded-lg border border-border-primary bg-bg-primary text-text-primary hover:bg-bg-secondary hover:text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         aria-label={`Current theme: ${currentTheme.label}. Click to change theme.`}
         title={`Current theme: ${currentTheme.label}. Click to cycle through themes.`}
       >
@@ -32,7 +32,7 @@ const ThemeToggle: React.FC = () => {
       </button>
       
       {/* Theme indicator */}
-      <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-bg-primary"
+      <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white dark:border-gray-800"
            style={{
              backgroundColor: resolvedTheme === 'dark' ? '#818CF8' : '#6366F1'
            }}

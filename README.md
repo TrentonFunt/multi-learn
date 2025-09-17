@@ -21,11 +21,12 @@ A modern, responsive e-learning platform built with React, TypeScript, and Tailw
 - **Error Page** - Custom 404 error page with error boundaries
 
 ### 🎨 Design & Theming
-- **Dark/Light Mode** - Complete theme switching with smooth transitions
-- **Custom Design System** - Indigo/Amber color palette with CSS variables
+- **Dark/Light Mode** - Complete theme switching with smooth transitions using Tailwind V4
+- **Custom Design System** - Indigo/Amber color palette with modern Tailwind classes
 - **Responsive Design** - Mobile-first approach, works perfectly on all devices
 - **Interactive Navigation** - Hover effects, active states, and smooth transitions
 - **Professional UI/UX** - Clean, modern design with accessibility features
+- **Interactive Categories** - Enhanced category cards with animations and visual effects
 
 ### 🔐 Authentication & User Management
 - **Firebase Authentication** - Secure email/password authentication with role-based access
@@ -35,6 +36,8 @@ A modern, responsive e-learning platform built with React, TypeScript, and Tailw
 - **User Profiles** - Complete profile management with avatar upload and settings
 - **Role-Based Access** - Admin and user roles with protected routes
 - **Session Management** - Persistent authentication state with automatic logout
+- **Enhanced Error Messages** - User-friendly authentication error messages
+- **Loading States** - Separate loading states for different authentication actions
 
 ### 📚 Course Management
 - **Course Enrollment** - One-click course enrollment with progress tracking
@@ -55,12 +58,14 @@ A modern, responsive e-learning platform built with React, TypeScript, and Tailw
 - **Page Transitions** - Smooth animations between routes using Framer Motion
 - **Theme Persistence** - User preferences saved in localStorage
 - **PWA Support** - Service worker for offline functionality and caching
+- **Toast Notifications** - Global toast notification system for user feedback
+- **Confirmation Modals** - Reusable confirmation dialogs for important actions
 
 ## 🛠️ Tech Stack
 
 ### Core Technologies
 - **Frontend**: React 19, TypeScript
-- **Styling**: Tailwind CSS v4.1.13 with custom design system
+- **Styling**: Tailwind CSS v4 with custom design system and dark mode support
 - **Routing**: React Router DOM v7.9.1
 - **State Management**: Zustand v5.0.8
 - **Build Tool**: Vite v7.1.5
@@ -215,10 +220,11 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 ## ✨ Key Improvements & Features
 
 ### 🎨 Enhanced Design System
-- **Custom CSS Variables**: Complete theming system with light/dark mode support
+- **Tailwind CSS V4**: Latest version with improved dark mode support and custom variants
 - **Interactive Elements**: Hover effects, transitions, and smooth animations
 - **Responsive Layout**: Mobile-first design with optimized spacing and typography
 - **Accessibility**: ARIA attributes, keyboard navigation, and screen reader support
+- **Interactive Categories**: Enhanced category cards with gradient overlays and animations
 
 ### 🔧 Technical Enhancements
 - **TypeScript**: Full type safety with custom interfaces and strict configuration
@@ -229,12 +235,15 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 - **Form Handling**: Enhanced validation with real-time feedback and accessibility features
 - **Search & Filtering**: Advanced search with debouncing and comprehensive filtering options
 - **User Experience**: Page transitions, smooth animations, and interactive feedback
+- **Authentication UX**: Enhanced error messages and separate loading states for better UX
+- **Toast System**: Global notification system for user feedback and actions
 
 ### 🌙 Theme System
 - **Light Mode**: Clean, professional appearance with indigo accents
 - **Dark Mode**: Modern dark theme with proper contrast ratios
 - **System Preference**: Automatic theme detection based on user's OS settings
 - **Persistence**: Theme preference saved in localStorage
+- **Tailwind V4 Integration**: Seamless dark mode implementation with custom variants
 
 ### 📱 User Experience
 - **Interactive Navigation**: Smooth hover effects, active states, and page transitions

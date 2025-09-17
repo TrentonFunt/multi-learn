@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Breadcrumb from '../components/ui/Breadcrumb';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +15,7 @@ const Login: React.FC = () => {
   const [resetEmail, setResetEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
   
@@ -47,7 +48,7 @@ const Login: React.FC = () => {
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
+    setResetLoading(true);
 
     try {
       await resetPassword(resetEmail);
@@ -55,17 +56,17 @@ const Login: React.FC = () => {
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
-      setLoading(false);
+      setResetLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-bg-secondary py-12">
+      <section className="bg-gray-50 dark:bg-gray-900 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4">
+            <h1 className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4">
               Login
             </h1>
           </div>
@@ -78,11 +79,11 @@ const Login: React.FC = () => {
 
         {/* Login Form */}
         <div className="max-w-md mx-auto mt-8">
-          <div className="bg-bg-primary border border-border-primary rounded-card shadow-card p-8">
-            <h2 className="text-2xl font-exo font-semibold text-text-primary mb-6 text-center">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-6 text-center">
               Welcome Back
             </h2>
-            <p className="text-text-secondary text-center mb-8">
+            <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
               Sign in to your MultiLearn account to continue your learning journey.
             </p>
             
@@ -118,7 +119,7 @@ const Login: React.FC = () => {
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-9 text-text-secondary hover:text-text-primary transition-colors"
+                  className="absolute right-3 top-9 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -130,9 +131,9 @@ const Login: React.FC = () => {
                   <input
                     type="checkbox"
                     id="remember"
-                    className="w-4 h-4 text-primary border-border-primary rounded focus:ring-primary"
+                    className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-700 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="remember" className="ml-2 text-sm text-text-primary">
+                  <label htmlFor="remember" className="ml-2 text-sm text-gray-900 dark:text-gray-100">
                     Remember me
                   </label>
                 </div>
@@ -164,8 +165,8 @@ const Login: React.FC = () => {
                 exit={{ opacity: 0, height: 0 }}
                 className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg"
               >
-                <h3 className="text-lg font-semibold text-text-primary mb-3">Reset Password</h3>
-                <p className="text-sm text-text-secondary mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Reset Password</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                   Enter your email address and we'll send you a link to reset your password.
                 </p>
                 
@@ -191,7 +192,7 @@ const Login: React.FC = () => {
                         <CheckCircle className="h-5 w-5" />
                         <span className="font-medium">Email Sent!</span>
                       </div>
-                      <p className="text-sm text-text-secondary">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Check your email for password reset instructions.
                       </p>
                       <button
@@ -213,10 +214,10 @@ const Login: React.FC = () => {
                         type="submit"
                         variant="fill"
                         size="small"
-                        disabled={loading || !resetEmail}
+                        disabled={resetLoading || !resetEmail}
                         className="flex-1"
                       >
-                        {loading ? 'Sending...' : 'Send Reset Link'}
+                        {resetLoading ? 'Sending...' : 'Send Reset Link'}
                       </Button>
                       <Button
                         type="button"
@@ -239,9 +240,9 @@ const Login: React.FC = () => {
             {/* Divider */}
             <div className="my-8">
               <div className="flex items-center">
-                <div className="flex-1 border-t border-border-primary"></div>
-                <div className="px-4 text-sm text-text-secondary font-medium">Or continue with</div>
-                <div className="flex-1 border-t border-border-primary"></div>
+                <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
+                <div className="px-4 text-sm text-gray-600 dark:text-gray-400 font-medium">Or continue with</div>
+                <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
               </div>
             </div>
 
@@ -249,14 +250,14 @@ const Login: React.FC = () => {
             <div className="space-y-3">
               <button 
                 type="button" 
-                className="w-full flex items-center justify-center space-x-3 px-6 py-2.5 text-button-lg font-medium border border-border-primary text-text-primary bg-bg-primary rounded-lg hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
+                className="w-full flex items-center justify-center space-x-3 px-6 py-2.5 text-lg font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
               >
                 <FaGoogle className="w-5 h-5" />
                 <span>Continue with Google</span>
               </button>
               <button 
                 type="button" 
-                className="w-full flex items-center justify-center space-x-3 px-6 py-2.5 text-button-lg font-medium border border-border-primary text-text-primary bg-bg-primary rounded-lg hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
+                className="w-full flex items-center justify-center space-x-3 px-6 py-2.5 text-lg font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
               >
                 <FaFacebook className="w-5 h-5" />
                 <span>Continue with Facebook</span>
@@ -265,7 +266,7 @@ const Login: React.FC = () => {
 
             {/* Register Link */}
             <div className="mt-8 text-center">
-              <p className="text-text-secondary">
+              <p className="text-gray-600 dark:text-gray-400">
                 Don't have an account?{' '}
                 <Link 
                   to="/register" 

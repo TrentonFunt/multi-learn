@@ -34,7 +34,7 @@ const Loading: React.FC<LoadingProps> = ({
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className={`${size === 'small' ? 'w-2 h-2' : size === 'medium' ? 'w-3 h-3' : 'w-4 h-4'} bg-primary rounded-full animate-pulse`}
+          className={`${size === 'small' ? 'w-2 h-2' : size === 'medium' ? 'w-3 h-3' : 'w-4 h-4'} bg-blue-600 rounded-full animate-pulse`}
           style={{
             animationDelay: `${i * 0.2}s`,
             animationDuration: '1s'
@@ -45,7 +45,7 @@ const Loading: React.FC<LoadingProps> = ({
   );
 
   const renderPulse = () => (
-    <div className={`${sizeClasses[size]} bg-primary rounded-full animate-pulse`} />
+    <div className={`${sizeClasses[size]} bg-blue-600 rounded-full animate-pulse`} />
   );
 
   const renderLoader = () => {

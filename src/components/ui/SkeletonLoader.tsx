@@ -72,7 +72,7 @@ const SkeletonLoader: React.FC<SkeletonProps> = ({
 
 // Specific skeleton components
 export const CourseCardSkeleton: React.FC = () => (
-  <div className="bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden">
+  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
     <SkeletonLoader variant="card" height={192} className="w-full" />
     <div className="p-6">
       <SkeletonLoader variant="text" width="85%" height={20} className="mb-2" />
@@ -90,7 +90,7 @@ export const CourseCardSkeleton: React.FC = () => (
 );
 
 export const ArticleCardSkeleton: React.FC = () => (
-  <div className="bg-bg-primary border border-border-primary rounded-lg shadow-lg overflow-hidden">
+  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
     <SkeletonLoader variant="card" height={192} className="w-full" />
     <div className="p-6">
       <SkeletonLoader variant="text" width="90%" height={20} className="mb-2" />
@@ -101,7 +101,7 @@ export const ArticleCardSkeleton: React.FC = () => (
 );
 
 export const CategoryCardSkeleton: React.FC = () => (
-  <div className="bg-bg-secondary rounded-lg p-6 text-center">
+  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
     <SkeletonLoader variant="circular" width={48} height={48} className="mx-auto mb-4" />
     <SkeletonLoader variant="text" width="80%" height={16} className="mb-2" />
     <SkeletonLoader variant="text" width="60%" height={14} />
@@ -116,7 +116,7 @@ export const StatCardSkeleton: React.FC = () => (
 );
 
 export const PageCardSkeleton: React.FC = () => (
-  <div className="min-h-screen bg-bg-secondary">
+  <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb skeleton */}
       <div className="mb-8">

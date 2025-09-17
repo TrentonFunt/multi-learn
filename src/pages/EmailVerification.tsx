@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, RefreshCw } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
 import Breadcrumb from '../components/ui/Breadcrumb';
@@ -74,15 +74,15 @@ const EmailVerification: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
       {/* Hero Section */}
-      <section className="bg-bg-secondary py-16">
+      <section className="bg-gray-50 dark:bg-gray-700 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-exo font-semibold text-text-primary mb-4"
+              className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4"
             >
               Verify Your Email
             </motion.h1>
@@ -90,7 +90,7 @@ const EmailVerification: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-text-secondary"
+              className="text-lg text-gray-600 dark:text-gray-400"
             >
               Please verify your email address to continue
             </motion.p>
@@ -108,7 +108,7 @@ const EmailVerification: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-bg-primary border border-border-primary rounded-card shadow-card p-8"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-8"
           >
             <div className="text-center">
               {/* Email Icon */}
@@ -128,13 +128,13 @@ const EmailVerification: React.FC = () => {
                 transition={{ delay: 0.4 }}
                 className="mb-6"
               >
-                <h2 className="text-2xl font-semibold text-text-primary mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                   Check Your Email
                 </h2>
-                <p className="text-text-secondary">
+                <p className="text-gray-600 dark:text-gray-400">
                   We've sent a verification link to:
                 </p>
-                <p className="font-medium text-text-primary mt-1">
+                <p className="font-medium text-gray-900 dark:text-gray-100 mt-1">
                   {user.email}
                 </p>
               </motion.div>
@@ -193,7 +193,7 @@ const EmailVerification: React.FC = () => {
                 </Button>
 
                 {lastSentTime && (
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     Last sent: {lastSentTime.toLocaleTimeString()}
                     {!canResend && (
                       <span className="block text-orange-600">
@@ -209,11 +209,11 @@ const EmailVerification: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7 }}
-                className="mt-8 pt-6 border-t border-border-primary"
+                className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
               >
                 <div className="text-left">
-                  <h3 className="font-medium text-text-primary mb-2">Need Help?</h3>
-                  <ul className="text-sm text-text-secondary space-y-1">
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Need Help?</h3>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                     <li>• Check your spam/junk folder</li>
                     <li>• Make sure you entered the correct email</li>
                     <li>• Contact support if you continue having issues</li>
@@ -230,7 +230,7 @@ const EmailVerification: React.FC = () => {
               >
                 <Link
                   to="/login"
-                  className="text-primary hover:text-primary-hover text-sm font-medium"
+                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
                 >
                   ← Back to Login
                 </Link>

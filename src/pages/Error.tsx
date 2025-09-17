@@ -134,10 +134,10 @@ const Error: React.FC = () => {
                 className="p-6 border border-neutral-white-grey rounded-card hover:border-primary hover:shadow-card transition-all group"
               >
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-hover transition-colors">
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors">
                     <span className="text-white text-xl">📚</span>
                   </div>
-                  <h4 className="font-medium text-neutral-dark-grey group-hover:text-primary transition-colors">
+                  <h4 className="font-medium text-neutral-dark-grey group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     Browse Courses
                   </h4>
                   <p className="text-sm text-neutral-grey mt-2">
@@ -151,10 +151,10 @@ const Error: React.FC = () => {
                 className="p-6 border border-neutral-white-grey rounded-card hover:border-primary hover:shadow-card transition-all group"
               >
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-hover transition-colors">
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors">
                     <span className="text-white text-xl">📝</span>
                   </div>
-                  <h4 className="font-medium text-neutral-dark-grey group-hover:text-primary transition-colors">
+                  <h4 className="font-medium text-neutral-dark-grey group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     Read Blog
                   </h4>
                   <p className="text-sm text-neutral-grey mt-2">
@@ -168,10 +168,10 @@ const Error: React.FC = () => {
                 className="p-6 border border-neutral-white-grey rounded-card hover:border-primary hover:shadow-card transition-all group"
               >
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-hover transition-colors">
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors">
                     <span className="text-white text-xl">💬</span>
                   </div>
-                  <h4 className="font-medium text-neutral-dark-grey group-hover:text-primary transition-colors">
+                  <h4 className="font-medium text-neutral-dark-grey group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     Contact Us
                   </h4>
                   <p className="text-sm text-neutral-grey mt-2">

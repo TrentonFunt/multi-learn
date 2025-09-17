@@ -98,7 +98,7 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
     type
   }) => (
     <div className="space-y-3">
-      <h4 className="font-semibold text-text-primary">{title}</h4>
+      <h4 className="font-semibold text-gray-900 dark:text-gray-100">{title}</h4>
       <div className="space-y-2">
         {options.map((option) => (
           <label key={option} className="flex items-center space-x-2 cursor-pointer">
@@ -106,9 +106,9 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
               type="checkbox"
               checked={filters[type].includes(option)}
               onChange={() => handleFilterChange(type, option)}
-              className="w-4 h-4 text-primary bg-bg-primary border-border-primary rounded focus:ring-primary focus:ring-2"
+              className="w-4 h-4 text-blue-600 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded focus:ring-blue-500 focus:ring-2"
             />
-            <span className="text-sm text-text-secondary">{option}</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">{option}</span>
           </label>
         ))}
       </div>
@@ -116,18 +116,18 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
   );
 
   return (
-    <div className={`bg-bg-primary border border-border-primary rounded-lg ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg ${className}`}>
       {/* Mobile Filter Toggle */}
       <div className="lg:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-4 text-text-primary hover:bg-bg-secondary transition-colors"
+          className="w-full flex items-center justify-between p-4 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:bg-gray-700 transition-colors"
         >
           <div className="flex items-center gap-2">
             <Filter className="w-5 h-5" />
             <span className="font-semibold">Filters</span>
             {getActiveFiltersCount() > 0 && (
-              <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">
+              <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
                 {getActiveFiltersCount()}
               </span>
             )}
@@ -138,21 +138,21 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
 
       {/* Filter Content */}
       <AnimatePresence>
-        {(isOpen || window.innerWidth >= 1024) && (
+        {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden"
+            className="overflow-hidden lg:block"
           >
-            <div className="p-6 border-t border-border-primary lg:border-t-0">
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700 lg:border-t-0">
               {/* Sort Options */}
               <div className="mb-6">
-                <h4 className="font-semibold text-text-primary mb-3">Sort By</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Sort By</h4>
                 <select
                   onChange={(e) => onSortChange(e.target.value)}
-                  className="w-full p-3 border border-border-primary rounded-lg bg-bg-primary text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {sortOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -197,10 +197,10 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
 
               {/* Clear Filters Button */}
               {getActiveFiltersCount() > 0 && (
-                <div className="mt-6 pt-6 border-t border-border-primary">
+                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <button
                     onClick={clearFilters}
-                    className="w-full flex items-center justify-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
+                    className="w-full flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                   >
                     <X className="w-4 h-4" />
                     Clear All Filters
