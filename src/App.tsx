@@ -12,23 +12,25 @@ import { RouteErrorBoundary } from './components/ui/ErrorBoundary';
 import { PageCardSkeleton } from './components/ui/SkeletonLoader';
 import useScrollToTop from './hooks/useScrollToTop';
 
-// Lazy load pages for code splitting
-const Home = React.lazy(() => import('./pages/Home'));
+// Import Home page directly (loads immediately)
+import Home from './pages/Home';
+
+// Lazy load all pages except Home (which loads immediately)
 const Courses = React.lazy(() => import('./pages/Courses'));
-const CourseSingle = React.lazy(() => import('./pages/CourseSingle'));
 const Blog = React.lazy(() => import('./pages/Blog'));
-const BlogSingle = React.lazy(() => import('./pages/BlogSingle'));
 const Contact = React.lazy(() => import('./pages/Contact'));
-const Favorites = React.lazy(() => import('./pages/Favorites'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Register = React.lazy(() => import('./pages/Register'));
+const CourseSingle = React.lazy(() => import('./pages/CourseSingle'));
+const BlogSingle = React.lazy(() => import('./pages/BlogSingle'));
 const EmailVerification = React.lazy(() => import('./pages/EmailVerification'));
 const PasswordReset = React.lazy(() => import('./pages/PasswordReset'));
-const Account = React.lazy(() => import('./pages/Account'));
-const Admin = React.lazy(() => import('./pages/Admin'));
 const Unauthorized = React.lazy(() => import('./pages/Unauthorized'));
 const FAQs = React.lazy(() => import('./pages/FAQs'));
 const Error = React.lazy(() => import('./pages/Error'));
+const Favorites = React.lazy(() => import('./pages/Favorites'));
+const Account = React.lazy(() => import('./pages/Account'));
+const Admin = React.lazy(() => import('./pages/Admin'));
 
 // Create a client
 const queryClient = new QueryClient({
@@ -49,26 +51,67 @@ const AppRoutes: React.FC = () => {
   
   return (
     <PageTransition>
-      <Suspense fallback={<PageCardSkeleton />}>
-        <Routes location={location} key={location.pathname}>
+      <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogSingle />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/email-verification" element={<EmailVerification />} />
-          <Route path="/password-reset" element={<PasswordReset />} />
-          <Route path="/faqs" element={<FAQs />} />
-          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/courses" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Courses />
+            </Suspense>
+          } />
+          <Route path="/blog" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Blog />
+            </Suspense>
+          } />
+          <Route path="/blog/:id" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <BlogSingle />
+            </Suspense>
+          } />
+          <Route path="/contact" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Contact />
+            </Suspense>
+          } />
+          <Route path="/login" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Login />
+            </Suspense>
+          } />
+          <Route path="/register" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Register />
+            </Suspense>
+          } />
+          <Route path="/email-verification" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <EmailVerification />
+            </Suspense>
+          } />
+          <Route path="/password-reset" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <PasswordReset />
+            </Suspense>
+          } />
+          <Route path="/faqs" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <FAQs />
+            </Suspense>
+          } />
+          <Route path="/unauthorized" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Unauthorized />
+            </Suspense>
+          } />
           
           {/* Protected Routes */}
           <Route 
             path="/courses/:id" 
             element={
               <ProtectedRoute>
-                <CourseSingle />
+                <Suspense fallback={<PageCardSkeleton />}>
+                  <CourseSingle />
+                </Suspense>
               </ProtectedRoute>
             } 
           />
@@ -76,7 +119,9 @@ const AppRoutes: React.FC = () => {
             path="/favorites" 
             element={
               <ProtectedRoute>
-                <Favorites />
+                <Suspense fallback={<PageCardSkeleton />}>
+                  <Favorites />
+                </Suspense>
               </ProtectedRoute>
             } 
           />
@@ -84,7 +129,9 @@ const AppRoutes: React.FC = () => {
             path="/account" 
             element={
               <ProtectedRoute>
-                <Account />
+                <Suspense fallback={<PageCardSkeleton />}>
+                  <Account />
+                </Suspense>
               </ProtectedRoute>
             } 
           />
@@ -92,15 +139,24 @@ const AppRoutes: React.FC = () => {
             path="/admin" 
             element={
               <ProtectedRoute requireAdmin={true}>
-                <Admin />
+                <Suspense fallback={<PageCardSkeleton />}>
+                  <Admin />
+                </Suspense>
               </ProtectedRoute>
             } 
           />
           
-          <Route path="/error" element={<Error />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </Suspense>
+          <Route path="/error" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Error />
+            </Suspense>
+          } />
+          <Route path="*" element={
+            <Suspense fallback={<PageCardSkeleton />}>
+              <Error />
+            </Suspense>
+          } />
+      </Routes>
     </PageTransition>
   );
 };

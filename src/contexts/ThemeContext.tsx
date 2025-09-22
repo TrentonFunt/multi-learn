@@ -63,8 +63,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#0F172A' : '#FFFFFF');
       }
       
-      // Debug logging
-      console.log('Theme applied:', resolvedTheme, 'HTML classes:', root.className);
+      // Theme applied successfully
     }
   };
 
