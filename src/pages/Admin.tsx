@@ -23,7 +23,6 @@ import {
 import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
-import Breadcrumb from '../components/ui/Breadcrumb';
 import ConfirmationModal from '../components/ui/ConfirmationModal';
 
 const Admin: React.FC = () => {
@@ -88,10 +87,6 @@ const Admin: React.FC = () => {
     smsNotifications: false
   });
 
-  const breadcrumbItems = [
-    { label: 'Homepage', href: '/' },
-    { label: 'Admin Dashboard' }
-  ];
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
@@ -254,9 +249,6 @@ const Admin: React.FC = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb items={breadcrumbItems} />
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-12">
           {/* Sidebar */}
           <motion.div

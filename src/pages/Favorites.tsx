@@ -2,26 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, BookOpen, FileText, Clock } from 'lucide-react';
 import { useFavoritesStore } from '../store/favoritesStore';
-import Breadcrumb from '../components/ui/Breadcrumb';
+import { useToast } from '../contexts/ToastContext';
 
 const Favorites: React.FC = () => {
   const { favorites, removeFromFavorites } = useFavoritesStore();
-  
-  const breadcrumbItems = [
-    { label: 'Homepage', href: '/' },
-    { label: 'My Favorites' }
-  ];
+  const { addToast } = useToast();
 
-  const handleRemoveFavorite = (id: string) => {
+  const handleRemoveFavorite = (id: string, title: string) => {
     removeFromFavorites(id);
+    addToast({
+      type: 'info',
+      title: 'Removed from Favorites',
+      message: `${title} has been removed from your favorites.`
+    });
   };
 
   if (favorites.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Breadcrumb items={breadcrumbItems} />
-          
           <div className="text-center py-16">
             <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
               <Heart className="w-12 h-12 text-gray-400" />
@@ -55,8 +54,6 @@ const Favorites: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb items={breadcrumbItems} />
-        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">My Favorites</h1>
           <p className="text-gray-600 dark:text-gray-400">
@@ -80,7 +77,7 @@ const Favorites: React.FC = () => {
                 )}
                 <div className="absolute top-4 right-4">
                   <button
-                    onClick={() => handleRemoveFavorite(item.id)}
+                    onClick={() => handleRemoveFavorite(item.id, item.title)}
                     className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
                     aria-label={`Remove ${item.title} from favorites`}
                   >
@@ -117,7 +114,7 @@ const Favorites: React.FC = () => {
                   </Link>
                   
                   <button
-                    onClick={() => handleRemoveFavorite(item.id)}
+                    onClick={() => handleRemoveFavorite(item.id, item.title)}
                     className="text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors text-sm"
                   >
                     Remove

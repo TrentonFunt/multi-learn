@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, Grid, List } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import CourseCard from '../components/course/CourseCard';
@@ -24,10 +24,12 @@ const Courses: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const hasProcessedInitialSearch = useRef(false);
 
   // Get category from URL parameters
   useEffect(() => {
     const categoryParam = searchParams.get('category');
+    
     if (categoryParam) {
       setSelectedCategory(categoryParam);
       // Also update the filter state to reflect the URL parameter
@@ -46,6 +48,17 @@ const Courses: React.FC = () => {
       );
     } else {
       setSelectedCategory('');
+    }
+  }, [searchParams]);
+
+  // Handle search parameter from URL only on initial load (when coming from header search)
+  useEffect(() => {
+    if (!hasProcessedInitialSearch.current) {
+      const searchParam = searchParams.get('search');
+      if (searchParam) {
+        setSearchTerm(decodeURIComponent(searchParam));
+      }
+      hasProcessedInitialSearch.current = true;
     }
   }, [searchParams]);
   const [filters, setFilters] = useState<FilterSection[]>([
@@ -236,12 +249,12 @@ const Courses: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Course Listings */}
           <div className="lg:col-span-3">
-            <div className={`grid gap-6 ${
+            <div className={`grid gap-4 sm:gap-6 ${
               viewMode === 'grid' 
-                ? 'grid-cols-1 md:grid-cols-2' 
+                ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-2' 
                 : 'grid-cols-1'
             }`}>
               {paginatedCourses.map((course) => (

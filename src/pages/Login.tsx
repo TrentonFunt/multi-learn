@@ -5,7 +5,7 @@ import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import Breadcrumb from '../components/ui/Breadcrumb';
+import Logo from '../components/ui/Logo';
 import { useAuth } from '../hooks/useAuth';
 
 const Login: React.FC = () => {
@@ -19,16 +19,12 @@ const Login: React.FC = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
   
-  const { signIn, resetPassword } = useAuth();
+  const { signIn, resetPassword, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
   const from = location.state?.from?.pathname || '/';
 
-  const breadcrumbItems = [
-    { label: 'Homepage', href: '/' },
-    { label: 'Login' }
-  ];
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,228 +56,312 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setLoading(true);
+
+    try {
+      await signInWithGoogle();
+      navigate(from, { replace: true });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred during Google sign-in');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute -top-40 -right-40 w-80 h-80 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            rotate: [360, 180, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div
+          className="absolute top-40 left-1/2 w-80 h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+          animate={{
+            scale: [1, 1.3, 1],
+            rotate: [0, -180, -360],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      </div>
+
       {/* Hero Section */}
-      <section className="bg-gray-50 dark:bg-gray-900 py-12">
+      <section className="relative py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-4">
-              Login
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div
+              className="inline-flex items-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3 mb-6 shadow-lg"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Logo size="sm" showText={true} />
+            </motion.div>
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-orange-600 via-yellow-600 to-green-600 bg-clip-text text-transparent mb-4">
+              Welcome Back
             </h1>
-          </div>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Continue your learning journey or manage your instructor account
+            </p>
+          </motion.div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Breadcrumb */}
-        <Breadcrumb items={breadcrumbItems} />
-
         {/* Login Form */}
         <div className="max-w-md mx-auto mt-8">
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-exo font-semibold text-gray-900 dark:text-gray-100 mb-6 text-center">
-              Welcome Back
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
-              Sign in to your MultiLearn account to continue your learning journey.
-            </p>
-            
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2"
-              >
-                <AlertCircle className="h-5 w-5" />
-                <span className="text-sm">{error}</span>
-              </motion.div>
-            )}
-
-            <form onSubmit={handleLogin} className="space-y-6">
-              <Input
-                label="Email"
-                type="email"
-                name="email"
-                placeholder="Email*"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                required
-              />
-              
-              <div className="relative">
-                <Input
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="Password*"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-9 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                  onClick={() => setShowPassword(!showPassword)}
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl p-8">
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Sign In
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8">
+                    Enter your credentials to access your account
+                  </p>
+                  
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2 mb-6"
+                    >
+                      <AlertCircle className="h-5 w-5" />
+                      <span className="text-sm">{error}</span>
+                    </motion.div>
+                  )}
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="remember"
-                    className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-700 rounded focus:ring-blue-500"
-                  />
-                  <label htmlFor="remember" className="ml-2 text-sm text-gray-900 dark:text-gray-100">
-                    Remember me
-                  </label>
-                </div>
-                <button 
-                  type="button"
-                  onClick={() => setShowForgotPassword(!showForgotPassword)}
-                  className="text-sm link-primary"
-                >
-                  Forgot password?
-                </button>
-              </div>
-
-              <Button 
-                type="submit" 
-                variant="fill" 
-                size="large" 
-                className="w-full"
-                disabled={loading}
-              >
-                {loading ? 'Signing In...' : 'Sign In'}
-              </Button>
-            </form>
-
-            {/* Forgot Password Form */}
-            {showForgotPassword && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg"
-              >
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Reset Password</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Enter your email address and we'll send you a link to reset your password.
-                </p>
-                
-                <form onSubmit={handleForgotPassword} className="space-y-4">
-                  <div>
+                  <form onSubmit={handleLogin} className="space-y-6">
                     <Input
+                      label="Email"
                       type="email"
-                      name="resetEmail"
-                      placeholder="Enter your email"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
+                      name="email"
+                      placeholder="Email*"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       autoComplete="email"
                       required
-                      className="w-full"
                     />
-                  </div>
-                  
-                  {resetEmailSent ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-center"
-                    >
-                      <div className="flex items-center justify-center space-x-2 text-green-600 mb-2">
-                        <CheckCircle className="h-5 w-5" />
-                        <span className="font-medium">Email Sent!</span>
-                      </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Check your email for password reset instructions.
-                      </p>
+                    
+                    <div className="relative">
+                      <Input
+                        label="Password"
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        placeholder="Password*"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                        required
+                      />
                       <button
                         type="button"
-                        onClick={() => {
-                          setShowForgotPassword(false);
-                          setResetEmailSent(false);
-                          setResetEmail('');
-                          setError('');
-                        }}
-                        className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mt-2"
+                        className="absolute right-3 top-9 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                        onClick={() => setShowPassword(!showPassword)}
                       >
-                        Back to Login
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
-                    </motion.div>
-                  ) : (
-                    <div className="flex space-x-3">
-                      <Button
-                        type="submit"
-                        variant="fill"
-                        size="small"
-                        disabled={resetLoading || !resetEmail}
-                        className="flex-1"
-                      >
-                        {resetLoading ? 'Sending...' : 'Send Reset Link'}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="small"
-                        onClick={() => {
-                          setShowForgotPassword(false);
-                          setResetEmail('');
-                          setError('');
-                        }}
-                      >
-                        Cancel
-                      </Button>
                     </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="remember"
+                          className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-700 rounded focus:ring-blue-500"
+                        />
+                        <label htmlFor="remember" className="ml-2 text-sm text-gray-900 dark:text-gray-100">
+                          Remember me
+                        </label>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => setShowForgotPassword(!showForgotPassword)}
+                        className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Button 
+                        type="submit" 
+                        variant="fill" 
+                        size="large" 
+                        className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0 text-white font-semibold py-3 rounded-xl shadow-lg"
+                        disabled={loading}
+                      >
+                        {loading ? 'Signing In...' : 'Sign In'}
+                      </Button>
+                    </motion.div>
+                  </form>
+
+                  {/* Forgot Password Form */}
+                  {showForgotPassword && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl"
+                    >
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Reset Password</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        Enter your email address and we'll send you a link to reset your password.
+                      </p>
+                      
+                      <form onSubmit={handleForgotPassword} className="space-y-4">
+                        <div>
+                          <Input
+                            type="email"
+                            name="resetEmail"
+                            placeholder="Enter your email"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
+                            autoComplete="email"
+                            required
+                            className="w-full"
+                          />
+                        </div>
+                        
+                        {resetEmailSent ? (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-center"
+                          >
+                            <div className="flex items-center justify-center space-x-2 text-green-600 mb-2">
+                              <CheckCircle className="h-5 w-5" />
+                              <span className="font-medium">Email Sent!</span>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              Check your email for password reset instructions.
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setShowForgotPassword(false);
+                                setResetEmailSent(false);
+                                setResetEmail('');
+                                setError('');
+                              }}
+                              className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mt-2 font-medium"
+                            >
+                              Back to Login
+                            </button>
+                          </motion.div>
+                        ) : (
+                          <div className="flex space-x-3">
+                            <Button
+                              type="submit"
+                              variant="fill"
+                              size="small"
+                              disabled={resetLoading || !resetEmail}
+                              className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                            >
+                              {resetLoading ? 'Sending...' : 'Send Reset Link'}
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="small"
+                              onClick={() => {
+                                setShowForgotPassword(false);
+                                setResetEmail('');
+                                setError('');
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        )}
+                      </form>
+                    </motion.div>
                   )}
-                </form>
-              </motion.div>
-            )}
 
-            {/* Divider */}
-            <div className="my-8">
-              <div className="flex items-center">
-                <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
-                <div className="px-4 text-sm text-gray-600 dark:text-gray-400 font-medium">Or continue with</div>
-                <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
-              </div>
-            </div>
+                  {/* Divider */}
+                  <div className="my-8">
+                    <div className="flex items-center">
+                      <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
+                      <div className="px-4 text-sm text-gray-600 dark:text-gray-400 font-medium">Or continue with</div>
+                      <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
+                    </div>
+                  </div>
 
-            {/* Social Login */}
-            <div className="space-y-3">
-              <button 
-                type="button" 
-                className="w-full flex items-center justify-center space-x-3 px-6 py-2.5 text-lg font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2"
-              >
-                <FaGoogle className="w-5 h-5" />
-                <span>Continue with Google</span>
-              </button>
-              <button 
-                type="button" 
-                className="w-full flex items-center justify-center space-x-3 px-6 py-2.5 text-lg font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
-              >
-                <FaFacebook className="w-5 h-5" />
-                <span>Continue with Facebook</span>
-              </button>
-            </div>
+                   {/* Social Login */}
+                   <div className="space-y-3">
+                     <motion.button 
+                       type="button" 
+                       onClick={handleGoogleSignIn}
+                       disabled={loading}
+                       className="w-full flex items-center justify-center space-x-3 px-6 py-3 font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                       whileHover={{ scale: loading ? 1 : 1.02 }}
+                       whileTap={{ scale: loading ? 1 : 0.98 }}
+                     >
+                       <FaGoogle className="w-5 h-5" />
+                       <span>{loading ? 'Signing in...' : 'Continue with Google'}</span>
+                     </motion.button>
+                    <motion.button 
+                      type="button" 
+                      className="w-full flex items-center justify-center space-x-3 px-6 py-3 font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <FaFacebook className="w-5 h-5" />
+                      <span>Continue with Facebook</span>
+                    </motion.button>
+                  </div>
 
-            {/* Register Link */}
-            <div className="mt-8 text-center">
-              <p className="text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
-                <Link 
-                  to="/register" 
-                  className="link-primary font-medium"
-                >
-                  Sign up here
-                </Link>
-              </p>
-            </div>
+                  {/* Register Link */}
+                  <div className="mt-8 text-center">
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Don't have an account?{' '}
+                      <Link 
+                        to="/register" 
+                        className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                      >
+                        Sign up here
+                      </Link>
+                    </p>
+                  </div>
+                </motion.div>
           </div>
         </div>
       </div>

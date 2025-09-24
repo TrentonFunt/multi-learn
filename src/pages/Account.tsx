@@ -19,8 +19,6 @@ import {
   TrendingUp,
   CheckCircle,
   AlertTriangle,
-  Heart,
-  Bookmark,
   Share2
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
@@ -28,7 +26,6 @@ import { useEnrollmentStore } from '../store/enrollmentStore';
 // import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import Breadcrumb from '../components/ui/Breadcrumb';
 import ProgressVisualization from '../components/ui/ProgressVisualization';
 
 const Account: React.FC = () => {
@@ -86,16 +83,6 @@ const Account: React.FC = () => {
 
   // Use enrolled courses from store
 
-  const [favoriteCourses] = useState([
-    { id: 1, title: 'Python for Beginners', instructor: 'Alex Chen', rating: 4.8, students: 1234, thumbnail: '/api/placeholder/300/200' },
-    { id: 2, title: 'Machine Learning Basics', instructor: 'Dr. Smith', rating: 4.9, students: 856, thumbnail: '/api/placeholder/300/200' },
-    { id: 3, title: 'Web Development Mastery', instructor: 'Emma Davis', rating: 4.7, students: 2103, thumbnail: '/api/placeholder/300/200' }
-  ]);
-
-  const breadcrumbItems = [
-    { label: 'Homepage', href: '/' },
-    { label: 'Account' }
-  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -175,7 +162,6 @@ const Account: React.FC = () => {
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'courses', label: 'My Courses', icon: BookOpen },
-    { id: 'favorites', label: 'Favorites', icon: Star },
     { id: 'activity', label: 'Activity', icon: Clock },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'privacy', label: 'Privacy', icon: Shield },
@@ -208,9 +194,6 @@ const Account: React.FC = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb items={breadcrumbItems} />
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-12">
           {/* Sidebar */}
           <motion.div
@@ -608,57 +591,6 @@ const Account: React.FC = () => {
                 </div>
               )}
 
-              {/* Favorites Tab */}
-              {activeTab === 'favorites' && (
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">My Favorites</h2>
-                    <Button variant="outline" size="small">
-                      <Star className="h-4 w-4 mr-2" />
-                      Explore More
-                    </Button>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {favoriteCourses.map((course) => (
-                      <motion.div
-                        key={course.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden hover:shadow-lg transition-shadow"
-                      >
-                        <div className="h-32 bg-gradient-to-r from-green-500 to-blue-600 relative">
-                          <div className="absolute inset-0 bg-black/20"></div>
-                          <button className="absolute top-4 right-4 p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
-                            <Heart className="h-4 w-4 text-white fill-current" />
-                          </button>
-                        </div>
-                        <div className="p-4">
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">{course.title}</h3>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">by {course.instructor}</p>
-                          
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-1">
-                              <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                              <span className="text-sm text-gray-900 dark:text-gray-100">{course.rating}</span>
-                            </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">{course.students} students</span>
-                          </div>
-                          
-                          <div className="flex space-x-2">
-                            <Button variant="fill" size="small" className="flex-1">
-                              Enroll Now
-                            </Button>
-                            <Button variant="outline" size="small">
-                              <Bookmark className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Activity Tab */}
               {activeTab === 'activity' && (

@@ -3,6 +3,7 @@ import {
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   sendPasswordResetEmail,
@@ -12,11 +13,11 @@ import {
   // type User
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../config/firebase';
+import { auth, db, googleProvider } from '../config/firebase';
 import { getAuthErrorMessage } from '../utils/authErrors';
 
 // User role types
-export type UserRole = 'user' | 'admin';
+export type UserRole = 'user' | 'instructor' | 'admin';
 
 // Extended user interface
 export interface AppUser {
@@ -35,7 +36,8 @@ interface AuthContextType {
   user: AppUser | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  signUp: (email: string, password: string, displayName: string, role?: UserRole) => Promise<void>;
+  signInWithGoogle: (role?: UserRole) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   sendEmailVerification: () => Promise<void>;
@@ -113,7 +115,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   // Sign up function
-  const signUp = async (email: string, password: string, displayName: string): Promise<void> => {
+  const signUp = async (email: string, password: string, displayName: string, role: UserRole = 'user'): Promise<void> => {
     try {
       setLoading(true);
       const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
@@ -126,7 +128,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       // Create user document in Firestore
       await setDoc(doc(db, 'users', firebaseUser.uid), {
-        role: 'user',
+        role,
         displayName,
         email,
         photoURL: null,
@@ -134,6 +136,41 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         createdAt: new Date(),
         lastLoginAt: new Date()
       });
+    } catch (error: unknown) {
+      const errorCode = (error as { code?: string })?.code || 'unknown';
+      throw new Error(getAuthErrorMessage(errorCode));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Sign in with Google function
+  const signInWithGoogle = async (role: UserRole = 'user'): Promise<void> => {
+    try {
+      setLoading(true);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      
+      // Check if user document exists in Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      
+      if (!userDoc.exists()) {
+        // Create user document for new Google sign-in user
+        await setDoc(doc(db, 'users', user.uid), {
+          role,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          emailVerified: user.emailVerified,
+          createdAt: new Date(),
+          lastLoginAt: new Date()
+        });
+      } else {
+        // Update last login time for existing user
+        await updateDoc(doc(db, 'users', user.uid), {
+          lastLoginAt: new Date()
+        });
+      }
     } catch (error: unknown) {
       const errorCode = (error as { code?: string })?.code || 'unknown';
       throw new Error(getAuthErrorMessage(errorCode));
@@ -241,6 +278,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     loading,
     signIn,
     signUp,
+    signInWithGoogle,
     signOut: signOutUser,
     resetPassword,
     sendEmailVerification: sendEmailVerificationToUser,

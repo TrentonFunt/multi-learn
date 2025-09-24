@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, X, Clock, BookOpen } from 'lucide-react';
+import { Search, X, Clock, BookOpen, User, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useDebounce from '../../hooks/useDebounce';
+import { courses } from '../../data/courseData';
 
 interface SearchSuggestion {
   id: string;
@@ -34,28 +35,81 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const debouncedQuery = useDebounce(query, 300);
 
-  // Mock suggestions based on query
-  const getMockSuggestions = (searchQuery: string): SearchSuggestion[] => {
+  // Generate suggestions from real course data
+  const getRealSuggestions = (searchQuery: string): SearchSuggestion[] => {
     if (!searchQuery.trim()) return [];
     
-    const mockData: SearchSuggestion[] = [
-      { id: '1', title: 'React Development', type: 'course', subtitle: 'Web Development', icon: <BookOpen className="w-4 h-4" /> },
-      { id: '2', title: 'JavaScript Fundamentals', type: 'course', subtitle: 'Programming', icon: <BookOpen className="w-4 h-4" /> },
-      { id: '3', title: 'John Doe', type: 'instructor', subtitle: 'Senior Developer', icon: <Search className="w-4 h-4" /> },
-      { id: '4', title: 'Web Development', type: 'category', subtitle: '15 courses', icon: <Search className="w-4 h-4" /> },
-      { id: '5', title: 'Python Programming', type: 'course', subtitle: 'Programming', icon: <BookOpen className="w-4 h-4" /> },
-      { id: '6', title: 'UI/UX Design', type: 'course', subtitle: 'Design', icon: <BookOpen className="w-4 h-4" /> },
-      { id: '7', title: 'Sarah Johnson', type: 'instructor', subtitle: 'Design Expert', icon: <Search className="w-4 h-4" /> },
-      { id: '8', title: 'Data Science', type: 'category', subtitle: '8 courses', icon: <Search className="w-4 h-4" /> },
-    ];
-
-    return mockData.filter(item =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.subtitle?.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 6);
+    const query = searchQuery.toLowerCase();
+    const suggestions: SearchSuggestion[] = [];
+    
+    // Get unique categories and their counts
+    const categoryCounts = courses.reduce((acc, course) => {
+      acc[course.category] = (acc[course.category] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    // Get unique instructors and their counts
+    const instructorCounts = courses.reduce((acc, course) => {
+      const instructorName = course.instructor.name;
+      acc[instructorName] = (acc[instructorName] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    // Filter courses
+    const matchingCourses = courses.filter(course =>
+      course.title.toLowerCase().includes(query) ||
+      course.category.toLowerCase().includes(query) ||
+      course.instructor.name.toLowerCase().includes(query) ||
+      course.description.toLowerCase().includes(query)
+    ).slice(0, 4);
+    
+    // Filter categories
+    const matchingCategories = Object.entries(categoryCounts)
+      .filter(([category]) => category.toLowerCase().includes(query))
+      .slice(0, 2);
+    
+    // Filter instructors
+    const matchingInstructors = Object.entries(instructorCounts)
+      .filter(([instructor]) => instructor.toLowerCase().includes(query))
+      .slice(0, 2);
+    
+    // Add course suggestions
+    matchingCourses.forEach(course => {
+      suggestions.push({
+        id: `course-${course.id}`,
+        title: course.title,
+        type: 'course',
+        subtitle: course.category,
+        icon: <BookOpen className="w-4 h-4" />
+      });
+    });
+    
+    // Add category suggestions
+    matchingCategories.forEach(([category, count]) => {
+      suggestions.push({
+        id: `category-${category}`,
+        title: category,
+        type: 'category',
+        subtitle: `${count} course${count !== 1 ? 's' : ''}`,
+        icon: <Tag className="w-4 h-4" />
+      });
+    });
+    
+    // Add instructor suggestions
+    matchingInstructors.forEach(([instructor, count]) => {
+      suggestions.push({
+        id: `instructor-${instructor}`,
+        title: instructor,
+        type: 'instructor',
+        subtitle: `${count} course${count !== 1 ? 's' : ''}`,
+        icon: <User className="w-4 h-4" />
+      });
+    });
+    
+    return suggestions.slice(0, 8); // Limit to 8 suggestions
   };
 
-  const filteredSuggestions = suggestions.length > 0 ? suggestions : getMockSuggestions(debouncedQuery);
+  const filteredSuggestions = suggestions.length > 0 ? suggestions : getRealSuggestions(debouncedQuery);
 
   useEffect(() => {
     if (debouncedQuery) {
@@ -231,18 +285,18 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Recent Searches</span>
             </div>
           </div>
-          {['React Development', 'JavaScript', 'Python Programming'].map((search, index) => (
+          {courses.slice(0, 3).map((course, index) => (
             <div
               key={index}
               onClick={() => {
-                setQuery(search);
-                onSearch(search);
+                setQuery(course.title);
+                onSearch(course.title);
                 setIsOpen(false);
               }}
               className="flex items-center space-x-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <Clock className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-700 dark:text-gray-300">{search}</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">{course.title}</span>
             </div>
           ))}
         </motion.div>

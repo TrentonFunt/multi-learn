@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LogOut, Settings, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
+import Logo from '../ui/Logo';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../contexts/ToastContext';
 import SearchAutocomplete from '../ui/SearchAutocomplete';
@@ -17,8 +18,8 @@ const Header: React.FC = () => {
 
   const handleSearch = (query: string) => {
     if (query.trim()) {
-      // Redirect to courses page with search query
-      window.location.href = `/courses?search=${encodeURIComponent(query.trim())}`;
+      // Navigate to courses page with search query using React Router
+      navigate(`/courses?search=${encodeURIComponent(query.trim())}`);
     }
   };
 
@@ -66,15 +67,12 @@ const Header: React.FC = () => {
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-card border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 mr-6 -ml-4">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-black font-exo font-semibold text-xl">M</span>
-            </div>
-            <span className="text-2xl font-exo font-semibold text-gray-900 dark:text-gray-100">MultiLearn</span>
-          </Link>
+          <div className="mr-6 -ml-4">
+            <Logo size="md" />
+          </div>
 
 
           {/* Navigation - Desktop */}
@@ -131,27 +129,26 @@ const Header: React.FC = () => {
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
-            <Link 
-              to="/contact" 
-              className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
-                location.pathname === '/contact' 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
-              }`}
-            >
-              <span className="relative z-10">Contact</span>
-              {location.pathname !== '/contact' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-              )}
-            </Link>
             <div className="relative group">
               <button className="flex items-center space-x-1 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
-                <span>Page</span>
+                <span>More</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
               {/* Dropdown menu */}
               <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-card shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="py-2">
+                  <Link
+                    to="/contact"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    Contact
+                  </Link>
+                  <Link
+                    to="/addons"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    MultiLearn Add-Ons
+                  </Link>
                   <Link
                     to="/faqs"
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -167,10 +164,6 @@ const Header: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Link to="/addons" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-4 py-2 rounded-md">
-              <span className="hidden lg:inline">MultiLearn Add-On</span>
-              <span className="lg:hidden">Add-On</span>
-            </Link>
           </nav>
 
                   {/* User Actions - Desktop */}
@@ -264,15 +257,15 @@ const Header: React.FC = () => {
                         )}
                       </>
                     )}
-                    {/* Search Form */}
-                    <div className="w-52">
-                      <SearchAutocomplete
-                        placeholder="Search courses..."
-                        onSearch={handleSearch}
-                        onSuggestionSelect={handleSuggestionSelect}
-                        className="w-full"
-                      />
-                    </div>
+                           {/* Search Form */}
+                           <div className="w-48 lg:w-52 xl:w-56">
+                             <SearchAutocomplete
+                               placeholder="Search courses..."
+                               onSearch={handleSearch}
+                               onSuggestionSelect={handleSuggestionSelect}
+                               className="w-full"
+                             />
+                           </div>
                     <ThemeToggle />
                   </div>
 
@@ -307,9 +300,7 @@ const Header: React.FC = () => {
                     { to: '/', label: 'Home' },
                     { to: '/courses', label: 'Courses' },
                     { to: '/blog', label: 'Blog' },
-                    { to: '/contact', label: 'Contact' },
-                    { to: '/addons', label: 'MultiLearn Add-On' },
-                    { to: '/premium', label: 'Premium Theme' }
+                    { to: '/favorites', label: 'Favorites' }
                   ].map((item, index) => (
                     <motion.div
                       key={item.to}
@@ -332,6 +323,42 @@ const Header: React.FC = () => {
                     </motion.div>
                   ))}
                 </nav>
+                
+                {/* Additional Links Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                  className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4"
+                >
+                  <div className="mb-3">
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">More</h3>
+                    {[
+                      { to: '/contact', label: 'Contact' },
+                      { to: '/addons', label: 'MultiLearn Add-Ons' },
+                      { to: '/faqs', label: 'FAQs' },
+                      { to: '/error', label: 'Error Page' }
+                    ].map((item, index) => (
+                      <motion.div
+                        key={item.to}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3, delay: 0.35 + index * 0.05 }}
+                      >
+                        <Link
+                          to={item.to}
+                          className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-2 py-2 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+                
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -456,10 +483,12 @@ const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.3, delay: 1.0 }}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between px-2"
                   >
                     <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>
-                    <ThemeToggle />
+                    <div className="ml-4">
+                      <ThemeToggle />
+                    </div>
                   </motion.div>
                 </motion.div>
               </motion.div>

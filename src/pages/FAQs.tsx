@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import Breadcrumb from '../components/ui/Breadcrumb';
 
 interface FAQItem {
   id: string;
@@ -11,10 +10,6 @@ interface FAQItem {
 const FAQs: React.FC = () => {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set(['faq-2']));
 
-  const breadcrumbItems = [
-    { label: 'Homepage', href: '/' },
-    { label: 'FAQs' }
-  ];
 
   const faqItems: FAQItem[] = [
     {
@@ -83,9 +78,6 @@ const FAQs: React.FC = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb items={breadcrumbItems} />
-
         {/* FAQ Accordion */}
         <div className="max-w-6xl mx-auto mt-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

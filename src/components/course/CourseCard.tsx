@@ -39,7 +39,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   description = ''
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 group hover:-translate-y-2 hover:border-primary/20 w-full max-w-sm mx-auto sm:max-w-none">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 group hover:-translate-y-2 hover:border-primary/20 w-full max-w-sm mx-auto sm:max-w-none h-full flex flex-col">
       <div className="relative overflow-hidden">
         <LazyImage
           src={image}
@@ -63,8 +63,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
           />
         </div>
         {/* Hover overlay with play button */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300 pointer-events-auto">
             <svg className="w-6 h-6 text-blue-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
             </svg>
@@ -72,7 +72,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         </div>
       </div>
       
-      <div className="p-6 pb-4">
+      <div className="p-4 sm:p-6 pb-4 flex-1 flex flex-col">
         <Link to={`/courses/${id}`} className="block">
           <h3 className="text-lg font-exo font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer">
             {title}
@@ -80,7 +80,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         </Link>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">by {instructor}</p>
         
-        <div className="grid grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 flex-shrink-0">
           <div className="flex items-center space-x-1">
             <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="truncate">{duration}</span>
@@ -99,8 +99,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </div>
         </div>
 
-        {/* Price Section */}
-        <div className="flex items-center justify-between mb-4">
+               {/* Price Section */}
+               <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center space-x-2">
             {rating > 0 && (
               <div className="flex items-center space-x-1">
@@ -121,8 +121,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </div>
         </div>
         
-        {/* Enrollment Button */}
-        <EnrollmentButton
+               {/* Enrollment Button */}
+               <div className="mt-auto">
+                 <EnrollmentButton
           courseId={id}
           courseTitle={title}
           instructor={instructor}
@@ -132,10 +133,11 @@ const CourseCard: React.FC<CourseCardProps> = ({
           difficulty={level as 'beginner' | 'intermediate' | 'advanced'}
           category={category}
           rating={rating}
-          description={description}
-          variant="card"
-        />
-      </div>
+                 description={description}
+                 variant="card"
+               />
+               </div>
+             </div>
     </div>
   );
 };

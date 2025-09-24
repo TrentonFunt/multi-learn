@@ -2,6 +2,7 @@ import React from 'react';
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useFavoritesStore } from '../../store/favoritesStore';
+import { useToast } from '../../contexts/ToastContext';
 
 interface FavoriteButtonProps {
   id: string;
@@ -23,6 +24,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   className = ""
 }) => {
   const { isFavorite, addToFavorites, removeFromFavorites } = useFavoritesStore();
+  const { addToast } = useToast();
   
   const isItemFavorite = isFavorite(id);
   
@@ -32,12 +34,23 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     
     if (isItemFavorite) {
       removeFromFavorites(id);
+      addToast({
+        type: 'info',
+        title: 'Removed from Favorites',
+        message: `${title} has been removed from your favorites.`
+      });
     } else {
-      addToFavorites({
+      const favoriteData = {
         id,
         type,
         title,
         image
+      };
+      addToFavorites(favoriteData);
+      addToast({
+        type: 'success',
+        title: 'Added to Favorites',
+        message: `${title} has been added to your favorites!`
       });
     }
   };

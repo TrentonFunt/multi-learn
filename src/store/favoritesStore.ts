@@ -23,16 +23,17 @@ export const useFavoritesStore = create<FavoritesStore>()(
     (set, get) => ({
       favorites: [],
 
-      addToFavorites: (item) => {
-        const { id } = item;
-        const { favorites, isFavorite } = get();
-        
-        if (!isFavorite(id)) {
-          set({
-            favorites: [...favorites, { ...item, addedAt: Date.now() }]
-          });
-        }
-      },
+            addToFavorites: (item) => {
+              const { id } = item;
+              const { favorites, isFavorite } = get();
+              
+              if (!isFavorite(id)) {
+                const newFavorite = { ...item, addedAt: Date.now() };
+                set({
+                  favorites: [...favorites, newFavorite]
+                });
+              }
+            },
 
       removeFromFavorites: (id) => {
         set({
