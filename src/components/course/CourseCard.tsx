@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Clock, Users, BookOpen, Star } from 'lucide-react';
 import FavoriteButton from '../ui/FavoriteButton';
 import LazyImage from '../ui/LazyImage';
@@ -72,9 +73,11 @@ const CourseCard: React.FC<CourseCardProps> = ({
       </div>
       
       <div className="p-6 pb-4">
-        <h3 className="text-lg font-exo font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-          {title}
-        </h3>
+        <Link to={`/courses/${id}`} className="block">
+          <h3 className="text-lg font-exo font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer">
+            {title}
+          </h3>
+        </Link>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">by {instructor}</p>
         
         <div className="grid grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4">

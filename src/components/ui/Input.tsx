@@ -11,6 +11,8 @@ const Input: React.FC<InputProps> = ({
   error,
   size = 'large',
   className = '',
+  id,
+  name,
   ...props
 }) => {
   const sizeClasses = {
@@ -38,19 +40,26 @@ const Input: React.FC<InputProps> = ({
     ${className}
   `.trim();
   
+  // Generate unique id if not provided
+  const inputId = id || (name ? `input-${name}` : `input-${Math.random().toString(36).substr(2, 9)}`);
+  
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+        <label htmlFor={inputId} className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
           {label}
         </label>
       )}
       <input
+        id={inputId}
+        name={name}
         className={classes}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${inputId}-error` : undefined}
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-red-600">
+        <p id={`${inputId}-error`} className="mt-1 text-sm text-red-600">
           {error}
         </p>
       )}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, CheckCircle, AlertCircle, Lock } from 'lucide-react';
+import { confirmPasswordReset } from 'firebase/auth';
+import { auth } from '../config/firebase';
 // import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
@@ -70,10 +72,6 @@ const PasswordReset: React.FC = () => {
       if (!oobCode) {
         throw new Error('Invalid reset link');
       }
-
-      // Import Firebase auth functions
-      const { confirmPasswordReset } = await import('firebase/auth');
-      const { auth } = await import('../config/firebase');
 
       // Confirm the password reset
       await confirmPasswordReset(auth, oobCode, formData.password);

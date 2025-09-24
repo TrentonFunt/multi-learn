@@ -125,6 +125,7 @@ const Register: React.FC = () => {
                 placeholder="Enter your full name*"
                 value={formData.fullName}
                 onChange={handleInputChange}
+                autoComplete="name"
                 required
               />
 
@@ -135,6 +136,7 @@ const Register: React.FC = () => {
                 placeholder="Enter your email*"
                 value={formData.email}
                 onChange={handleInputChange}
+                autoComplete="email"
                 required
               />
               
@@ -146,6 +148,7 @@ const Register: React.FC = () => {
                   placeholder="Create a password*"
                   value={formData.password}
                   onChange={handleInputChange}
+                  autoComplete="new-password"
                   required
                 />
                 <button
@@ -165,6 +168,7 @@ const Register: React.FC = () => {
                   placeholder="Confirm your password*"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
+                  autoComplete="new-password"
                   required
                 />
                 <button

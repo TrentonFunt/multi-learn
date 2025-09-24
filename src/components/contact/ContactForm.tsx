@@ -123,6 +123,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
+                autoComplete="name"
                 className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
                   errors.name ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
                 }`}
@@ -151,6 +152,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                autoComplete="email"
                 className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
                   errors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
                 }`}
@@ -179,6 +181,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
             name="subject"
             value={formData.subject}
             onChange={handleInputChange}
+            autoComplete="off"
             className={`w-full px-4 py-3 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
               errors.subject ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
             }`}
@@ -205,6 +208,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
               value={formData.message}
               onChange={handleInputChange}
               rows={5}
+              autoComplete="off"
               className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none ${
                 errors.message ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
               }`}

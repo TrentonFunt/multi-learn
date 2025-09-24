@@ -3,139 +3,16 @@ import BlogCard from '../components/blog/BlogCard';
 import BlogSidebar from '../components/blog/BlogSidebar';
 import Breadcrumb from '../components/ui/Breadcrumb';
 import Pagination from '../components/ui/Pagination';
+import { blogPosts, blogCategories, recentPosts, blogTags, searchBlogPosts } from '../data/blogData';
 
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  image: string;
-  date: string;
-  author: string;
-  category: string;
-}
-
-interface Category {
-  name: string;
-  count: number;
-}
-
-interface RecentPost {
-  id: string;
-  title: string;
-  image: string;
-  date: string;
-}
+// Interfaces are now imported from blogData.ts
 
 const Blog: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Dummy blog posts data
-  const blogPosts: BlogPost[] = [
-    {
-      id: '1',
-      title: 'Best LearnPress WordPress Theme Collection For 2023',
-      excerpt: 'Looking for an amazing & well-functional LearnPress WordPress Theme? Online education has become increasingly popular, and having the right theme for your learning management system is crucial for success.',
-      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop',
-      date: 'Jan 24, 2023',
-      author: 'John Doe',
-      category: 'WordPress'
-    },
-    {
-      id: '2',
-      title: 'Complete Guide to Building an Online Learning Platform',
-      excerpt: 'Learn how to create a comprehensive online learning platform with modern features and best practices for student engagement and course management.',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop',
-      date: 'Jan 20, 2023',
-      author: 'Sarah Johnson',
-      category: 'E-Learning'
-    },
-    {
-      id: '3',
-      title: 'Top 10 E-Learning Trends for 2023',
-      excerpt: 'Discover the latest trends in e-learning that will shape the future of online education and student learning experiences.',
-      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&h=250&fit=crop',
-      date: 'Jan 18, 2023',
-      author: 'Mike Chen',
-      category: 'Trends'
-    },
-    {
-      id: '4',
-      title: 'How to Create Engaging Online Courses',
-      excerpt: 'Master the art of creating compelling and interactive online courses that keep students engaged and motivated throughout their learning journey.',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop',
-      date: 'Jan 15, 2023',
-      author: 'Emma Wilson',
-      category: 'Course Creation'
-    },
-    {
-      id: '5',
-      title: 'WordPress LMS Plugin Comparison 2023',
-      excerpt: 'Compare the best WordPress LMS plugins available in 2023, including features, pricing, and user reviews to help you choose the right one.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop',
-      date: 'Jan 12, 2023',
-      author: 'David Brown',
-      category: 'WordPress'
-    },
-    {
-      id: '6',
-      title: 'Building a Successful Online Education Business',
-      excerpt: 'Learn the essential strategies and tactics for building a profitable online education business from scratch.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop',
-      date: 'Jan 10, 2023',
-      author: 'Lisa Garcia',
-      category: 'Business'
-    },
-    {
-      id: '7',
-      title: 'Student Engagement Strategies for Online Learning',
-      excerpt: 'Discover proven methods to increase student engagement and participation in your online courses and learning programs.',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop',
-      date: 'Jan 8, 2023',
-      author: 'Alex Thompson',
-      category: 'Teaching'
-    }
-  ];
-
-  const categories: Category[] = [
-    { name: 'Commercial', count: 15 },
-    { name: 'Office', count: 15 },
-    { name: 'Shop', count: 15 },
-    { name: 'Educate', count: 15 },
-    { name: 'Academy', count: 15 },
-    { name: 'Single family home', count: 15 }
-  ];
-
-  const recentPosts: RecentPost[] = [
-    {
-      id: '1',
-      title: 'Best LearnPress WordPress Theme Collection For 2023',
-      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100&h=100&fit=crop',
-      date: 'Jan 24, 2023'
-    },
-    {
-      id: '2',
-      title: 'Complete Guide to Building an Online Learning Platform',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=100&h=100&fit=crop',
-      date: 'Jan 20, 2023'
-    },
-    {
-      id: '3',
-      title: 'Top 10 E-Learning Trends for 2023',
-      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop',
-      date: 'Jan 18, 2023'
-    }
-  ];
-
-  const tags = [
-    'Free courses',
-    'Marketing',
-    'Idea',
-    'LMS',
-    'LearnPress',
-    'Instructor'
-  ];
+  // Use centralized blog data
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -146,12 +23,8 @@ const Blog: React.FC = () => {
     setCurrentPage(page);
   };
 
-  // Filter posts based on search query
-  const filteredPosts = blogPosts.filter(post =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter posts based on search query using centralized search function
+  const filteredPosts = searchQuery ? searchBlogPosts(searchQuery) : blogPosts;
 
   const postsPerPage = 6;
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -199,9 +72,9 @@ const Blog: React.FC = () => {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <BlogSidebar
-              categories={categories}
+              categories={blogCategories}
               recentPosts={recentPosts}
-              tags={tags}
+              tags={blogTags}
               onSearch={handleSearch}
               onViewModeChange={setViewMode}
               viewMode={viewMode}

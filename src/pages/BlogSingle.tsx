@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import BlogHero from '../components/blog/BlogHero';
 import BlogContent from '../components/blog/BlogContent';
 import SocialShare from '../components/blog/SocialShare';
@@ -8,17 +8,7 @@ import CommentsSection from '../components/blog/CommentsSection';
 import CommentForm from '../components/blog/CommentForm';
 import BlogSidebar from '../components/blog/BlogSidebar';
 import Breadcrumb from '../components/ui/Breadcrumb';
-
-interface BlogPost {
-  id: string;
-  title: string;
-  author: string;
-  date: string;
-  commentsCount: number;
-  featuredImage: string;
-  content: string;
-  tags: string[];
-}
+import { getBlogPostById, getRelatedPosts, blogCategories, recentPosts, blogTags } from '../data/blogData';
 
 interface Comment {
   id: string;
@@ -30,33 +20,30 @@ interface Comment {
   content: string;
 }
 
-interface Category {
-  name: string;
-  count: number;
-}
-
-interface RecentPost {
-  id: string;
-  title: string;
-  image: string;
-  date: string;
-}
-
 const BlogSingle: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [commentsPage, setCommentsPage] = useState(1);
 
-  // Dummy blog post data
-  const blogPost: BlogPost = {
-    id: id || '1',
-    title: 'Best LearnPress WordPress Theme Collection For 2023',
-    author: 'Determined-poitras',
-    date: 'Jan 24, 2023',
-    commentsCount: 20,
-    featuredImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop',
-    content: 'Looking for an amazing & well-functional LearnPress WordPress Theme? Online education has become increasingly popular, and having the right theme for your learning management system is crucial for success. In this comprehensive guide, we\'ll explore the best LearnPress themes available in 2023.',
-    tags: ['Free courses', 'Marketing', 'Idea', 'LMS', 'LearnPress', 'Instructor']
-  };
+  // Get blog post data from centralized store
+  const blogPost = getBlogPostById(id || '1');
+  
+  // If post not found, show error or redirect
+  if (!blogPost) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Article Not Found</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">The article you're looking for doesn't exist.</p>
+          <Link
+            to="/blog"
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          >
+            Back to Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   // Dummy comments data
   const comments: Comment[] = [
@@ -89,44 +76,8 @@ const BlogSingle: React.FC = () => {
     }
   ];
 
-  const categories: Category[] = [
-    { name: 'Commercial', count: 15 },
-    { name: 'Office', count: 15 },
-    { name: 'Shop', count: 15 },
-    { name: 'Educate', count: 15 },
-    { name: 'Academy', count: 15 },
-    { name: 'Single family home', count: 15 }
-  ];
-
-  const recentPosts: RecentPost[] = [
-    {
-      id: '1',
-      title: 'Best LearnPress WordPress Theme Collection For 2023',
-      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100&h=100&fit=crop',
-      date: 'Jan 24, 2023'
-    },
-    {
-      id: '2',
-      title: 'Complete Guide to Building an Online Learning Platform',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=100&h=100&fit=crop',
-      date: 'Jan 20, 2023'
-    },
-    {
-      id: '3',
-      title: 'Top 10 E-Learning Trends for 2023',
-      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop',
-      date: 'Jan 18, 2023'
-    }
-  ];
-
-  const tags = [
-    'Free courses',
-    'Marketing',
-    'Idea',
-    'LMS',
-    'LearnPress',
-    'Instructor'
-  ];
+  // Get related posts
+  const relatedPosts = getRelatedPosts(blogPost.id);
 
   const handleSearch = (query: string) => {
     console.log('Search query:', query);
@@ -174,19 +125,19 @@ const BlogSingle: React.FC = () => {
             <SocialShare />
 
             <ArticleNavigation
-              previousArticle={{
-                id: '2',
-                title: 'Complete Guide to Building an Online Learning Platform'
-              }}
-              nextArticle={{
-                id: '3',
-                title: 'Top 10 E-Learning Trends for 2023'
-              }}
+              previousArticle={relatedPosts[0] ? {
+                id: relatedPosts[0].id,
+                title: relatedPosts[0].title
+              } : undefined}
+              nextArticle={relatedPosts[1] ? {
+                id: relatedPosts[1].id,
+                title: relatedPosts[1].title
+              } : undefined}
             />
 
             <CommentsSection
               comments={comments}
-              totalComments={20}
+              totalComments={blogPost.commentsCount}
               currentPage={commentsPage}
               totalPages={3}
               onPageChange={handleCommentsPageChange}
@@ -198,9 +149,9 @@ const BlogSingle: React.FC = () => {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <BlogSidebar
-              categories={categories}
+              categories={blogCategories}
               recentPosts={recentPosts}
-              tags={tags}
+              tags={blogTags}
               onSearch={handleSearch}
               onViewModeChange={handleViewModeChange}
               viewMode="list"

@@ -1,22 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type Theme = 'light' | 'dark' | 'system';
-
-interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  resolvedTheme: 'light' | 'dark';
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
+import React, { useEffect, useState, useCallback } from 'react';
+import { Theme, ThemeContextType, ThemeContext } from './ThemeContextTypes';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -34,13 +17,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return 'light';
   };
 
-  // Resolve theme based on current setting
-  const resolveTheme = (currentTheme: Theme): 'light' | 'dark' => {
+  // Resolve theme based on current setting - memoized to prevent recreation
+  const resolveTheme = useCallback((currentTheme: Theme): 'light' | 'dark' => {
     if (currentTheme === 'system') {
       return getSystemTheme();
     }
     return currentTheme;
-  };
+  }, []);
 
   // Apply theme to document
   const applyTheme = (resolvedTheme: 'light' | 'dark') => {
@@ -80,14 +63,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const initialTheme = savedTheme && ['light', 'dark', 'system'].includes(savedTheme) ? savedTheme : 'system';
     const initialResolvedTheme = resolveTheme(initialTheme);
     applyTheme(initialResolvedTheme);
-  }, []);
+  }, [resolveTheme]);
 
   // Update resolved theme when theme changes
   useEffect(() => {
     const newResolvedTheme = resolveTheme(theme);
     setResolvedTheme(newResolvedTheme);
     applyTheme(newResolvedTheme);
-  }, [theme]);
+  }, [theme, resolveTheme]);
 
   // Listen for system theme changes
   useEffect(() => {
@@ -102,7 +85,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       mediaQuery.addEventListener('change', handleChange);
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
-  }, [theme]);
+  }, [theme, resolveTheme]);
 
   // Save theme to localStorage
   const handleSetTheme = (newTheme: Theme) => {

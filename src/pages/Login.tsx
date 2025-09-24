@@ -102,9 +102,11 @@ const Login: React.FC = () => {
               <Input
                 label="Email"
                 type="email"
+                name="email"
                 placeholder="Email*"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
                 required
               />
               
@@ -112,9 +114,11 @@ const Login: React.FC = () => {
                 <Input
                   label="Password"
                   type={showPassword ? 'text' : 'password'}
+                  name="password"
                   placeholder="Password*"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                   required
                 />
                 <button
@@ -174,9 +178,11 @@ const Login: React.FC = () => {
                   <div>
                     <Input
                       type="email"
+                      name="resetEmail"
                       placeholder="Enter your email"
                       value={resetEmail}
                       onChange={(e) => setResetEmail(e.target.value)}
+                      autoComplete="email"
                       required
                       className="w-full"
                     />

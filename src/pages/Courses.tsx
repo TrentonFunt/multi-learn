@@ -1,24 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Grid, List } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import CourseCard from '../components/course/CourseCard';
 import FilterSidebar from '../components/course/FilterSidebar';
 import Pagination from '../components/ui/Pagination';
-
-interface Course {
-  id: string;
-  title: string;
-  instructor: string;
-  category: string;
-  image: string;
-  duration: string;
-  students: number;
-  level: string;
-  lessons: number;
-  price: number;
-  originalPrice?: number;
-  isFree?: boolean;
-  rating?: number;
-}
+import { courses, searchCourses } from '../data/courseData';
 
 interface FilterOption {
   label: string;
@@ -32,21 +18,48 @@ interface FilterSection {
 }
 
 const Courses: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  // Get category from URL parameters
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+      // Also update the filter state to reflect the URL parameter
+      setFilters(prevFilters => 
+        prevFilters.map(section => 
+          section.title === 'Course Category'
+            ? {
+                ...section,
+                options: section.options.map(option => ({
+                  ...option,
+                  checked: option.label === categoryParam
+                }))
+              }
+            : section
+        )
+      );
+    } else {
+      setSelectedCategory('');
+    }
+  }, [searchParams]);
   const [filters, setFilters] = useState<FilterSection[]>([
     {
       title: 'Course Category',
       options: [
-        { label: 'Commercial', count: 15, checked: false },
-        { label: 'Office', count: 15, checked: false },
-        { label: 'Shop', count: 15, checked: false },
-        { label: 'Educate', count: 15, checked: false },
-        { label: 'Academy', count: 15, checked: false },
-        { label: 'Single family home', count: 15, checked: false },
-        { label: 'Studio', count: 15, checked: false },
-        { label: 'University', count: 15, checked: false },
+        { label: 'Development', count: 5, checked: false },
+        { label: 'Marketing', count: 1, checked: false },
+        { label: 'Art & Design', count: 1, checked: false },
+        { label: 'Photography', count: 1, checked: false },
+        { label: 'Videography', count: 1, checked: false },
+        { label: 'Communication', count: 1, checked: false },
+        { label: 'Content Writing', count: 1, checked: false },
+        { label: 'Finance', count: 0, checked: false },
       ]
     },
     {
@@ -85,121 +98,7 @@ const Courses: React.FC = () => {
     }
   ]);
 
-  // Dummy course data
-  const courses: Course[] = [
-    {
-      id: '1',
-      title: 'Create An LMS Website With LearnPress',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop',
-      duration: '2 Weeks',
-      students: 156,
-      level: 'All levels',
-      lessons: 20,
-      price: 29,
-      isFree: true,
-      rating: 4.8
-    },
-    {
-      id: '2',
-      title: 'Complete WordPress Theme Development',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop',
-      duration: '3 Weeks',
-      students: 234,
-      level: 'All levels',
-      lessons: 25,
-      price: 49,
-      originalPrice: 80,
-      rating: 4.9
-    },
-    {
-      id: '3',
-      title: 'Advanced React Development Course',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop',
-      duration: '4 Weeks',
-      students: 189,
-      level: 'All levels',
-      lessons: 30,
-      price: 99,
-      originalPrice: 150,
-      rating: 4.7
-    },
-    {
-      id: '4',
-      title: 'Digital Marketing Masterclass',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop',
-      duration: '2 Weeks',
-      students: 312,
-      level: 'All levels',
-      lessons: 18,
-      price: 79,
-      originalPrice: 120,
-      rating: 4.6
-    },
-    {
-      id: '5',
-      title: 'UI/UX Design Fundamentals',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=250&fit=crop',
-      duration: '3 Weeks',
-      students: 145,
-      level: 'All levels',
-      lessons: 22,
-      price: 89,
-      originalPrice: 130,
-      rating: 4.8
-    },
-    {
-      id: '6',
-      title: 'Python Programming for Beginners',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=250&fit=crop',
-      duration: '5 Weeks',
-      students: 456,
-      level: 'All levels',
-      lessons: 35,
-      price: 59,
-      originalPrice: 100,
-      rating: 4.9
-    },
-    {
-      id: '7',
-      title: 'JavaScript ES6+ Mastery',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400&h=250&fit=crop',
-      duration: '3 Weeks',
-      students: 278,
-      level: 'All levels',
-      lessons: 28,
-      price: 69,
-      originalPrice: 110,
-      rating: 4.7
-    },
-    {
-      id: '8',
-      title: 'Node.js Backend Development',
-      instructor: 'Determined Poitras',
-      category: 'Photography',
-      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop',
-      duration: '4 Weeks',
-      students: 198,
-      level: 'All levels',
-      lessons: 32,
-      price: 89,
-      originalPrice: 140,
-      rating: 4.8
-    }
-  ];
+  // Use centralized course data
 
   const handleFilterChange = (sectionTitle: string, optionLabel: string, checked: boolean) => {
     setFilters(prevFilters => 
@@ -216,16 +115,38 @@ const Courses: React.FC = () => {
           : section
       )
     );
+
+    // Handle category filtering
+    if (sectionTitle === 'Course Category') {
+      setSelectedCategories(prev => {
+        if (checked) {
+          return [...prev, optionLabel];
+        } else {
+          return prev.filter(cat => cat !== optionLabel);
+        }
+      });
+    }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const filteredCourses = courses.filter(course => {
-    if (searchTerm && !course.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+  // Filter courses using centralized search function and additional filters
+  let filteredCourses = searchTerm ? searchCourses(searchTerm) : courses;
+  
+  // Apply additional filters
+  filteredCourses = filteredCourses.filter(course => {
+    // Filter by URL category parameter if selected
+    if (selectedCategory && course.category !== selectedCategory) {
       return false;
     }
+
+    // Filter by selected categories from filter sidebar
+    if (selectedCategories.length > 0 && !selectedCategories.includes(course.category)) {
+      return false;
+    }
+
     return true;
   });
 
@@ -239,18 +160,53 @@ const Courses: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">All Courses</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+            {selectedCategory ? `${selectedCategory} Courses` : 
+             selectedCategories.length > 0 ? `${selectedCategories.join(', ')} Courses` : 
+             'All Courses'}
+          </h1>
+          <div className="mb-4 flex items-center justify-between">
+            <div className="text-gray-600 dark:text-gray-400">
+              {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''} found
+            </div>
+            {(selectedCategory || selectedCategories.length > 0) && (
+              <button
+                onClick={() => {
+                  setSelectedCategory('');
+                  setSelectedCategories([]);
+                  setSearchParams({});
+                  // Reset filter checkboxes
+                  setFilters(prevFilters => 
+                    prevFilters.map(section => 
+                      section.title === 'Course Category'
+                        ? {
+                            ...section,
+                            options: section.options.map(option => ({ ...option, checked: false }))
+                          }
+                        : section
+                    )
+                  );
+                }}
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+              >
+                ← Clear All Filters
+              </button>
+            )}
+          </div>
           
           {/* Search and View Toggle */}
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-500 w-5 h-5" />
               <input
+                id="course-search"
+                name="course-search"
                 type="text"
-                placeholder="Search"
+                placeholder="Search courses..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                autoComplete="off"
               />
             </div>
             
@@ -291,7 +247,20 @@ const Courses: React.FC = () => {
               {paginatedCourses.map((course) => (
                 <CourseCard
                   key={course.id}
-                  {...course}
+                  id={course.id}
+                  title={course.title}
+                  instructor={course.instructor.name}
+                  category={course.category}
+                  image={course.image}
+                  duration={course.duration}
+                  students={course.students}
+                  level={course.level}
+                  lessons={course.lessons}
+                  price={course.price}
+                  originalPrice={course.originalPrice}
+                  isFree={course.isFree}
+                  rating={course.rating}
+                  description={course.description}
                 />
               ))}
             </div>
