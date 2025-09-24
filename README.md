@@ -1,6 +1,6 @@
 # MultiLearn - E-Learning Platform
 
-A modern, responsive e-learning platform built with React, TypeScript, and Tailwind CSS. Features Firebase authentication, user management, course enrollment, admin dashboard, and a comprehensive design system with dark/light mode theming.
+A modern, responsive e-learning platform built with React, TypeScript, and Tailwind CSS. Features Firebase authentication, user management, course enrollment, admin dashboard, instructor approval system, and a comprehensive design system with dark/light mode theming.
 
 ## 🚀 Features
 
@@ -12,32 +12,33 @@ A modern, responsive e-learning platform built with React, TypeScript, and Tailw
 - **Blog Single** - Individual blog posts with comments, social sharing, and navigation
 - **Favorites Page** - User's saved courses and articles with management features
 - **Contact Page** - Enhanced contact form with validation, information cards, and interactive map
-- **Login/Register** - Firebase authentication with email verification and password reset
+- **Login/Register** - Firebase authentication with email verification, password reset, and Google sign-in
 - **Account Dashboard** - User profile management, course progress, learning stats, and settings
-- **Admin Dashboard** - Complete admin panel for user management, course management, and analytics
+- **Admin Dashboard** - Complete admin panel for user management, course management, instructor management, and analytics
+- **Instructor Dashboard** - Comprehensive dashboard for approved instructors to manage courses and students
 - **Email Verification** - Email verification flow with resend functionality
 - **Password Reset** - Secure password reset with Firebase integration
 - **FAQs** - Accordion-style frequently asked questions
 - **Error Page** - Custom 404 error page with error boundaries
 
-### 🎨 Design & Theming
-- **Dark/Light Mode** - Complete theme switching with smooth transitions using Tailwind V4
-- **Custom Design System** - Indigo/Amber color palette with modern Tailwind classes
-- **Responsive Design** - Mobile-first approach, works perfectly on all devices
-- **Interactive Navigation** - Hover effects, active states, and smooth transitions
-- **Professional UI/UX** - Clean, modern design with accessibility features
-- **Interactive Categories** - Enhanced category cards with animations and visual effects
-
 ### 🔐 Authentication & User Management
-- **Firebase Authentication** - Secure email/password authentication with role-based access
-- **User Registration** - Account creation with email verification
+- **Firebase Authentication** - Secure email/password and Google authentication with role-based access
+- **User Registration** - Account creation with email verification and role selection (Student/Instructor)
 - **Email Verification** - Automatic email verification on signup with resend functionality
 - **Password Reset** - Secure password reset flow with email links
 - **User Profiles** - Complete profile management with avatar upload and settings
-- **Role-Based Access** - Admin and user roles with protected routes
+- **Role-Based Access** - Student, Instructor, and Admin roles with protected routes
+- **Instructor Approval System** - Admin approval workflow for instructor applications
 - **Session Management** - Persistent authentication state with automatic logout
 - **Enhanced Error Messages** - User-friendly authentication error messages
 - **Loading States** - Separate loading states for different authentication actions
+
+### 👨‍🏫 Instructor System
+- **Instructor Registration** - Enhanced registration form with instructor-specific fields
+- **Application Process** - Instructors must be approved by admins before gaining access
+- **Instructor Dashboard** - Comprehensive dashboard for course management, student tracking, and analytics
+- **Verification Status** - Pending, Approved, and Rejected status tracking
+- **Admin Management** - Full CRUD operations for instructor approval/rejection with reasons
 
 ### 📚 Course Management
 - **Course Enrollment** - One-click course enrollment with progress tracking
@@ -60,6 +61,14 @@ A modern, responsive e-learning platform built with React, TypeScript, and Tailw
 - **PWA Support** - Service worker for offline functionality and caching
 - **Toast Notifications** - Global toast notification system for user feedback
 - **Confirmation Modals** - Reusable confirmation dialogs for important actions
+
+### 🎨 Design & Theming
+- **Dark/Light Mode** - Complete theme switching with smooth transitions using Tailwind V4
+- **Custom Design System** - Orange/Yellow/Green gradient color palette with modern Tailwind classes
+- **Responsive Design** - Mobile-first approach, works perfectly on all devices
+- **Interactive Navigation** - Hover effects, active states, and smooth transitions
+- **Professional UI/UX** - Clean, modern design with accessibility features
+- **Interactive Categories** - Enhanced category cards with animations and visual effects
 
 ## 🛠️ Tech Stack
 
@@ -85,6 +94,106 @@ A modern, responsive e-learning platform built with React, TypeScript, and Tailw
 - **Git Hooks**: Husky with lint-staged
 - **Testing**: Vitest (configured, ready for use)
 
+## 🗄️ Database Structure
+
+### Firestore Collections
+
+#### `users`
+```typescript
+{
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string | null;
+  emailVerified: boolean;
+  role: 'user' | 'instructor' | 'admin';
+  createdAt: Date;
+  lastLoginAt: Date;
+  
+  // Instructor-specific fields
+  instructorVerificationStatus?: 'pending' | 'approved' | 'rejected';
+  instructorVerificationDate?: Date;
+  instructorBio?: string;
+  instructorSpecialties?: string[];
+  instructorExperience?: string;
+  instructorEducation?: string;
+  instructorCertifications?: string[];
+  instructorWebsite?: string;
+  instructorLinkedIn?: string;
+  instructorTwitter?: string;
+  instructorRejectionReason?: string;
+}
+```
+
+#### `instructorApplications`
+```typescript
+{
+  uid: string;
+  name: string;
+  email: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  appliedDate: string;
+  bio: string;
+  specialties: string[];
+  experience: string;
+  education: string;
+  certifications: string[];
+  website: string;
+  linkedin: string;
+  twitter: string;
+  verificationDate: string;
+  rejectionReason?: string;
+}
+```
+
+#### `courses`
+```typescript
+{
+  id: string;
+  title: string;
+  description: string;
+  instructor: string;
+  category: string;
+  level: 'Beginner' | 'Intermediate' | 'Advanced';
+  duration: string;
+  price: number;
+  rating: number;
+  students: number;
+  thumbnail: string;
+  curriculum: Array<{
+    title: string;
+    lessons: Array<{
+      title: string;
+      duration: string;
+      type: 'video' | 'text' | 'quiz';
+    }>;
+  }>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+#### `enrollments`
+```typescript
+{
+  userId: string;
+  courseId: string;
+  enrolledAt: Date;
+  progress: number;
+  completedLessons: string[];
+  status: 'active' | 'completed' | 'paused';
+}
+```
+
+#### `favorites`
+```typescript
+{
+  userId: string;
+  courseId: string;
+  addedAt: Date;
+}
+```
+
 ## 🏗️ Project Structure
 
 ```
@@ -95,26 +204,63 @@ src/
 │   │   ├── ErrorBoundary.tsx  # Error handling
 │   │   ├── SearchInput.tsx    # Debounced search
 │   │   ├── FavoriteButton.tsx # Favorites toggle
-│   │   ├── NewsletterSubscription.tsx # Email signup
+│   │   ├── Logo.tsx           # Consistent branding
 │   │   └── ...
 │   ├── course/               # Course-related components
-│   │   └── CourseCard.tsx    # Enhanced with favorites
+│   │   ├── CourseCard.tsx    # Enhanced with favorites
+│   │   ├── CourseHero.tsx    # Course page hero
+│   │   ├── CourseTabs.tsx    # Course content tabs
+│   │   └── ...
 │   ├── courses/              # Course listing components
-│   │   └── CourseFilters.tsx # Filtering and sorting
+│   │   ├── CourseFilters.tsx # Filtering and sorting
+│   │   └── LazyCourseFilters.tsx
 │   ├── contact/              # Contact components
-│   │   └── ContactForm.tsx   # Enhanced form with validation
+│   │   ├── ContactForm.tsx   # Enhanced form with validation
+│   │   ├── ContactHero.tsx   # Contact page hero
+│   │   └── ...
+│   ├── admin/                # Admin dashboard components
+│   │   ├── Dashboard.tsx     # Admin overview
+│   │   ├── UserManagement.tsx # User CRUD operations
+│   │   ├── CourseManagement.tsx # Course CRUD operations
+│   │   ├── InstructorManagement.tsx # Instructor approval system
+│   │   ├── Analytics.tsx     # Analytics dashboard
+│   │   └── Settings.tsx      # Admin settings
+│   ├── auth/                 # Authentication components
+│   │   └── ProtectedRoute.tsx # Route protection
 │   └── layout/               # Layout components
-│       ├── Header.tsx        # Navigation with favorites
+│       ├── Header.tsx        # Navigation with search
 │       └── Footer.tsx        # With newsletter signup
 ├── contexts/                 # React contexts
-│   └── LoadingContext.tsx    # Global loading states
+│   ├── AuthContext.tsx       # Authentication state
+│   ├── LoadingContext.tsx    # Global loading states
+│   ├── ThemeContext.tsx      # Theme management
+│   └── ToastContext.tsx      # Toast notifications
 ├── hooks/                    # Custom hooks
-│   └── useDebounce.ts        # Debounced search
+│   ├── useAuth.ts           # Authentication hook
+│   ├── useDebounce.ts       # Debounced search
+│   └── ...
 ├── pages/                    # Page components
-│   └── Favorites.tsx         # User favorites page
+│   ├── Home.tsx             # Landing page
+│   ├── Courses.tsx          # Course listing
+│   ├── CourseSingle.tsx     # Individual course
+│   ├── Login.tsx            # Login page
+│   ├── Register.tsx         # Registration page
+│   ├── Admin.tsx            # Admin dashboard
+│   ├── InstructorDashboard.tsx # Instructor dashboard
+│   └── ...
 ├── store/                    # State management
-│   └── favoritesStore.ts     # Zustand favorites store
-└── ...
+│   ├── authStore.ts         # Authentication state
+│   ├── courseStore.ts       # Course data
+│   ├── enrollmentStore.ts   # Enrollment state
+│   └── favoritesStore.ts    # Favorites state
+├── types/                    # TypeScript definitions
+│   └── index.ts             # Shared interfaces
+├── utils/                    # Utility functions
+│   ├── authErrors.ts        # Auth error handling
+│   ├── validation.ts        # Form validation
+│   └── accessibility.ts     # Accessibility helpers
+└── config/
+    └── firebase.ts          # Firebase configuration
 ```
 
 ## 📦 Installation & Setup
@@ -168,23 +314,98 @@ npm run preview
 6. **Newsletter** - Subscribe in footer
 7. **Page Transitions** - Navigate between pages
 8. **Error Boundaries** - Try navigating to invalid routes
+9. **Instructor Registration** - Register as an instructor
+10. **Admin Dashboard** - Manage users and instructors
 
 ## 🚀 Deployment
 
-This project is ready for deployment on **Vercel** or any static hosting platform:
-
-### Vercel Deployment
-1. Connect your GitHub repository to Vercel
-2. Vercel will automatically detect the Vite configuration
-3. Deploy with zero configuration needed
-
-### Manual Deployment
-```bash
-# Build the project
-npm run build
-
-# The dist/ folder contains all static files ready for deployment
+### Environment Setup
+```env
+VITE_FIREBASE_API_KEY=your-api-key-here
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
+VITE_FIREBASE_MEASUREMENT_ID=your-measurement-id
 ```
+
+### Deployment Options
+
+#### **Vercel (Recommended)**
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically on every push
+
+#### **Netlify**
+1. Connect your GitHub repository to Netlify
+2. Set environment variables in Netlify dashboard
+3. Deploy automatically on every push
+
+#### **Firebase Hosting**
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login and initialize
+firebase login
+firebase init hosting
+
+# Build and deploy
+npm run build
+firebase deploy
+```
+
+### Firebase Configuration
+
+#### **Authentication Settings**
+- **Email/Password**: Enabled ✅
+- **Google Sign-In**: Enabled ✅
+- **Email verification**: Configured ✅
+- **Password reset**: Configured ✅
+
+#### **Firestore Security Rules**
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Instructor applications are readable by admins
+    match /instructorApplications/{applicationId} {
+      allow read, write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+    
+    // Courses are readable by all authenticated users
+    match /courses/{courseId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'instructor']);
+    }
+  }
+}
+```
+
+#### **Authorized Domains**
+Add your production domain to Firebase Console:
+- Go to **Authentication** → **Settings** → **Authorized domains**
+- Add: `your-domain.vercel.app` (or your hosting domain)
+
+### Production Checklist
+
+- ✅ **Environment variables** configured
+- ✅ **Firebase project** set up with authentication and Firestore
+- ✅ **Build successful** (`npm run build`)
+- ✅ **No critical errors** in console
+- ✅ **Responsive design** tested on mobile/desktop
+- ✅ **Authentication flow** working
+- ✅ **Admin access** configured (set user role to 'admin' in Firestore)
+- ✅ **Instructor approval system** functional
+- ✅ **Email templates** customized in Firebase Console
 
 ## 🎨 Design Credits
 
@@ -197,25 +418,14 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 - **LearnPress Plugin**: https://thimpress.com/learnpress/
 - **Support**: https://thimpress.com
 - **License**: CC BY 4.0
-- **Last Updated**: 2 years ago
 
 ### Design Features:
 - Modern, sleek, and visually appealing design
-- **Enhanced Color Palette**: Indigo primary, Amber secondary with comprehensive neutral scale
+- **Enhanced Color Palette**: Orange/Yellow/Green gradient with comprehensive neutral scale
 - **Typography**: Exo (headings) and Jost (body text) from Google Fonts
 - **Theme System**: Complete light/dark mode implementation with CSS variables
 - Based on LearnPress LMS functionality
 - Includes all essential LMS website components
-
-### Pages Included in Original Design:
-- Home Page
-- Course Listing
-- Course Single
-- Blog Listing
-- Blog Single
-- Contact
-- FAQs
-- Register/Login
 
 ## ✨ Key Improvements & Features
 
@@ -239,7 +449,7 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 - **Toast System**: Global notification system for user feedback and actions
 
 ### 🌙 Theme System
-- **Light Mode**: Clean, professional appearance with indigo accents
+- **Light Mode**: Clean, professional appearance with orange accents
 - **Dark Mode**: Modern dark theme with proper contrast ratios
 - **System Preference**: Automatic theme detection based on user's OS settings
 - **Persistence**: Theme preference saved in localStorage
@@ -254,7 +464,7 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 - **Form Validation**: Real-time validation with helpful error messages and accessibility
 - **Loading States**: Professional skeleton components with smooth animations
 - **Newsletter**: Email subscription with validation and success feedback
-- **Social Authentication**: Google and Facebook login options (UI ready)
+- **Social Authentication**: Google sign-in integration
 
 ## 🚀 Production-Ready Features
 
@@ -271,6 +481,7 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 - **Newsletter Subscription** - Email collection with validation
 - **Enhanced Contact Form** - Comprehensive validation and feedback
 - **Mobile-Responsive** - Optimized for all device sizes
+- **Instructor Approval System** - Complete workflow for instructor management
 
 ### ✅ **Technical Excellence**
 - **TypeScript** - Full type safety with strict configuration
@@ -284,91 +495,6 @@ This project is inspired by the **EduPress UI Kit** from ThimPress.
 - **Clean Architecture** - Well-organized components and hooks
 - **Easy Deployment** - Ready for Vercel, Netlify, or any static hosting
 - **Build Optimization** - Production-ready build with code splitting
-
-## 🚀 Deployment
-
-**Ready for production deployment!** 
-
-### Quick Deploy
-- **Vercel**: Connect GitHub repo → Auto-deploy
-- **Netlify**: Connect GitHub repo → Auto-deploy  
-- **Firebase Hosting**: `npm run build` → `firebase deploy`
-
-### Environment Setup
-```env
-VITE_FIREBASE_API_KEY=your-api-key-here
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-VITE_FIREBASE_APP_ID=your-app-id
-VITE_FIREBASE_MEASUREMENT_ID=your-measurement-id
-```
-
-### Features Included
-- ✅ **Firebase Authentication** - Email/password, verification, password reset
-- ✅ **User Management** - Registration, login, profile management
-- ✅ **Admin Dashboard** - User management, course management, analytics
-- ✅ **Email Verification** - Automatic verification emails
-- ✅ **Password Reset** - Secure password reset flow
-- ✅ **PWA Support** - Service worker, offline functionality
-- ✅ **Responsive Design** - Works on all devices
-- ✅ **Dark/Light Mode** - Theme switching
-- ✅ **Performance Optimized** - Code splitting, lazy loading
-
-**📋 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.**
-
-## 🚀 Deployment
-
-### Quick Deploy to Vercel
-
-1. **Fork this repository** or clone it to your GitHub account
-2. **Set up Firebase project** and get your configuration values
-3. **Deploy to Vercel**:
-   - Connect your GitHub repository to Vercel
-   - Add environment variables in Vercel dashboard:
-     ```
-     VITE_FIREBASE_API_KEY=your-api-key
-     VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-     VITE_FIREBASE_PROJECT_ID=your-project-id
-     VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-     VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-     VITE_FIREBASE_APP_ID=your-app-id
-     ```
-   - Deploy automatically on every push to main branch
-
-### Environment Setup
-
-1. **Copy environment file**:
-   ```bash
-   cp env.example .env
-   ```
-
-2. **Add your Firebase configuration** to `.env`:
-   ```env
-   VITE_FIREBASE_API_KEY=your-api-key-here
-   VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-   VITE_FIREBASE_PROJECT_ID=your-project-id
-   VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-   VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-   VITE_FIREBASE_APP_ID=your-app-id
-   ```
-
-3. **Firebase Setup**:
-   - Enable Authentication (Email/Password)
-   - Enable Firestore Database
-   - Set up security rules
-   - Configure email templates
-
-### Production Checklist
-
-- ✅ **Environment variables** configured
-- ✅ **Firebase project** set up with authentication and Firestore
-- ✅ **Build successful** (`npm run build`)
-- ✅ **No critical errors** in console
-- ✅ **Responsive design** tested on mobile/desktop
-- ✅ **Authentication flow** working
-- ✅ **Admin access** configured (set user role to 'admin' in Firestore)
 
 ## 📄 License
 
@@ -386,4 +512,4 @@ For questions about the original design, please contact ThimPress at https://thi
 
 ---
 
-**Note**: This is a frontend implementation showcasing modern web development skills. The design is used for educational and portfolio purposes.# Trigger rebuild Sat, Sep 20, 2025  5:48:12 AM
+**Note**: This is a frontend implementation showcasing modern web development skills. The design is used for educational and portfolio purposes.

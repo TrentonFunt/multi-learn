@@ -31,6 +31,7 @@ const Error = React.lazy(() => import('./pages/Error'));
 const Favorites = React.lazy(() => import('./pages/Favorites'));
 const Account = React.lazy(() => import('./pages/Account'));
 const Admin = React.lazy(() => import('./pages/Admin'));
+const InstructorDashboard = React.lazy(() => import('./pages/InstructorDashboard'));
 
 // Create a client
 const queryClient = new QueryClient({
@@ -141,6 +142,16 @@ const AppRoutes: React.FC = () => {
               <ProtectedRoute requireAdmin={true}>
                 <Suspense fallback={<PageCardSkeleton />}>
                   <Admin />
+                </Suspense>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/instructor" 
+            element={
+              <ProtectedRoute requireInstructor={true}>
+                <Suspense fallback={<PageCardSkeleton />}>
+                  <InstructorDashboard />
                 </Suspense>
               </ProtectedRoute>
             } 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle, CheckCircle, GraduationCap, User } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, CheckCircle, GraduationCap, User, Plus, X } from 'lucide-react';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
@@ -19,6 +19,21 @@ const Register: React.FC = () => {
     password: '',
     confirmPassword: ''
   });
+  
+  // Instructor-specific form data
+  const [instructorData, setInstructorData] = useState({
+    specialties: [] as string[],
+    experience: '',
+    bio: '',
+    education: '',
+    certifications: [] as string[],
+    website: '',
+    linkedin: '',
+    twitter: ''
+  });
+  
+  const [newSpecialty, setNewSpecialty] = useState('');
+  const [newCertification, setNewCertification] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -36,11 +51,53 @@ const Register: React.FC = () => {
   }, [searchParams]);
 
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleInstructorDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setInstructorData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const addSpecialty = () => {
+    if (newSpecialty.trim() && !instructorData.specialties.includes(newSpecialty.trim())) {
+      setInstructorData(prev => ({
+        ...prev,
+        specialties: [...prev.specialties, newSpecialty.trim()]
+      }));
+      setNewSpecialty('');
+    }
+  };
+
+  const removeSpecialty = (specialty: string) => {
+    setInstructorData(prev => ({
+      ...prev,
+      specialties: prev.specialties.filter(s => s !== specialty)
+    }));
+  };
+
+  const addCertification = () => {
+    if (newCertification.trim() && !instructorData.certifications.includes(newCertification.trim())) {
+      setInstructorData(prev => ({
+        ...prev,
+        certifications: [...prev.certifications, newCertification.trim()]
+      }));
+      setNewCertification('');
+    }
+  };
+
+  const removeCertification = (certification: string) => {
+    setInstructorData(prev => ({
+      ...prev,
+      certifications: prev.certifications.filter(c => c !== certification)
     }));
   };
 
@@ -62,8 +119,28 @@ const Register: React.FC = () => {
       return;
     }
 
+    // Instructor-specific validation
+    if (selectedRole === 'instructor') {
+      if (instructorData.specialties.length === 0) {
+        setError('Please add at least one specialty');
+        setLoading(false);
+        return;
+      }
+      if (!instructorData.experience.trim()) {
+        setError('Please provide your experience');
+        setLoading(false);
+        return;
+      }
+      if (!instructorData.bio.trim()) {
+        setError('Please provide a bio');
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
-      await signUp(formData.email, formData.password, formData.fullName, selectedRole);
+      // Pass instructor data to signUp function
+      await signUp(formData.email, formData.password, formData.fullName, selectedRole, instructorData);
       setSuccess(true);
       setTimeout(() => {
         navigate('/email-verification');
@@ -371,6 +448,167 @@ const Register: React.FC = () => {
                         {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
                     </div>
+
+                    {/* Instructor-specific fields */}
+                    {selectedRole === 'instructor' && (
+                      <div className="space-y-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+                        <div className="text-center">
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                            Instructor Information
+                          </h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Help us learn more about your expertise
+                          </p>
+                        </div>
+
+                        {/* Specialties */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Specialties *
+                          </label>
+                          <div className="flex space-x-2 mb-2">
+                            <input
+                              type="text"
+                              placeholder="e.g., React, JavaScript, Python"
+                              value={newSpecialty}
+                              onChange={(e) => setNewSpecialty(e.target.value)}
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSpecialty())}
+                              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            />
+                            <button
+                              type="button"
+                              onClick={addSpecialty}
+                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {instructorData.specialties.map((specialty) => (
+                              <span
+                                key={specialty}
+                                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
+                              >
+                                {specialty}
+                                <button
+                                  type="button"
+                                  onClick={() => removeSpecialty(specialty)}
+                                  className="ml-2 hover:text-orange-600"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Experience */}
+                        <Input
+                          label="Experience *"
+                          type="text"
+                          name="experience"
+                          placeholder="e.g., 5+ years in web development"
+                          value={instructorData.experience}
+                          onChange={handleInstructorDataChange}
+                          required
+                        />
+
+                        {/* Bio */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Bio *
+                          </label>
+                          <textarea
+                            name="bio"
+                            placeholder="Tell us about yourself and your teaching experience..."
+                            value={instructorData.bio}
+                            onChange={handleInstructorDataChange}
+                            rows={3}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-none"
+                            required
+                          />
+                        </div>
+
+                        {/* Education */}
+                        <Input
+                          label="Education"
+                          type="text"
+                          name="education"
+                          placeholder="e.g., Bachelor's in Computer Science"
+                          value={instructorData.education}
+                          onChange={handleInstructorDataChange}
+                        />
+
+                        {/* Certifications */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Certifications
+                          </label>
+                          <div className="flex space-x-2 mb-2">
+                            <input
+                              type="text"
+                              placeholder="e.g., AWS Certified, Google Analytics"
+                              value={newCertification}
+                              onChange={(e) => setNewCertification(e.target.value)}
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCertification())}
+                              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            />
+                            <button
+                              type="button"
+                              onClick={addCertification}
+                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {instructorData.certifications.map((certification) => (
+                              <span
+                                key={certification}
+                                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                              >
+                                {certification}
+                                <button
+                                  type="button"
+                                  onClick={() => removeCertification(certification)}
+                                  className="ml-2 hover:text-blue-600"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Social Links */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <Input
+                            label="Website"
+                            type="url"
+                            name="website"
+                            placeholder="https://yourwebsite.com"
+                            value={instructorData.website}
+                            onChange={handleInstructorDataChange}
+                          />
+                          <Input
+                            label="LinkedIn"
+                            type="url"
+                            name="linkedin"
+                            placeholder="https://linkedin.com/in/yourprofile"
+                            value={instructorData.linkedin}
+                            onChange={handleInstructorDataChange}
+                          />
+                          <Input
+                            label="Twitter"
+                            type="url"
+                            name="twitter"
+                            placeholder="https://twitter.com/yourhandle"
+                            value={instructorData.twitter}
+                            onChange={handleInstructorDataChange}
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     <div className="flex items-start space-x-3">
                       <input

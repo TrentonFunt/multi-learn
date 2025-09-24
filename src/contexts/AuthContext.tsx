@@ -29,6 +29,18 @@ export interface AppUser {
   role?: UserRole;
   createdAt?: Date;
   lastLoginAt?: Date;
+  // Instructor-specific fields
+  instructorVerificationStatus?: 'pending' | 'approved' | 'rejected';
+  instructorVerificationDate?: Date;
+  instructorBio?: string;
+  instructorSpecialties?: string[];
+  instructorExperience?: string;
+  instructorEducation?: string;
+  instructorCertifications?: string[];
+  instructorWebsite?: string;
+  instructorLinkedIn?: string;
+  instructorTwitter?: string;
+  instructorRejectionReason?: string;
 }
 
 // Authentication context interface
@@ -36,7 +48,16 @@ interface AuthContextType {
   user: AppUser | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, displayName: string, role?: UserRole) => Promise<void>;
+  signUp: (email: string, password: string, displayName: string, role?: UserRole, instructorData?: {
+    specialties: string[];
+    experience: string;
+    bio: string;
+    education: string;
+    certifications: string[];
+    website: string;
+    linkedin: string;
+    twitter: string;
+  }) => Promise<void>;
   signInWithGoogle: (role?: UserRole) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
@@ -47,6 +68,8 @@ interface AuthContextType {
   isAdmin: boolean;
   isAuthenticated: boolean;
   isEmailVerified: boolean;
+  isInstructor: boolean;
+  isInstructorVerified: boolean;
 }
 
 // Create the context
@@ -73,7 +96,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           emailVerified: firebaseUser.emailVerified,
           role: userData?.role || 'user',
           createdAt: userData?.createdAt?.toDate(),
-          lastLoginAt: new Date()
+          lastLoginAt: new Date(),
+          // Instructor-specific fields
+          instructorVerificationStatus: userData?.instructorVerificationStatus,
+          instructorVerificationDate: userData?.instructorVerificationDate?.toDate(),
+          instructorBio: userData?.instructorBio,
+          instructorSpecialties: userData?.instructorSpecialties,
+          instructorExperience: userData?.instructorExperience,
+          instructorEducation: userData?.instructorEducation,
+          instructorCertifications: userData?.instructorCertifications,
+          instructorWebsite: userData?.instructorWebsite,
+          instructorLinkedIn: userData?.instructorLinkedIn,
+          instructorTwitter: userData?.instructorTwitter,
+          instructorRejectionReason: userData?.instructorRejectionReason
         };
 
         // Update last login time
@@ -115,7 +150,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   // Sign up function
-  const signUp = async (email: string, password: string, displayName: string, role: UserRole = 'user'): Promise<void> => {
+  const signUp = async (email: string, password: string, displayName: string, role: UserRole = 'user', instructorData?: {
+    specialties: string[];
+    experience: string;
+    bio: string;
+    education: string;
+    certifications: string[];
+    website: string;
+    linkedin: string;
+    twitter: string;
+  }): Promise<void> => {
     try {
       setLoading(true);
       const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
@@ -127,7 +171,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await sendEmailVerification(firebaseUser);
       
       // Create user document in Firestore
-      await setDoc(doc(db, 'users', firebaseUser.uid), {
+      const userDocData: {
+        role: UserRole;
+        displayName: string;
+        email: string;
+        photoURL: string | null;
+        emailVerified: boolean;
+        createdAt: Date;
+        lastLoginAt: Date;
+        instructorVerificationStatus?: 'pending';
+        instructorVerificationDate?: Date;
+        instructorBio?: string;
+        instructorSpecialties?: string[];
+        instructorExperience?: string;
+        instructorEducation?: string;
+        instructorCertifications?: string[];
+        instructorWebsite?: string;
+        instructorLinkedIn?: string;
+        instructorTwitter?: string;
+      } = {
         role,
         displayName,
         email,
@@ -135,7 +197,49 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         emailVerified: false,
         createdAt: new Date(),
         lastLoginAt: new Date()
-      });
+      };
+
+      // Set instructor verification status and data if role is instructor
+      if (role === 'instructor') {
+        userDocData.instructorVerificationStatus = 'pending';
+        userDocData.instructorVerificationDate = new Date();
+        
+        // Add instructor-specific data if provided
+        if (instructorData) {
+          userDocData.instructorBio = instructorData.bio;
+          userDocData.instructorSpecialties = instructorData.specialties;
+          userDocData.instructorExperience = instructorData.experience;
+          userDocData.instructorEducation = instructorData.education;
+          userDocData.instructorCertifications = instructorData.certifications;
+          userDocData.instructorWebsite = instructorData.website;
+          userDocData.instructorLinkedIn = instructorData.linkedin;
+          userDocData.instructorTwitter = instructorData.twitter;
+        }
+      }
+
+      await setDoc(doc(db, 'users', firebaseUser.uid), userDocData);
+
+      // Create instructor application document if role is instructor
+      if (role === 'instructor') {
+        const instructorApplicationData = {
+          uid: firebaseUser.uid,
+          name: displayName,
+          email: email,
+          status: 'Pending',
+          appliedDate: new Date().toISOString().split('T')[0],
+          bio: instructorData?.bio || '',
+          specialties: instructorData?.specialties || [],
+          experience: instructorData?.experience || '',
+          education: instructorData?.education || '',
+          certifications: instructorData?.certifications || [],
+          website: instructorData?.website || '',
+          linkedin: instructorData?.linkedin || '',
+          twitter: instructorData?.twitter || '',
+          verificationDate: new Date().toISOString().split('T')[0]
+        };
+
+        await setDoc(doc(db, 'instructorApplications', firebaseUser.uid), instructorApplicationData);
+      }
     } catch (error: unknown) {
       const errorCode = (error as { code?: string })?.code || 'unknown';
       throw new Error(getAuthErrorMessage(errorCode));
@@ -287,7 +391,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     updateUserEmail,
     isAdmin: user?.role === 'admin',
     isAuthenticated: !!user,
-    isEmailVerified: user?.emailVerified || false
+    isEmailVerified: user?.emailVerified || false,
+    isInstructor: user?.role === 'instructor',
+    isInstructorVerified: user?.role === 'instructor' && user?.instructorVerificationStatus === 'approved'
   };
 
   return (

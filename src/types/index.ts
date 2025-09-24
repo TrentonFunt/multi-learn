@@ -7,6 +7,18 @@ export interface User {
   role: 'student' | 'instructor' | 'admin';
   createdAt: string;
   updatedAt: string;
+  // Instructor-specific fields
+  instructorVerificationStatus?: 'pending' | 'approved' | 'rejected';
+  instructorVerificationDate?: string;
+  instructorBio?: string;
+  instructorSpecialties?: string[];
+  instructorExperience?: string;
+  instructorEducation?: string;
+  instructorCertifications?: string[];
+  instructorWebsite?: string;
+  instructorLinkedIn?: string;
+  instructorTwitter?: string;
+  instructorRejectionReason?: string;
 }
 
 // Course types

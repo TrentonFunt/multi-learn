@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, LogOut, Settings, Shield } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut, Settings, Shield, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
 import Logo from '../ui/Logo';
@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut, isAdmin, loading } = useAuth();
+  const { user, signOut, isAdmin, isInstructor, loading } = useAuth();
   const { addToast } = useToast();
 
   const handleSearch = (query: string) => {
@@ -215,6 +215,16 @@ const Header: React.FC = () => {
                                   <User className="h-4 w-4" />
                                   <span>My Favorites</span>
                                 </Link>
+                                {isInstructor && (
+                                  <Link
+                                    to="/instructor"
+                                    className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    onClick={() => setIsUserMenuOpen(false)}
+                                  >
+                                    <GraduationCap className="h-4 w-4" />
+                                    <span>Instructor Dashboard</span>
+                                  </Link>
+                                )}
                                 {isAdmin && (
                                   <Link
                                     to="/admin"

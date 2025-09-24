@@ -6,15 +6,19 @@ import { motion } from 'framer-motion';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requireAdmin?: boolean;
+  requireInstructor?: boolean;
+  requireInstructorVerified?: boolean;
   fallbackPath?: string;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
   children, 
-  requireAdmin = false, 
+  requireAdmin = false,
+  requireInstructor = false,
+  requireInstructorVerified = false,
   fallbackPath = '/login' 
 }) => {
-  const { user, loading, isAdmin, isEmailVerified } = useAuth();
+  const { user, loading, isAdmin, isInstructor, isInstructorVerified, isEmailVerified } = useAuth();
   const location = useLocation();
 
   // Show loading spinner while checking authentication
@@ -46,6 +50,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Redirect to unauthorized page if admin required but user is not admin
   if (requireAdmin && !isAdmin) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // Redirect to unauthorized page if instructor required but user is not instructor
+  if (requireInstructor && !isInstructor) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // Redirect to unauthorized page if verified instructor required but user is not verified
+  if (requireInstructorVerified && !isInstructorVerified) {
     return <Navigate to="/unauthorized" replace />;
   }
 
