@@ -12,7 +12,10 @@ const Footer: React.FC = () => {
 
   return (
     <>
-      <footer className="bg-gray-900 text-white">
+      {/* Footer Divider */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent shadow-sm"></div>
+      
+      <footer className="bg-gray-900 text-white relative border-t-2 border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
@@ -133,7 +136,7 @@ const Footer: React.FC = () => {
           {/* Bottom Bar */}
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              Copyright © 2024 Learn From LMS | Powered by ThimPress
+              Copyright © 2025 MultiLearn | All rights reserved
             </p>
           </div>
         </div>

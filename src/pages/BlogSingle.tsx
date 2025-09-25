@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import BlogHero from '../components/blog/BlogHero';
 import BlogContent from '../components/blog/BlogContent';
 import SocialShare from '../components/blog/SocialShare';
 import ArticleNavigation from '../components/blog/ArticleNavigation';
@@ -8,25 +7,25 @@ import CommentsSection from '../components/blog/CommentsSection';
 import CommentForm from '../components/blog/CommentForm';
 import BlogSidebar from '../components/blog/BlogSidebar';
 import Breadcrumb from '../components/ui/Breadcrumb';
-import { getBlogPostById, getRelatedPosts, blogCategories, recentPosts, blogTags } from '../data/blogData';
-
-interface Comment {
-  id: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  date: string;
-  content: string;
-}
+import { getBlogPostById, getPreviousArticle, getNextArticle, blogCategories, recentPosts } from '../data/blogData';
+import { getComments, type Comment } from '../utils/commentStorage';
 
 const BlogSingle: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [commentsPage, setCommentsPage] = useState(1);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   // Get blog post data from centralized store
   const blogPost = getBlogPostById(id || '1');
   
+  // Load comments from localStorage
+  useEffect(() => {
+    if (blogPost) {
+      const storedComments = getComments(blogPost.id);
+      setComments(storedComments);
+    }
+  }, [blogPost]);
+
   // If post not found, show error or redirect
   if (!blogPost) {
     return (
@@ -45,54 +44,21 @@ const BlogSingle: React.FC = () => {
     );
   }
 
-  // Dummy comments data
-  const comments: Comment[] = [
-    {
-      id: '1',
-      author: {
-        name: 'Laura Hipster',
-        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face'
-      },
-      date: 'October 03, 2022',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.'
-    },
-    {
-      id: '2',
-      author: {
-        name: 'Laura Hipster',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-      },
-      date: 'October 03, 2022',
-      content: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    },
-    {
-      id: '3',
-      author: {
-        name: 'Laura Hipster',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
-      },
-      date: 'October 03, 2022',
-      content: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
-    }
-  ];
+  // Get navigation articles
+  const previousArticle = getPreviousArticle(blogPost.id);
+  const nextArticle = getNextArticle(blogPost.id);
 
-  // Get related posts
-  const relatedPosts = getRelatedPosts(blogPost.id);
-
-  const handleSearch = (query: string) => {
-    console.log('Search query:', query);
-  };
-
-  const handleViewModeChange = (mode: 'grid' | 'list') => {
-    console.log('View mode changed to:', mode);
-  };
 
   const handleCommentsPageChange = (page: number) => {
     setCommentsPage(page);
   };
 
-  const handleCommentSubmit = (comment: { name: string; email: string; comment: string; saveInfo: boolean }) => {
-    console.log('New comment:', comment);
+  const handleCommentSubmit = (comment: Comment) => {
+    setComments(prev => [comment, ...prev]);
+  };
+
+  const handleCommentDeleted = (commentId: string) => {
+    setComments(prev => prev.filter(comment => comment.id !== commentId));
   };
 
   const breadcrumbItems = [
@@ -101,9 +67,7 @@ const BlogSingle: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <BlogHero />
-      
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <Breadcrumb items={breadcrumbItems} />
@@ -125,25 +89,29 @@ const BlogSingle: React.FC = () => {
             <SocialShare />
 
             <ArticleNavigation
-              previousArticle={relatedPosts[0] ? {
-                id: relatedPosts[0].id,
-                title: relatedPosts[0].title
+              previousArticle={previousArticle ? {
+                id: previousArticle.id,
+                title: previousArticle.title
               } : undefined}
-              nextArticle={relatedPosts[1] ? {
-                id: relatedPosts[1].id,
-                title: relatedPosts[1].title
+              nextArticle={nextArticle ? {
+                id: nextArticle.id,
+                title: nextArticle.title
               } : undefined}
             />
 
             <CommentsSection
               comments={comments}
-              totalComments={blogPost.commentsCount}
+              totalComments={comments.length}
               currentPage={commentsPage}
-              totalPages={3}
+              totalPages={Math.ceil(comments.length / 5)}
               onPageChange={handleCommentsPageChange}
+              onCommentDeleted={handleCommentDeleted}
             />
 
-            <CommentForm onSubmitComment={handleCommentSubmit} />
+            <CommentForm 
+              postId={blogPost.id}
+              onSubmitComment={handleCommentSubmit} 
+            />
           </div>
 
           {/* Sidebar */}
@@ -151,10 +119,6 @@ const BlogSingle: React.FC = () => {
             <BlogSidebar
               categories={blogCategories}
               recentPosts={recentPosts}
-              tags={blogTags}
-              onSearch={handleSearch}
-              onViewModeChange={handleViewModeChange}
-              viewMode="list"
             />
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 interface LoadingProps {
   size?: 'small' | 'medium' | 'large';
@@ -26,18 +27,32 @@ const Loading: React.FC<LoadingProps> = ({
   };
 
   const renderSpinner = () => (
-    <div className={`${sizeClasses[size]} border-2 border-neutral-white-grey border-t-primary rounded-full animate-spin`} />
+    <motion.div 
+      className={`${sizeClasses[size]} border-2 border-gray-200 dark:border-gray-700 border-t-blue-600 dark:border-t-blue-400 rounded-full`}
+      animate={{ rotate: 360 }}
+      transition={{
+        duration: 1,
+        repeat: Infinity,
+        ease: "linear"
+      }}
+    />
   );
 
   const renderDots = () => (
     <div className="flex space-x-1">
       {[0, 1, 2].map((i) => (
-        <div
+        <motion.div
           key={i}
-          className={`${size === 'small' ? 'w-2 h-2' : size === 'medium' ? 'w-3 h-3' : 'w-4 h-4'} bg-blue-600 rounded-full animate-pulse`}
-          style={{
-            animationDelay: `${i * 0.2}s`,
-            animationDuration: '1s'
+          className={`${size === 'small' ? 'w-2 h-2' : size === 'medium' ? 'w-3 h-3' : 'w-4 h-4'} bg-blue-600 dark:bg-blue-400 rounded-full`}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 1, 0.5]
+          }}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            delay: i * 0.2,
+            ease: "easeInOut"
           }}
         />
       ))}
@@ -45,7 +60,18 @@ const Loading: React.FC<LoadingProps> = ({
   );
 
   const renderPulse = () => (
-    <div className={`${sizeClasses[size]} bg-blue-600 rounded-full animate-pulse`} />
+    <motion.div 
+      className={`${sizeClasses[size]} bg-blue-600 dark:bg-blue-400 rounded-full`}
+      animate={{
+        scale: [1, 1.2, 1],
+        opacity: [0.5, 1, 0.5]
+      }}
+      transition={{
+        duration: 1.5,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
   );
 
   const renderLoader = () => {
@@ -60,14 +86,24 @@ const Loading: React.FC<LoadingProps> = ({
   };
 
   return (
-    <div className={`flex flex-col items-center justify-center space-y-2 ${className}`}>
+    <motion.div 
+      className={`flex flex-col items-center justify-center space-y-2 ${className}`}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
       {renderLoader()}
       {text && (
-        <p className={`text-neutral-grey ${textSizeClasses[size]}`}>
+        <motion.p 
+          className={`text-gray-600 dark:text-gray-400 ${textSizeClasses[size]}`}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.3 }}
+        >
           {text}
-        </p>
+        </motion.p>
       )}
-    </div>
+    </motion.div>
   );
 };
 

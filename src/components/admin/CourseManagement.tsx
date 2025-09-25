@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { 
   BookOpen, 
-  Plus, 
   Edit, 
   Trash2, 
   Eye, 

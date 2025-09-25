@@ -42,6 +42,21 @@ const Textarea: React.FC<TextareaProps> = ({
   // Generate unique id if not provided
   const textareaId = id || (name ? `textarea-${name}` : `textarea-${Math.random().toString(36).substr(2, 9)}`);
   
+  // Determine autocomplete attribute based on name
+  const getAutocompleteValue = (): string => {
+    if (props.autoComplete) return props.autoComplete;
+    
+    const nameLower = (name || '').toLowerCase();
+    
+    if (nameLower.includes('comment')) return 'off';
+    if (nameLower.includes('message')) return 'off';
+    if (nameLower.includes('description')) return 'off';
+    if (nameLower.includes('bio')) return 'off';
+    if (nameLower.includes('address')) return 'address-line1';
+    
+    return 'on';
+  };
+  
   return (
     <div className="w-full">
       {label && (
@@ -53,6 +68,7 @@ const Textarea: React.FC<TextareaProps> = ({
         id={textareaId}
         name={name}
         className={classes}
+        autoComplete={getAutocompleteValue()}
         aria-invalid={!!error}
         aria-describedby={error ? `${textareaId}-error` : undefined}
         {...props}

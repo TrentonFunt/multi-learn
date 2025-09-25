@@ -39,7 +39,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   description = ''
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 group hover:-translate-y-2 hover:border-primary/20 w-full max-w-sm mx-auto sm:max-w-none h-full flex flex-col">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 group hover:-translate-y-2 hover:border-primary/20 hover:scale-[1.02] w-full max-w-sm mx-auto sm:max-w-none h-full flex flex-col">
       <div className="relative overflow-hidden">
         <LazyImage
           src={image}

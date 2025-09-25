@@ -1,15 +1,7 @@
 import React from 'react';
-import { MessageCircle, Reply } from 'lucide-react';
-
-interface Comment {
-  id: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  date: string;
-  content: string;
-}
+import { MessageCircle, Reply, Trash2 } from 'lucide-react';
+import { deleteComment, type Comment } from '../../utils/commentStorage';
+import { useToast } from '../../contexts/ToastContext';
 
 interface CommentsSectionProps {
   comments: Comment[];
@@ -17,6 +9,7 @@ interface CommentsSectionProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  onCommentDeleted: (commentId: string) => void;
 }
 
 const CommentsSection: React.FC<CommentsSectionProps> = ({
@@ -24,35 +17,66 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
   totalComments,
   currentPage,
   totalPages,
-  onPageChange
+  onPageChange,
+  onCommentDeleted
 }) => {
+  const { addToast } = useToast();
+
+  const handleDeleteComment = (commentId: string) => {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      try {
+        deleteComment(commentId);
+        onCommentDeleted(commentId);
+        addToast({
+          type: 'success',
+          title: 'Comment Deleted',
+          message: 'The comment has been successfully deleted.'
+        });
+      } catch {
+        addToast({
+          type: 'error',
+          title: 'Error',
+          message: 'Failed to delete comment. Please try again.'
+        });
+      }
+    }
+  };
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
       <div className="flex items-center space-x-2 mb-6">
-        <MessageCircle className="w-6 h-6 text-gray-600" />
-        <h2 className="text-2xl font-bold text-gray-900">Comments</h2>
-        <span className="text-gray-600">({totalComments})</span>
+        <MessageCircle className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Comments</h2>
+        <span className="text-gray-600 dark:text-gray-400">({totalComments})</span>
       </div>
 
       <div className="space-y-6">
         {comments.map((comment) => (
-          <div key={comment.id} className="flex space-x-4 pb-6 border-b border-gray-200 last:border-b-0">
-            <img
-              src={comment.author.avatar}
-              alt={comment.author.name}
-              className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-            />
+          <div key={comment.id} className="flex space-x-4 pb-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-semibold text-lg">
+                {comment.author.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <h4 className="font-semibold text-gray-900">{comment.author.name}</h4>
-                <span className="text-sm text-gray-500">{comment.date}</span>
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">{comment.author.name}</h4>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">{comment.date}</span>
+                  <button
+                    onClick={() => handleDeleteComment(comment.id)}
+                    className="text-red-500 hover:text-red-700 transition-colors"
+                    title="Delete comment"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <p className="text-gray-700 leading-relaxed mb-3">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
                 {comment.content}
               </p>
               <a
                 href="#"
-                className="inline-flex items-center space-x-1 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+                className="inline-flex items-center space-x-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
               >
                 <Reply className="w-4 h-4" />
                 <span>Reply</span>

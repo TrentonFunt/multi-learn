@@ -53,13 +53,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/unauthorized" replace />;
   }
 
-  // Redirect to unauthorized page if instructor required but user is not instructor
-  if (requireInstructor && !isInstructor) {
+  // Redirect to unauthorized page if instructor required but user is not instructor OR admin
+  if (requireInstructor && !isInstructor && !isAdmin) {
     return <Navigate to="/unauthorized" replace />;
   }
 
-  // Redirect to unauthorized page if verified instructor required but user is not verified
-  if (requireInstructorVerified && !isInstructorVerified) {
+  // Redirect to unauthorized page if verified instructor required but user is not verified (admins bypass this)
+  if (requireInstructorVerified && !isInstructorVerified && !isAdmin) {
     return <Navigate to="/unauthorized" replace />;
   }
 

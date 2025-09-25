@@ -84,53 +84,75 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Get user data from Firestore
-        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-        const userData = userDoc.data();
-        
-        const appUser: AppUser = {
+        // Create basic user object immediately for faster UI response
+        const basicAppUser: AppUser = {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
           displayName: firebaseUser.displayName,
           photoURL: firebaseUser.photoURL,
           emailVerified: firebaseUser.emailVerified,
-          role: userData?.role || 'user',
-          createdAt: userData?.createdAt?.toDate(),
+          role: 'user', // Default role, will be updated from Firestore
+          createdAt: undefined,
           lastLoginAt: new Date(),
-          // Instructor-specific fields
-          instructorVerificationStatus: userData?.instructorVerificationStatus,
-          instructorVerificationDate: userData?.instructorVerificationDate?.toDate(),
-          instructorBio: userData?.instructorBio,
-          instructorSpecialties: userData?.instructorSpecialties,
-          instructorExperience: userData?.instructorExperience,
-          instructorEducation: userData?.instructorEducation,
-          instructorCertifications: userData?.instructorCertifications,
-          instructorWebsite: userData?.instructorWebsite,
-          instructorLinkedIn: userData?.instructorLinkedIn,
-          instructorTwitter: userData?.instructorTwitter,
-          instructorRejectionReason: userData?.instructorRejectionReason
         };
 
-        // Update last login time
-        await updateDoc(doc(db, 'users', firebaseUser.uid), {
-          lastLoginAt: new Date()
-        }).catch(() => {
-          // If user document doesn't exist, create it
-          setDoc(doc(db, 'users', firebaseUser.uid), {
-            role: 'user',
-            displayName: firebaseUser.displayName,
-            email: firebaseUser.email,
-            photoURL: firebaseUser.photoURL,
-            createdAt: new Date(),
-            lastLoginAt: new Date()
-          });
-        });
+        // Set user immediately with basic data
+        setUser(basicAppUser);
+        setLoading(false);
 
-        setUser(appUser);
+        // Fetch additional user data from Firestore asynchronously
+        try {
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          const userData = userDoc.data();
+          
+          const completeAppUser: AppUser = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+            emailVerified: firebaseUser.emailVerified,
+            role: userData?.role || 'user',
+            createdAt: userData?.createdAt?.toDate(),
+            lastLoginAt: new Date(),
+            // Instructor-specific fields
+            instructorVerificationStatus: userData?.instructorVerificationStatus,
+            instructorVerificationDate: userData?.instructorVerificationDate?.toDate(),
+            instructorBio: userData?.instructorBio,
+            instructorSpecialties: userData?.instructorSpecialties,
+            instructorExperience: userData?.instructorExperience,
+            instructorEducation: userData?.instructorEducation,
+            instructorCertifications: userData?.instructorCertifications,
+            instructorWebsite: userData?.instructorWebsite,
+            instructorLinkedIn: userData?.instructorLinkedIn,
+            instructorTwitter: userData?.instructorTwitter,
+            instructorRejectionReason: userData?.instructorRejectionReason
+          };
+
+          // Update user with complete data
+          setUser(completeAppUser);
+
+          // Update last login time (non-blocking)
+          updateDoc(doc(db, 'users', firebaseUser.uid), {
+            lastLoginAt: new Date()
+          }).catch(() => {
+            // If user document doesn't exist, create it
+            setDoc(doc(db, 'users', firebaseUser.uid), {
+              role: 'user',
+              displayName: firebaseUser.displayName,
+              email: firebaseUser.email,
+              photoURL: firebaseUser.photoURL,
+              createdAt: new Date(),
+              lastLoginAt: new Date()
+            });
+          });
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          // Keep the basic user data if Firestore fetch fails
+        }
       } else {
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();

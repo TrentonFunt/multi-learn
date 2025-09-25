@@ -8,74 +8,26 @@ import InstructorTab from '../components/course/tabs/InstructorTab';
 import FAQTab from '../components/course/tabs/FAQTab';
 import ReviewsTab from '../components/course/tabs/ReviewsTab';
 import CommentSection from '../components/course/CommentSection';
+import RelatedCourses from '../components/course/RelatedCourses';
 import useScrollToTop from '../hooks/useScrollToTop';
 import { getCourseById, getRelatedCourses } from '../data/courseData';
 // import { useEnrollmentStore } from '../store/enrollmentStore';
 
-interface Course {
-  id: string;
-  title: string;
-  description: string;
-  heroImage: string;
-  instructor: {
-    id: string;
-    name: string;
-    title: string;
-    avatar: string;
-    bio: string;
-    socialLinks: {
-      facebook?: string;
-      twitter?: string;
-      instagram?: string;
-      linkedin?: string;
-    };
-  };
-  modules: Array<{
-    id: string;
-    title: string;
-    isExpanded: boolean;
-    lessons: Array<{
-      id: string;
-      title: string;
-      type: 'video' | 'document' | 'quiz';
-      duration: string;
-      isPreview: boolean;
-      isCompleted: boolean;
-    }>;
-  }>;
-  faqs: Array<{
-    id: string;
-    question: string;
-    answer: string;
-  }>;
-  reviews: Array<{
-    id: string;
-    user: {
-      name: string;
-      avatar: string;
-    };
-    rating: number;
-    date: string;
-    comment: string;
-  }>;
-  averageRating: number;
-  totalReviews: number;
-  ratingBreakdown: {
-    [key: number]: number;
-  };
-}
 
 const CourseSingle: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState('overview');
-  // Enrollment store for future use
-  // const { getEnrolledCourse, updateCourseProgress } = useEnrollmentStore();
+  // Enrollment store for course management (for future use)
+  // const { getEnrolledCourse, isEnrolled, enrollInCourse, updateCourseProgress } = useEnrollmentStore();
 
   // Ensure page scrolls to top
   useScrollToTop();
 
   // Get course data from centralized store
   const course = getCourseById(id || '1');
+  
+  // Get related courses (only if course exists)
+  const relatedCourses = course ? getRelatedCourses(course.id, 4) : [];
   
   // If course not found, show error or redirect
   if (!course) {
@@ -95,8 +47,6 @@ const CourseSingle: React.FC = () => {
     );
   }
 
-  // Get related courses
-  const relatedCourses = getRelatedCourses(course.id);
 
   const tabs = [
     { id: 'overview', label: 'Overview', active: activeTab === 'overview' },
@@ -110,9 +60,9 @@ const CourseSingle: React.FC = () => {
     setActiveTab(tabId);
   };
 
-  const handleCommentSubmit = (comment: { name: string; email: string; comment: string }) => {
-    console.log('New comment:', comment);
+  const handleCommentSubmit = () => {
     // Here you would typically send the comment to your backend
+    // For now, comments are handled by the CommentSection component
   };
 
   const renderTabContent = () => {
@@ -156,7 +106,7 @@ const CourseSingle: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <CourseHero 
         title={course.title} 
         image={course.heroImage}
@@ -178,6 +128,9 @@ const CourseSingle: React.FC = () => {
         </div>
         
         <CommentSection onSubmitComment={handleCommentSubmit} />
+        
+        {/* Related Courses */}
+        <RelatedCourses courses={relatedCourses} />
       </div>
     </div>
   );

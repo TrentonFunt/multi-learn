@@ -573,6 +573,21 @@ export const getRelatedPosts = (currentPostId: string, limit: number = 3): BlogP
     .slice(0, limit);
 };
 
+// Get previous and next articles based on chronological order
+export const getPreviousArticle = (currentPostId: string): BlogPost | null => {
+  const currentIndex = blogPosts.findIndex(post => post.id === currentPostId);
+  if (currentIndex === -1 || currentIndex === 0) return null;
+  
+  return blogPosts[currentIndex - 1];
+};
+
+export const getNextArticle = (currentPostId: string): BlogPost | null => {
+  const currentIndex = blogPosts.findIndex(post => post.id === currentPostId);
+  if (currentIndex === -1 || currentIndex === blogPosts.length - 1) return null;
+  
+  return blogPosts[currentIndex + 1];
+};
+
 export const getPostsByCategory = (category: string): BlogPost[] => {
   return blogPosts.filter(post => post.category.toLowerCase() === category.toLowerCase());
 };

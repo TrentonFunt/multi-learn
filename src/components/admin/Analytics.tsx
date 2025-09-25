@@ -20,10 +20,24 @@ interface AnalyticsData {
   completionRate: number;
 }
 
+interface Course {
+  id: number;
+  title: string;
+  revenue?: number;
+  students?: number;
+}
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
+
 interface AnalyticsProps {
   analyticsData: AnalyticsData;
-  courses: any[];
-  users: any[];
+  courses: Course[];
+  users: User[];
 }
 
 const Analytics: React.FC<AnalyticsProps> = ({ analyticsData, courses, users }) => {
@@ -49,7 +63,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ analyticsData, courses, users }) 
 
   const refreshAnalytics = () => {
     // In a real app, this would fetch fresh data from the server
-    console.log('Refreshing analytics data...');
+    // TODO: Implement actual data refresh functionality
   };
 
   return (

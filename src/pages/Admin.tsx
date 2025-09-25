@@ -7,7 +7,8 @@ import {
   Users, 
   BookOpen, 
   TrendingUp,
-  GraduationCap
+  GraduationCap,
+  UserCheck
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import Dashboard from '../components/admin/Dashboard';
@@ -16,6 +17,7 @@ import CourseManagement from '../components/admin/CourseManagement';
 import InstructorManagement from '../components/admin/InstructorManagement';
 import Analytics from '../components/admin/Analytics';
 import Settings from '../components/admin/Settings';
+import { Link } from 'react-router-dom';
 
 // Define interfaces for type safety
 interface User {
@@ -170,6 +172,7 @@ const Admin: React.FC = () => {
     { id: 'instructors', label: 'Instructors', icon: GraduationCap },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+    { id: 'instructor-dashboard', label: 'Instructor Dashboard', icon: UserCheck },
     { id: 'settings', label: 'Settings', icon: SettingsIcon }
   ];
 
@@ -185,6 +188,53 @@ const Admin: React.FC = () => {
         return <CourseManagement courses={courses} setCourses={setCourses} />;
       case 'analytics':
         return <Analytics analyticsData={analyticsData} courses={courses} users={users} />;
+      case 'instructor-dashboard':
+        return (
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-8">
+            <div className="text-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mb-6"
+              >
+                <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <UserCheck className="h-10 w-10 text-white" />
+                </div>
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                  Instructor Dashboard Access
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Access the instructor dashboard to manage courses, view student analytics, and perform instructor-specific tasks.
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="space-y-4"
+              >
+                <Link
+                  to="/instructor"
+                  className="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors duration-200 hover:scale-105 hover:shadow-lg"
+                >
+                  <UserCheck className="h-5 w-5 mr-2" />
+                  Open Instructor Dashboard
+                </Link>
+                
+                <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                  <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Admin Access Benefits</h3>
+                  <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                    <li>• View instructor course management interface</li>
+                    <li>• Access student enrollment analytics</li>
+                    <li>• Test instructor features and workflows</li>
+                    <li>• Manage courses from instructor perspective</li>
+                  </ul>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        );
       case 'settings':
         return <Settings settings={settings} setSettings={setSettings} />;
       default:

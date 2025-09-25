@@ -23,16 +23,16 @@ const Button: React.FC<ButtonProps> = ({
   
   const variantClasses = {
     fill: {
-      default: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/25',
-      disabled: 'bg-gray-400 text-white cursor-not-allowed'
+      default: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600 dark:active:bg-blue-700 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/25',
+      disabled: 'bg-gray-400 text-white cursor-not-allowed dark:bg-gray-600 dark:text-gray-300'
     },
     outline: {
-      default: 'border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white active:bg-blue-700 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/25',
-      disabled: 'border border-gray-300 text-gray-400 bg-gray-50 cursor-not-allowed'
+      default: 'border border-blue-600 text-blue-600 bg-white dark:bg-gray-800 dark:border-blue-400 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white active:bg-blue-700 dark:active:bg-blue-700 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/25',
+      disabled: 'border border-gray-300 text-gray-400 bg-gray-50 dark:border-gray-600 dark:text-gray-500 dark:bg-gray-700 cursor-not-allowed'
     },
     text: {
-      default: 'text-blue-600 hover:underline active:text-blue-800 hover:scale-105 active:scale-95',
-      disabled: 'text-gray-500 cursor-not-allowed'
+      default: 'text-blue-600 dark:text-blue-400 hover:underline active:text-blue-800 dark:active:text-blue-300 hover:scale-105 active:scale-95',
+      disabled: 'text-gray-500 dark:text-gray-400 cursor-not-allowed'
     }
   };
   

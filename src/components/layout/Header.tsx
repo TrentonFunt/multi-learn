@@ -74,6 +74,16 @@ const Header: React.FC = () => {
             <Logo size="md" />
           </div>
 
+          {/* Mobile Search Bar - Only visible on mobile */}
+          <div className="flex-1 max-w-xs mx-4 md:hidden">
+            <SearchAutocomplete
+              placeholder="Search courses..."
+              onSearch={handleSearch}
+              onSuggestionSelect={handleSuggestionSelect}
+              className="w-full"
+            />
+          </div>
+
 
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-6">
@@ -296,16 +306,16 @@ const Header: React.FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="md:hidden border-t border-gray-200 dark:border-gray-700 overflow-hidden"
+              className="md:hidden border-t border-gray-200 dark:border-gray-700 overflow-hidden max-h-[70vh] overflow-y-auto"
             >
               <motion.div
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
                 exit={{ y: -20 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="py-4"
+                className="py-2"
               >
-                <nav className="flex flex-col space-y-4">
+                <nav className="flex flex-col space-y-1">
                   {[
                     { to: '/', label: 'Home' },
                     { to: '/courses', label: 'Courses' },
@@ -321,7 +331,7 @@ const Header: React.FC = () => {
                     >
                       <Link
                         to={item.to}
-                        className={`font-medium transition-colors py-3 px-2 min-h-[44px] flex items-center ${
+                        className={`font-medium transition-colors py-2 px-2 min-h-[40px] flex items-center ${
                           location.pathname === item.to
                             ? 'text-blue-600 dark:text-blue-400 bg-blue-600/10'
                             : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-600/5'
@@ -340,10 +350,10 @@ const Header: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.3, delay: 0.3 }}
-                  className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4"
+                  className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2"
                 >
-                  <div className="mb-3">
-                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">More</h3>
+                  <div className="mb-2">
+                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">More</h3>
                     {[
                       { to: '/contact', label: 'Contact' },
                       { to: '/addons', label: 'MultiLearn Add-Ons' },
@@ -359,7 +369,7 @@ const Header: React.FC = () => {
                       >
                         <Link
                           to={item.to}
-                          className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-2 py-2 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
+                          className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-1 px-2 min-h-[36px] rounded-md hover:bg-blue-600/5 transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           {item.label}
@@ -374,15 +384,15 @@ const Header: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4"
+                  className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2"
                 >
                   {user ? (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3, delay: 0.5 }}
-                        className="flex items-center space-x-3 mb-4"
+                        className="flex items-center space-x-3 mb-2"
                       >
                         <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                           <User className="h-5 w-5 text-white" />
@@ -411,7 +421,7 @@ const Header: React.FC = () => {
                         >
                           <Link
                             to={item.to}
-                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
+                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-2 px-2 min-h-[36px] rounded-md hover:bg-blue-600/5 transition-colors"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             <item.icon className="h-4 w-4" />
@@ -428,7 +438,7 @@ const Header: React.FC = () => {
                           handleSignOut();
                           setIsMobileMenuOpen(false);
                         }}
-                        className="flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium mb-4 py-3 px-2 min-h-[44px] rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        className="flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium mb-2 py-2 px-2 min-h-[36px] rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                       >
                         <LogOut className="h-4 w-4" />
                         <span>Sign Out</span>
@@ -441,7 +451,7 @@ const Header: React.FC = () => {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.3, delay: 0.5 }}
-                          className="flex items-center space-x-2 py-3 px-2"
+                          className="flex items-center space-x-2 py-2 px-2"
                         >
                           <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                           <span className="text-gray-600 dark:text-gray-400 text-sm">Loading...</span>
@@ -461,7 +471,7 @@ const Header: React.FC = () => {
                             >
                               <Link
                                 to={item.to}
-                                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-2 py-3 px-2 min-h-[44px] rounded-md hover:bg-blue-600/5 transition-colors"
+                                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-1 py-2 px-2 min-h-[36px] rounded-md hover:bg-blue-600/5 transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 {item.label}
@@ -472,27 +482,12 @@ const Header: React.FC = () => {
                       )}
                     </>
                   )}
-                  {/* Mobile Search */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.3, delay: 0.9 }}
-                    className="mb-4"
-                  >
-                    <SearchAutocomplete
-                      placeholder="Search courses..."
-                      onSearch={handleSearch}
-                      onSuggestionSelect={handleSuggestionSelect}
-                      className="w-full"
-                    />
-                  </motion.div>
                   
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.3, delay: 1.0 }}
+                    transition={{ duration: 0.3, delay: 0.9 }}
                     className="flex items-center justify-between px-2"
                   >
                     <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>

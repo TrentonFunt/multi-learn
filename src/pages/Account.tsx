@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { 
   User, 
   BookOpen, 
-  Star, 
   Settings, 
   LogOut,
   Edit3,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle, CheckCircle, GraduationCap, User, Plus, X } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, CheckCircle, GraduationCap, User, Plus, X, Shield } from 'lucide-react';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
@@ -8,6 +8,7 @@ import Input from '../components/ui/Input';
 import Logo from '../components/ui/Logo';
 import { useAuth } from '../hooks/useAuth';
 import { type UserRole } from '../contexts/AuthContext';
+import { validatePassword, getPasswordStrengthColor, getPasswordStrengthText } from '../utils/passwordValidation';
 
 const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +38,11 @@ const Register: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState<{
+    isValid: boolean;
+    errors: string[];
+    strength: 'weak' | 'medium' | 'strong';
+  }>({ isValid: false, errors: [], strength: 'weak' });
   
   const { signUp, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -57,6 +63,12 @@ const Register: React.FC = () => {
       ...prev,
       [name]: value
     }));
+
+    // Validate password in real-time
+    if (name === 'password') {
+      const validation = validatePassword(value);
+      setPasswordValidation(validation);
+    }
   };
 
   const handleInstructorDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -113,8 +125,9 @@ const Register: React.FC = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    // Use the password validation utility
+    if (!passwordValidation.isValid) {
+      setError(passwordValidation.errors[0] || 'Password does not meet requirements');
       setLoading(false);
       return;
     }
@@ -427,6 +440,43 @@ const Register: React.FC = () => {
                       >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
+                      
+                      {/* Password Strength Indicator */}
+                      {formData.password && (
+                        <div className="mt-2">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <Shield className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm text-gray-600 dark:text-gray-400">Password Strength:</span>
+                            <span className={`text-sm px-2 py-1 rounded-full ${getPasswordStrengthColor(passwordValidation.strength)}`}>
+                              {getPasswordStrengthText(passwordValidation.strength)}
+                            </span>
+                          </div>
+                          
+                          {/* Password Requirements */}
+                          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must be at least 8 characters long') ? 'text-red-500' : 'text-green-500'}`}>
+                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must be at least 8 characters long') ? 'bg-red-500' : 'bg-green-500'}`}></div>
+                              <span>At least 8 characters</span>
+                            </div>
+                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one uppercase letter') ? 'text-red-500' : 'text-green-500'}`}>
+                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one uppercase letter') ? 'bg-red-500' : 'bg-green-500'}`}></div>
+                              <span>One uppercase letter</span>
+                            </div>
+                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one lowercase letter') ? 'text-red-500' : 'text-green-500'}`}>
+                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one lowercase letter') ? 'bg-red-500' : 'bg-green-500'}`}></div>
+                              <span>One lowercase letter</span>
+                            </div>
+                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one number') ? 'text-red-500' : 'text-green-500'}`}>
+                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one number') ? 'bg-red-500' : 'bg-green-500'}`}></div>
+                              <span>One number</span>
+                            </div>
+                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one special character') ? 'text-red-500' : 'text-green-500'}`}>
+                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one special character') ? 'bg-red-500' : 'bg-green-500'}`}></div>
+                              <span>One special character</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="relative">

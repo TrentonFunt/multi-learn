@@ -9,9 +9,11 @@ import {
   BookPlus,
   Eye,
   Edit,
-  Trash2
+  Trash2,
+  UserCheck
 } from 'lucide-react';
 import Button from '../ui/Button';
+import { Link } from 'react-router-dom';
 
 interface User {
   id: number;
@@ -74,6 +76,33 @@ const Dashboard: React.FC<DashboardProps> = ({ users, courses }) => {
           );
         })}
       </div>
+
+      {/* Quick Access */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-card shadow-card p-6 text-white"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+              <UserCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">Instructor Dashboard Access</h3>
+              <p className="text-orange-100 text-sm">Quick access to instructor features and course management</p>
+            </div>
+          </div>
+          <Link
+            to="/instructor"
+            className="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors duration-200 hover:scale-105 hover:shadow-lg"
+          >
+            <UserCheck className="h-4 w-4 mr-2 inline" />
+            Open Dashboard
+          </Link>
+        </div>
+      </motion.div>
 
       {/* Recent Users */}
       <motion.div

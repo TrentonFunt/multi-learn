@@ -2,28 +2,21 @@ import React, { useState } from 'react';
 import BlogCard from '../components/blog/BlogCard';
 import BlogSidebar from '../components/blog/BlogSidebar';
 import Pagination from '../components/ui/Pagination';
-import { blogPosts, blogCategories, recentPosts, blogTags, searchBlogPosts } from '../data/blogData';
+import { blogPosts, blogCategories, recentPosts } from '../data/blogData';
 
 // Interfaces are now imported from blogData.ts
 
 const Blog: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
-  const [searchQuery, setSearchQuery] = useState('');
 
   // Use centralized blog data
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setCurrentPage(1); // Reset to first page when searching
-  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  // Filter posts based on search query using centralized search function
-  const filteredPosts = searchQuery ? searchBlogPosts(searchQuery) : blogPosts;
+  // Use all blog posts (no filtering)
+  const filteredPosts = blogPosts;
 
   const postsPerPage = 6;
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -67,10 +60,6 @@ const Blog: React.FC = () => {
             <BlogSidebar
               categories={blogCategories}
               recentPosts={recentPosts}
-              tags={blogTags}
-              onSearch={handleSearch}
-              onViewModeChange={setViewMode}
-              viewMode={viewMode}
             />
           </div>
         </div>

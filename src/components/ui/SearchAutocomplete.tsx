@@ -34,6 +34,9 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const debouncedQuery = useDebounce(query, 300);
+  
+  // Generate unique ID for this component instance
+  const searchId = `search-autocomplete-${Date.now()}`;
 
   // Generate suggestions from real course data
   const getRealSuggestions = (searchQuery: string): SearchSuggestion[] => {
@@ -206,21 +209,32 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
         </div>
         <input
           ref={inputRef}
-          type="text"
+          id={searchId}
+          name="search"
+          type="search"
           value={query}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => setIsOpen(query.length > 0)}
           placeholder={placeholder}
-          className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          autoComplete="off"
+          aria-label="Search courses, instructors, and categories"
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          role="combobox"
+          className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400 focus:scale-[1.02]"
         />
         {query && (
-          <button
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
             onClick={clearSearch}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all duration-200 hover:scale-110 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1"
+            aria-label="Clear search"
           >
-            <X className="h-5 w-5" />
-          </button>
+            <X className="h-4 w-4" />
+          </motion.button>
         )}
       </div>
 
@@ -228,24 +242,29 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
       <AnimatePresence>
         {isOpen && filteredSuggestions.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-64 overflow-y-auto"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-64 overflow-y-auto backdrop-blur-sm"
+            role="listbox"
+            aria-label="Search suggestions"
           >
             {filteredSuggestions.map((suggestion, index) => (
               <motion.div
                 key={suggestion.id}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ delay: index * 0.05, ease: "easeOut" }}
                 onClick={() => handleSuggestionSelect(suggestion)}
-                className={`flex items-center space-x-3 px-4 py-3 cursor-pointer transition-colors ${
+                className={`flex items-center space-x-3 px-4 py-3 cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
                   index === selectedIndex
-                    ? 'bg-blue-50 dark:bg-blue-900/20'
-                    : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-200 dark:ring-blue-800'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-sm'
                 }`}
+                role="option"
+                aria-selected={index === selectedIndex}
+                tabIndex={-1}
               >
                 <div className="flex-shrink-0 text-gray-400">
                   {suggestion.icon}
@@ -274,10 +293,13 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
       {/* Recent Searches */}
       {isOpen && query.length === 0 && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg"
+          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl backdrop-blur-sm"
+          role="listbox"
+          aria-label="Recent searches"
         >
           <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-2">
@@ -286,18 +308,23 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
             </div>
           </div>
           {courses.slice(0, 3).map((course, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1, ease: "easeOut" }}
               onClick={() => {
                 setQuery(course.title);
                 onSearch(course.title);
                 setIsOpen(false);
               }}
-              className="flex items-center space-x-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="flex items-center space-x-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-[1.01] hover:shadow-sm"
+              role="option"
+              tabIndex={-1}
             >
               <Clock className="w-4 h-4 text-gray-400" />
               <span className="text-sm text-gray-700 dark:text-gray-300">{course.title}</span>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       )}

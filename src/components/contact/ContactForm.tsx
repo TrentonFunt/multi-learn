@@ -124,7 +124,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
                 value={formData.name}
                 onChange={handleInputChange}
                 autoComplete="name"
-                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:border-blue-300 focus:scale-[1.02] ${
                   errors.name ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
                 }`}
                 placeholder="Enter your full name"
@@ -153,7 +153,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
                 value={formData.email}
                 onChange={handleInputChange}
                 autoComplete="email"
-                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+                className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:border-blue-300 focus:scale-[1.02] ${
                   errors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
                 }`}
                 placeholder="Enter your email address"
@@ -182,7 +182,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
             value={formData.subject}
             onChange={handleInputChange}
             autoComplete="off"
-            className={`w-full px-4 py-3 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
+            className={`w-full px-4 py-3 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:border-blue-300 focus:scale-[1.02] ${
               errors.subject ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
             }`}
             placeholder="What's this about?"
@@ -209,7 +209,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
               onChange={handleInputChange}
               rows={5}
               autoComplete="off"
-              className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none ${
+              className={`w-full px-4 py-3 pl-10 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none hover:border-blue-300 focus:scale-[1.01] ${
                 errors.message ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
               }`}
               placeholder="Tell us more about your inquiry..."
@@ -229,7 +229,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ className = "" }) => {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
+          className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 hover:shadow-lg active:scale-95"
         >
           {status === 'loading' ? (
             <>
