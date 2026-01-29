@@ -145,9 +145,9 @@ const EnrollmentButton: React.FC<EnrollmentButtonProps> = ({
                 <span className="text-gray-600 dark:text-gray-400">Progress</span>
                 <span className="text-gray-900 dark:text-gray-100 font-medium">{enrolledCourse.progress}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div 
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-orange-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${enrolledCourse.progress}%` }}
                 ></div>
               </div>

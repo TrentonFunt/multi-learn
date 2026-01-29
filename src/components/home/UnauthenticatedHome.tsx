@@ -106,10 +106,9 @@ const UnauthenticatedHome: React.FC = () => {
             </motion.div>
             <Link
               to="/courses"
-              className="group relative bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
+              className="hidden sm:inline-flex items-center bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95"
             >
-              <span className="relative z-10">All Categories</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
+              All Categories
             </Link>
           </motion.div>
 
@@ -136,7 +135,7 @@ const UnauthenticatedHome: React.FC = () => {
                 className="block"
               >
                 <motion.div 
-                  className="group relative bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10"
+                  className="group relative bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/10 hover:border-orange-200 dark:hover:border-orange-500/30"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ 
@@ -146,8 +145,7 @@ const UnauthenticatedHome: React.FC = () => {
                   }}
                   viewport={{ once: true, margin: "-50px" }}
                   whileHover={{ 
-                    y: -8,
-                    scale: 1.02,
+                    y: -4,
                     transition: { duration: 0.3, ease: "easeOut" }
                   }}
                 >
@@ -163,10 +161,10 @@ const UnauthenticatedHome: React.FC = () => {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300"></div>
                 </div>
                 
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors duration-300">
                   {category.name}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
+                <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                   {category.courses} Courses
                 </p>
                 
@@ -182,7 +180,7 @@ const UnauthenticatedHome: React.FC = () => {
                 </div>
                 
                 {/* Hover effect border */}
-                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-indigo-500/20 transition-colors duration-300"></div>
+                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-orange-500/20 transition-colors duration-300"></div>
                 </motion.div>
               </Link>
             ))}
@@ -204,52 +202,51 @@ const UnauthenticatedHome: React.FC = () => {
             </div>
             <Link
               to="/courses"
-              className="group relative bg-text-indigo-600 dark:text-indigo-400 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
+              className="hidden sm:inline-flex items-center bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95"
             >
-              <span className="relative z-10">All Courses</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
+              All Courses
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {getFeaturedCourses(6).map((course) => (
-              <div key={course.id} className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-2 hover:border-indigo-500/20">
+              <div key={course.id} className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 dark:hover:border-orange-500/30">
                 <div className="relative overflow-hidden">
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-500">
+                  <div className="absolute top-3 left-3 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300 group-hover:bg-orange-600">
                     {course.category}
                   </div>
                   {/* Hover overlay with play button */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                      <svg className="w-6 h-6 text-indigo-600 dark:text-indigo-400 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-full p-3 transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                      <svg className="w-5 h-5 text-orange-500 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z"/>
                       </svg>
                     </div>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                <div className="p-5">
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors duration-300">
                     {course.title}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">by {course.instructor.name}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">by {course.instructor.name}</p>
                   
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-500 mb-4">
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
                     <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
+                      <Clock className="w-3.5 h-3.5" />
                       <span>{course.duration}</span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <Users className="w-4 h-4" />
-                      <span>{course.students} Students</span>
+                      <Users className="w-3.5 h-3.5" />
+                      <span>{course.students}</span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
                       <span>{course.rating}</span>
                     </div>
                   </div>
@@ -257,12 +254,12 @@ const UnauthenticatedHome: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       {course.isFree ? (
-                        <span className="text-2xl font-bold text-green-600">Free</span>
+                        <span className="text-lg font-bold text-green-600">Free</span>
                       ) : (
                         <>
-                          <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">${course.price}</span>
+                          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">${course.price}</span>
                           {course.originalPrice && (
-                            <span className="text-lg text-gray-500 dark:text-gray-500 line-through">${course.originalPrice}</span>
+                            <span className="text-sm text-gray-500 line-through">${course.originalPrice}</span>
                           )}
                         </>
                       )}
@@ -339,15 +336,15 @@ const UnauthenticatedHome: React.FC = () => {
               { value: '158', label: 'Instructor' },
               { value: '100%', label: 'Satisfaction Rate' }
             ].map((stat, index) => (
-              <div key={index} className="group text-center p-6 rounded-xl hover:bg-gray-50 dark:bg-gray-700 transition-all duration-300 hover:scale-105 cursor-pointer">
-                <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                  <span className="inline-block group-hover:animate-pulse">{stat.value}</span>
+              <div key={index} className="group text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-105 cursor-pointer">
+                <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors duration-300">
+                  <span className="inline-block">{stat.value}</span>
                 </div>
                 <div className="text-lg text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
                   {stat.label}
                 </div>
                 {/* Decorative element */}
-                <div className="mt-4 mx-auto w-0 h-1 bg-gradient-to-r from-primary to-secondary rounded-full group-hover:w-16 transition-all duration-500"></div>
+                <div className="mt-4 mx-auto w-0 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full group-hover:w-16 transition-all duration-500"></div>
               </div>
             ))}
           </div>
@@ -461,8 +458,8 @@ const UnauthenticatedHome: React.FC = () => {
                 title: "Marketer"
               }
             ].map((testimonial, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-8">
-                <div className="text-4xl text-indigo-600 dark:text-indigo-400 mb-4">"</div>
+              <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md p-6 hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 hover:-translate-y-1">
+                <div className="text-4xl text-orange-500 dark:text-orange-400 mb-4">"</div>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                   {testimonial.feedback}
                 </p>
@@ -489,7 +486,7 @@ const UnauthenticatedHome: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/register?role=student"
-              className="bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="bg-white dark:bg-gray-800 text-orange-500 dark:text-orange-400 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-105"
             >
               I'm A Student
             </Link>
@@ -517,10 +514,9 @@ const UnauthenticatedHome: React.FC = () => {
             </div>
             <Link
               to="/blog"
-              className="group relative bg-text-indigo-600 dark:text-indigo-400 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gray-900/25 active:scale-95 overflow-hidden"
+              className="hidden sm:inline-flex items-center bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95"
             >
-              <span className="relative z-10">All Articles</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-600"></div>
+              All Articles
             </Link>
           </div>
 
@@ -549,21 +545,21 @@ const UnauthenticatedHome: React.FC = () => {
               }
             ].map((article, index) => (
               <Link key={index} to={`/blog/${article.id}`} className="block">
-                <div className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-2 hover:border-indigo-500/20">
+                <div className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 dark:hover:border-orange-500/30">
                   <div className="relative overflow-hidden">
                     <img
                       src={article.image}
                       alt={article.title}
-                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                  <div className="p-5">
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors duration-300">
                       {article.title}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-500 mb-3">{article.date}</p>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{article.date}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3">
                       {article.description}
                     </p>
                   </div>

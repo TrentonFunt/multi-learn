@@ -14,25 +14,25 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
-  const baseClasses = 'group relative font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 overflow-hidden';
+  const baseClasses = 'group relative font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 overflow-hidden rounded-lg inline-flex items-center justify-center';
   
   const sizeClasses = {
-    large: 'text-lg px-6 py-2.5',
+    large: 'text-base px-6 py-3',
     small: 'text-sm px-4 py-2.5'
   };
   
   const variantClasses = {
     fill: {
-      default: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600 dark:active:bg-blue-700 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/25',
+      default: 'bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 dark:active:bg-orange-700 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-orange-500/25',
       disabled: 'bg-gray-400 text-white cursor-not-allowed dark:bg-gray-600 dark:text-gray-300'
     },
     outline: {
-      default: 'border border-blue-600 text-blue-600 bg-white dark:bg-gray-800 dark:border-blue-400 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white active:bg-blue-700 dark:active:bg-blue-700 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/25',
-      disabled: 'border border-gray-300 text-gray-400 bg-gray-50 dark:border-gray-600 dark:text-gray-500 dark:bg-gray-700 cursor-not-allowed'
+      default: 'border-2 border-orange-500 text-orange-500 bg-transparent dark:border-orange-400 dark:text-orange-400 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white active:bg-orange-600 dark:active:bg-orange-600 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-orange-500/25',
+      disabled: 'border-2 border-gray-300 text-gray-400 bg-transparent dark:border-gray-600 dark:text-gray-500 cursor-not-allowed'
     },
     text: {
-      default: 'text-blue-600 dark:text-blue-400 hover:underline active:text-blue-800 dark:active:text-blue-300 hover:scale-105 active:scale-95',
-      disabled: 'text-gray-500 dark:text-gray-400 cursor-not-allowed'
+      default: 'text-orange-500 dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 hover:underline active:text-orange-700 dark:active:text-orange-200',
+      disabled: 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
     }
   };
   
