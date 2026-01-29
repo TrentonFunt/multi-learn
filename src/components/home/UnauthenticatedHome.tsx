@@ -63,7 +63,7 @@ const UnauthenticatedHome: React.FC = () => {
                 />
               </div>
               <motion.div 
-                className="absolute top-10 right-10 text-6xl font-bold text-white opacity-30 z-0"
+                className="absolute top-10 right-10 text-2xl sm:text-4xl md:text-6xl font-bold text-white opacity-30 z-0 hidden sm:block"
                 animate={{ 
                   scale: [1, 1.1, 1],
                   opacity: [0.3, 0.5, 0.3]

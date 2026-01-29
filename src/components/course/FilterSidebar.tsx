@@ -33,7 +33,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, onFilterChange }
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-8">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 space-y-6 sm:space-y-8 max-h-[70vh] lg:max-h-none overflow-y-auto lg:overflow-visible">
       {hasActiveFilters && (
         <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
           <button

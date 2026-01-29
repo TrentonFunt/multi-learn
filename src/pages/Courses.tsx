@@ -314,12 +314,12 @@ const Courses: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             {selectedCategory ? `${selectedCategory} Courses` : 
              selectedCategories.length > 0 ? `${selectedCategories.join(', ')} Courses` : 
              'All Courses'}
           </h1>
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div className="text-gray-600 dark:text-gray-400">
               {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''} found
             </div>
@@ -376,11 +376,19 @@ const Courses: React.FC = () => {
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Filter Sidebar - appears first in DOM for mobile, positioned right on desktop */}
+          <div className="order-first lg:order-last lg:col-span-1">
+            <FilterSidebar
+              filters={filters}
+              onFilterChange={handleFilterChange}
+            />
+          </div>
+
           {/* Course Listings */}
-          <div className="lg:col-span-3">
+          <div className="order-last lg:order-first lg:col-span-3">
             <div className={`grid gap-4 sm:gap-6 ${
               viewMode === 'grid' 
-                ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-2' 
+                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
                 : 'grid-cols-1'
             }`}>
               {paginatedCourses.map((course) => (
@@ -412,14 +420,6 @@ const Courses: React.FC = () => {
                 onPageChange={handlePageChange}
               />
             )}
-          </div>
-
-          {/* Filter Sidebar */}
-          <div className="lg:col-span-1">
-            <FilterSidebar
-              filters={filters}
-              onFilterChange={handleFilterChange}
-            />
           </div>
         </div>
       </div>

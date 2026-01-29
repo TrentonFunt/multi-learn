@@ -38,10 +38,10 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               >
-                <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
                   Welcome back, {user.displayName?.split(' ')[0] || 'Student'}! 👋
                 </h1>
-                <p className="text-xl text-blue-100 leading-relaxed">
+                <p className="text-lg sm:text-xl text-blue-100 leading-relaxed">
                   Ready to continue your learning journey? Let's pick up where you left off.
                 </p>
               </motion.div>
@@ -107,7 +107,7 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
                 />
               </div>
               <motion.div 
-                className="absolute top-10 right-10 text-6xl font-bold text-white opacity-30 z-0"
+                className="absolute top-10 right-10 text-2xl sm:text-4xl md:text-6xl font-bold text-white opacity-30 z-0 hidden sm:block"
                 animate={{ 
                   scale: [1, 1.1, 1],
                   opacity: [0.3, 0.5, 0.3]

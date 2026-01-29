@@ -28,27 +28,27 @@ const CourseHero: React.FC<CourseHeroProps> = ({
   courseId = '1'
 }) => {
   return (
-    <section className="bg-gray-900 text-white py-16">
+    <section className="bg-gray-900 text-white py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="space-y-4 sm:space-y-6">
             <div className="flex items-center space-x-2">
-              <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                 {category}
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
               {title}
             </h1>
             
-            <p className="text-gray-300 text-lg leading-relaxed">
+            <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
               {description || 'Master the fundamentals and advanced concepts in this comprehensive course designed for all skill levels.'}
             </p>
             
-            <div className="flex flex-wrap gap-6 text-sm">
+            <div className="flex flex-wrap gap-3 sm:gap-6 text-sm">
               <div className="flex items-center space-x-2">
-                <Users className="w-5 h-5 text-blue-400" />
+                <Users className="w-5 h-5 text-orange-400" />
                 <span>{students.toLocaleString()} students</span>
               </div>
               <div className="flex items-center space-x-2">
@@ -65,7 +65,7 @@ const CourseHero: React.FC<CourseHeroProps> = ({
               </div>
             </div>
             
-            <div className="pt-4">
+            <div className="pt-2 sm:pt-4 w-full sm:w-auto">
               <EnrollmentButton
                 courseId={courseId}
                 courseTitle={title}
