@@ -191,7 +191,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'course':
-        return 'text-blue-600 bg-blue-100 dark:bg-blue-900/20';
+        return 'text-orange-600 bg-orange-100 dark:bg-orange-900/20';
       case 'instructor':
         return 'text-green-600 bg-green-100 dark:bg-green-900/20';
       case 'category':
@@ -222,7 +222,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           role="combobox"
-          className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-blue-400 focus:scale-[1.02]"
+          className="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-orange-400 focus:scale-[1.02]"
         />
         {query && (
           <motion.button
@@ -259,7 +259,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                 onClick={() => handleSuggestionSelect(suggestion)}
                 className={`flex items-center space-x-3 px-4 py-3 cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
                   index === selectedIndex
-                    ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-200 dark:ring-blue-800'
+                    ? 'bg-orange-50 dark:bg-orange-900/20 ring-2 ring-orange-200 dark:ring-orange-800'
                     : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-sm'
                 }`}
                 role="option"
