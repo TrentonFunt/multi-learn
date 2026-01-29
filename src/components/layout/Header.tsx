@@ -70,14 +70,14 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="mr-6 -ml-4">
+          <div className="mr-4 sm:mr-6 md:-ml-4">
             <Logo size="md" />
           </div>
 
           {/* Mobile Search Bar - Only visible on mobile */}
-          <div className="flex-1 max-w-xs mx-4 md:hidden">
+          <div className="flex-1 max-w-[180px] sm:max-w-xs mx-2 sm:mx-4 md:hidden">
             <SearchAutocomplete
-              placeholder="Search courses..."
+              placeholder="Search..."
               onSearch={handleSearch}
               onSuggestionSelect={handleSuggestionSelect}
               className="w-full"
