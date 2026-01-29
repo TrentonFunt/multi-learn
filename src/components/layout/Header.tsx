@@ -331,7 +331,7 @@ const Header: React.FC = () => {
                     >
                       <Link
                         to={item.to}
-                        className={`font-medium transition-colors py-2 px-2 min-h-[40px] flex items-center ${
+                        className={`font-medium transition-colors py-2 px-2 min-h-10 flex items-center ${
                           location.pathname === item.to
                             ? 'text-blue-600 dark:text-blue-400 bg-blue-600/10'
                             : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-600/5'
@@ -369,7 +369,7 @@ const Header: React.FC = () => {
                       >
                         <Link
                           to={item.to}
-                          className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-1 px-2 min-h-[36px] rounded-md hover:bg-blue-600/5 transition-colors"
+                          className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-1 px-2 min-h-9 rounded-md hover:bg-blue-600/5 transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           {item.label}
@@ -421,7 +421,7 @@ const Header: React.FC = () => {
                         >
                           <Link
                             to={item.to}
-                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-2 px-2 min-h-[36px] rounded-md hover:bg-blue-600/5 transition-colors"
+                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-2 px-2 min-h-9 rounded-md hover:bg-blue-600/5 transition-colors"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             <item.icon className="h-4 w-4" />
@@ -438,7 +438,7 @@ const Header: React.FC = () => {
                           handleSignOut();
                           setIsMobileMenuOpen(false);
                         }}
-                        className="flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium mb-2 py-2 px-2 min-h-[36px] rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        className="flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium mb-2 py-2 px-2 min-h-9 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                       >
                         <LogOut className="h-4 w-4" />
                         <span>Sign Out</span>
@@ -471,7 +471,7 @@ const Header: React.FC = () => {
                             >
                               <Link
                                 to={item.to}
-                                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-1 py-2 px-2 min-h-[36px] rounded-md hover:bg-blue-600/5 transition-colors"
+                                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-1 py-2 px-2 min-h-9 rounded-md hover:bg-blue-600/5 transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 {item.label}

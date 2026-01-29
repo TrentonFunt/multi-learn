@@ -9,7 +9,6 @@ import {
   Eye,
   TrendingUp,
   BookPlus,
-  GraduationCap,
   Search,
   CheckCircle,
   XCircle,
@@ -28,6 +27,9 @@ import Button from '../components/ui/Button';
 import ConfirmationModal from '../components/ui/ConfirmationModal';
 import Input from '../components/ui/Input';
 import Textarea from '../components/ui/Textarea';
+import InstructorSidebar from '../components/instructor/InstructorSidebar';
+import InstructorStats from '../components/instructor/InstructorStats';
+import StudentTable from '../components/instructor/StudentTable';
 
 const InstructorDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -391,44 +393,12 @@ const InstructorDashboard: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="lg:col-span-1"
           >
-            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
-              {/* Instructor Info */}
-              <div className="text-center mb-6">
-                <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <GraduationCap className="h-10 w-10 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                  {user?.displayName || 'Instructor'}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  {user?.email}
-                </p>
-                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mt-2">
-                  {user?.instructorVerificationStatus === 'approved' ? 'Verified Instructor' : 'Pending Verification'}
-                </span>
-              </div>
-
-              {/* Navigation Tabs */}
-              <nav className="space-y-2">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                        activeTab === tab.id
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
-                      }`}
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
+            <InstructorSidebar
+              user={user}
+              tabs={tabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
           </motion.div>
 
           {/* Main Content */}
@@ -442,28 +412,7 @@ const InstructorDashboard: React.FC = () => {
             {activeTab === 'dashboard' && (
               <div className="space-y-8">
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {stats.map((stat, index) => {
-                    const Icon = stat.icon;
-                    return (
-                      <motion.div
-                        key={stat.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 * index }}
-                        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{stat.label}</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">{stat.value}</p>
-                          </div>
-                          <Icon className={`h-8 w-8 ${stat.color}`} />
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
+                <InstructorStats stats={stats} />
 
                 {/* Recent Courses */}
                 <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
@@ -545,56 +494,7 @@ const InstructorDashboard: React.FC = () => {
                       Export
                     </Button>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Student</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Courses</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Progress</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Last Active</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {students.slice(0, 4).map((student) => (
-                          <tr key={student.id} className="border-b border-gray-200 dark:border-gray-700">
-                            <td className="py-3 px-4">
-                              <div className="flex items-center space-x-3">
-                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                                  <span className="text-white font-medium text-sm">
-                                    {student.name.split(' ').map(n => n[0]).join('')}
-                                  </span>
-                                </div>
-                                <div>
-                                  <p className="text-gray-900 dark:text-gray-100 font-medium">{student.name}</p>
-                                  <p className="text-gray-600 dark:text-gray-400 text-sm">{student.email}</p>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{student.enrolledCourses}</td>
-                            <td className="py-3 px-4">
-                              <div className="flex items-center space-x-2">
-                                <div className="w-16 bg-gray-200 rounded-full h-2">
-                                  <div 
-                                    className="bg-blue-600 h-2 rounded-full" 
-                                    style={{ width: `${student.progress}%` }}
-                                  ></div>
-                                </div>
-                                <span className="text-gray-600 dark:text-gray-400 text-sm">{student.progress}%</span>
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{student.lastActive}</td>
-                            <td className="py-3 px-4">
-                              <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
-                                <Eye className="h-4 w-4" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <StudentTable students={students.slice(0, 4)} compact />
                 </div>
               </div>
             )}
@@ -1059,56 +959,7 @@ const InstructorDashboard: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Student</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Enrolled Courses</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Overall Progress</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Last Active</th>
-                          <th className="text-left py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {students.map((student) => (
-                          <tr key={student.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-700">
-                            <td className="py-3 px-4">
-                              <div className="flex items-center space-x-3">
-                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                                  <span className="text-white font-medium text-sm">
-                                    {student.name.split(' ').map(n => n[0]).join('')}
-                                  </span>
-                                </div>
-                                <div>
-                                  <p className="text-gray-900 dark:text-gray-100 font-medium">{student.name}</p>
-                                  <p className="text-gray-600 dark:text-gray-400 text-sm">{student.email}</p>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{student.enrolledCourses}</td>
-                            <td className="py-3 px-4">
-                              <div className="flex items-center space-x-2">
-                                <div className="w-20 bg-gray-200 rounded-full h-2">
-                                  <div 
-                                    className="bg-blue-600 h-2 rounded-full" 
-                                    style={{ width: `${student.progress}%` }}
-                                  ></div>
-                                </div>
-                                <span className="text-gray-600 dark:text-gray-400 text-sm">{student.progress}%</span>
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{student.lastActive}</td>
-                            <td className="py-3 px-4">
-                              <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-1">
-                                <Eye className="h-4 w-4" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <StudentTable students={students} />
                 </div>
               </div>
             )}

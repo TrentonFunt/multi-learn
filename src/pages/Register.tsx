@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle, CheckCircle, GraduationCap, User, Plus, X, Shield } from 'lucide-react';
-import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Logo from '../components/ui/Logo';
 import { useAuth } from '../hooks/useAuth';
 import { type UserRole } from '../contexts/AuthContext';
-import { validatePassword, getPasswordStrengthColor, getPasswordStrengthText } from '../utils/passwordValidation';
+import { validatePassword } from '../utils/passwordValidation';
+import {
+  AnimatedBackground,
+  RoleSelectionPanel,
+  PasswordStrengthIndicator,
+  InstructorFields,
+  SocialAuthButtons,
+} from '../components/register';
 
 const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -182,44 +188,7 @@ const Register: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute -top-40 -right-40 w-80 h-80 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [360, 180, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div
-          className="absolute top-40 left-1/2 w-80 h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -180, -360],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
+      <AnimatedBackground />
 
       {/* Hero Section */}
       <section className="relative py-12">
@@ -254,111 +223,10 @@ const Register: React.FC = () => {
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
               {/* Left Side - Role Selection */}
-              <div className="bg-gradient-to-br from-orange-500 to-yellow-500 p-8 flex flex-col justify-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <h2 className="text-3xl font-bold text-white mb-6">Choose Your Path</h2>
-                  <p className="text-orange-100 mb-8">How would you like to join MultiLearn?</p>
-                  
-                  <div className="space-y-4">
-                    <motion.button
-                      onClick={() => setSelectedRole('user')}
-                      className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
-                        selectedRole === 'user'
-                          ? 'bg-white text-orange-600 border-white shadow-lg scale-105'
-                          : 'bg-transparent text-white border-white/30 hover:border-white/60 hover:bg-white/10'
-                      }`}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-lg ${
-                          selectedRole === 'user' ? 'bg-orange-100' : 'bg-white/20'
-                        }`}>
-                          <User className={`w-6 h-6 ${
-                            selectedRole === 'user' ? 'text-orange-600' : 'text-white'
-                          }`} />
-                        </div>
-                        <div className="text-left">
-                          <h3 className="font-semibold text-lg">Student</h3>
-                          <p className={`text-sm ${
-                            selectedRole === 'user' ? 'text-orange-500' : 'text-orange-100'
-                          }`}>
-                            Learn new skills and advance your career
-                          </p>
-                        </div>
-                      </div>
-                    </motion.button>
-
-                    <motion.button
-                      onClick={() => setSelectedRole('instructor')}
-                      className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
-                        selectedRole === 'instructor'
-                          ? 'bg-white text-orange-600 border-white shadow-lg scale-105'
-                          : 'bg-transparent text-white border-white/30 hover:border-white/60 hover:bg-white/10'
-                      }`}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-lg ${
-                          selectedRole === 'instructor' ? 'bg-orange-100' : 'bg-white/20'
-                        }`}>
-                          <GraduationCap className={`w-6 h-6 ${
-                            selectedRole === 'instructor' ? 'text-orange-600' : 'text-white'
-                          }`} />
-                        </div>
-                        <div className="text-left">
-                          <h3 className="font-semibold text-lg">Instructor</h3>
-                          <p className={`text-sm ${
-                            selectedRole === 'instructor' ? 'text-orange-500' : 'text-orange-100'
-                          }`}>
-                            Share your expertise and earn money
-                          </p>
-                        </div>
-                      </div>
-                    </motion.button>
-                  </div>
-
-                  {/* Benefits */}
-                  <div className="mt-8 space-y-3">
-                    {selectedRole === 'user' ? (
-                      <>
-                        <div className="flex items-center space-x-3 text-white">
-                          <CheckCircle className="w-5 h-5 text-green-300" />
-                          <span className="text-sm">Access to 1000+ courses</span>
-                        </div>
-                        <div className="flex items-center space-x-3 text-white">
-                          <CheckCircle className="w-5 h-5 text-green-300" />
-                          <span className="text-sm">Certificates of completion</span>
-                        </div>
-                        <div className="flex items-center space-x-3 text-white">
-                          <CheckCircle className="w-5 h-5 text-green-300" />
-                          <span className="text-sm">Community support</span>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex items-center space-x-3 text-white">
-                          <CheckCircle className="w-5 h-5 text-green-300" />
-                          <span className="text-sm">Create and sell courses</span>
-                        </div>
-                        <div className="flex items-center space-x-3 text-white">
-                          <CheckCircle className="w-5 h-5 text-green-300" />
-                          <span className="text-sm">Earn from your expertise</span>
-                        </div>
-                        <div className="flex items-center space-x-3 text-white">
-                          <CheckCircle className="w-5 h-5 text-green-300" />
-                          <span className="text-sm">Reach global audience</span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </motion.div>
-              </div>
+              <RoleSelectionPanel 
+                selectedRole={selectedRole} 
+                onRoleChange={setSelectedRole} 
+              />
 
               {/* Right Side - Registration Form */}
               <div className="p-8 flex flex-col justify-center">
@@ -443,39 +311,7 @@ const Register: React.FC = () => {
                       
                       {/* Password Strength Indicator */}
                       {formData.password && (
-                        <div className="mt-2">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <Shield className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm text-gray-600 dark:text-gray-400">Password Strength:</span>
-                            <span className={`text-sm px-2 py-1 rounded-full ${getPasswordStrengthColor(passwordValidation.strength)}`}>
-                              {getPasswordStrengthText(passwordValidation.strength)}
-                            </span>
-                          </div>
-                          
-                          {/* Password Requirements */}
-                          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must be at least 8 characters long') ? 'text-red-500' : 'text-green-500'}`}>
-                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must be at least 8 characters long') ? 'bg-red-500' : 'bg-green-500'}`}></div>
-                              <span>At least 8 characters</span>
-                            </div>
-                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one uppercase letter') ? 'text-red-500' : 'text-green-500'}`}>
-                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one uppercase letter') ? 'bg-red-500' : 'bg-green-500'}`}></div>
-                              <span>One uppercase letter</span>
-                            </div>
-                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one lowercase letter') ? 'text-red-500' : 'text-green-500'}`}>
-                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one lowercase letter') ? 'bg-red-500' : 'bg-green-500'}`}></div>
-                              <span>One lowercase letter</span>
-                            </div>
-                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one number') ? 'text-red-500' : 'text-green-500'}`}>
-                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one number') ? 'bg-red-500' : 'bg-green-500'}`}></div>
-                              <span>One number</span>
-                            </div>
-                            <div className={`flex items-center space-x-1 ${passwordValidation.errors.includes('Password must contain at least one special character') ? 'text-red-500' : 'text-green-500'}`}>
-                              <div className={`w-2 h-2 rounded-full ${passwordValidation.errors.includes('Password must contain at least one special character') ? 'bg-red-500' : 'bg-green-500'}`}></div>
-                              <span>One special character</span>
-                            </div>
-                          </div>
-                        </div>
+                        <PasswordStrengthIndicator validation={passwordValidation} />
                       )}
                     </div>
 
@@ -501,163 +337,18 @@ const Register: React.FC = () => {
 
                     {/* Instructor-specific fields */}
                     {selectedRole === 'instructor' && (
-                      <div className="space-y-6 border-t border-gray-200 dark:border-gray-700 pt-6">
-                        <div className="text-center">
-                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                            Instructor Information
-                          </h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Help us learn more about your expertise
-                          </p>
-                        </div>
-
-                        {/* Specialties */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Specialties *
-                          </label>
-                          <div className="flex space-x-2 mb-2">
-                            <input
-                              type="text"
-                              placeholder="e.g., React, JavaScript, Python"
-                              value={newSpecialty}
-                              onChange={(e) => setNewSpecialty(e.target.value)}
-                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSpecialty())}
-                              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                            />
-                            <button
-                              type="button"
-                              onClick={addSpecialty}
-                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-                            >
-                              <Plus className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {instructorData.specialties.map((specialty) => (
-                              <span
-                                key={specialty}
-                                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
-                              >
-                                {specialty}
-                                <button
-                                  type="button"
-                                  onClick={() => removeSpecialty(specialty)}
-                                  className="ml-2 hover:text-orange-600"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Experience */}
-                        <Input
-                          label="Experience *"
-                          type="text"
-                          name="experience"
-                          placeholder="e.g., 5+ years in web development"
-                          value={instructorData.experience}
-                          onChange={handleInstructorDataChange}
-                          required
-                        />
-
-                        {/* Bio */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Bio *
-                          </label>
-                          <textarea
-                            name="bio"
-                            placeholder="Tell us about yourself and your teaching experience..."
-                            value={instructorData.bio}
-                            onChange={handleInstructorDataChange}
-                            rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-none"
-                            required
-                          />
-                        </div>
-
-                        {/* Education */}
-                        <Input
-                          label="Education"
-                          type="text"
-                          name="education"
-                          placeholder="e.g., Bachelor's in Computer Science"
-                          value={instructorData.education}
-                          onChange={handleInstructorDataChange}
-                        />
-
-                        {/* Certifications */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Certifications
-                          </label>
-                          <div className="flex space-x-2 mb-2">
-                            <input
-                              type="text"
-                              placeholder="e.g., AWS Certified, Google Analytics"
-                              value={newCertification}
-                              onChange={(e) => setNewCertification(e.target.value)}
-                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCertification())}
-                              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                            />
-                            <button
-                              type="button"
-                              onClick={addCertification}
-                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-                            >
-                              <Plus className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {instructorData.certifications.map((certification) => (
-                              <span
-                                key={certification}
-                                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                              >
-                                {certification}
-                                <button
-                                  type="button"
-                                  onClick={() => removeCertification(certification)}
-                                  className="ml-2 hover:text-blue-600"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Social Links */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                          <Input
-                            label="Website"
-                            type="url"
-                            name="website"
-                            placeholder="https://yourwebsite.com"
-                            value={instructorData.website}
-                            onChange={handleInstructorDataChange}
-                          />
-                          <Input
-                            label="LinkedIn"
-                            type="url"
-                            name="linkedin"
-                            placeholder="https://linkedin.com/in/yourprofile"
-                            value={instructorData.linkedin}
-                            onChange={handleInstructorDataChange}
-                          />
-                          <Input
-                            label="Twitter"
-                            type="url"
-                            name="twitter"
-                            placeholder="https://twitter.com/yourhandle"
-                            value={instructorData.twitter}
-                            onChange={handleInstructorDataChange}
-                          />
-                        </div>
-                      </div>
+                      <InstructorFields
+                        instructorData={instructorData}
+                        onInstructorDataChange={handleInstructorDataChange}
+                        newSpecialty={newSpecialty}
+                        setNewSpecialty={setNewSpecialty}
+                        onAddSpecialty={addSpecialty}
+                        onRemoveSpecialty={removeSpecialty}
+                        newCertification={newCertification}
+                        setNewCertification={setNewCertification}
+                        onAddCertification={addCertification}
+                        onRemoveCertification={removeCertification}
+                      />
                     )}
 
                     <div className="flex items-start space-x-3">
@@ -706,51 +397,7 @@ const Register: React.FC = () => {
                     </motion.div>
                   </form>
 
-                  {/* Divider */}
-                  <div className="my-8">
-                    <div className="flex items-center">
-                      <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
-                      <div className="px-4 text-sm text-gray-600 dark:text-gray-400 font-medium">Or sign up with</div>
-                      <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
-                    </div>
-                  </div>
-
-                  {/* Social Register */}
-                  <div className="space-y-3">
-                    <motion.button 
-                      type="button" 
-                      onClick={handleGoogleSignUp}
-                      disabled={loading}
-                      className="w-full flex items-center justify-center space-x-3 px-6 py-3 font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      whileHover={{ scale: loading ? 1 : 1.02 }}
-                      whileTap={{ scale: loading ? 1 : 0.98 }}
-                    >
-                      <FaGoogle className="w-5 h-5" />
-                      <span>{loading ? 'Signing up...' : 'Sign up with Google'}</span>
-                    </motion.button>
-                    <motion.button 
-                      type="button" 
-                      className="w-full flex items-center justify-center space-x-3 px-6 py-3 font-medium border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <FaFacebook className="w-5 h-5" />
-                      <span>Sign up with Facebook</span>
-                    </motion.button>
-                  </div>
-
-                  {/* Login Link */}
-                  <div className="mt-8 text-center">
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Already have an account?{' '}
-                      <Link 
-                        to="/login" 
-                        className="text-orange-600 hover:text-orange-700 font-medium"
-                      >
-                        Sign in here
-                      </Link>
-                    </p>
-                  </div>
+                  <SocialAuthButtons onGoogleSignUp={handleGoogleSignUp} loading={loading} />
                 </motion.div>
               </div>
             </div>

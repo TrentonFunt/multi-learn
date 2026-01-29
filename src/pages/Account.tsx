@@ -4,13 +4,11 @@ import {
   User, 
   BookOpen, 
   Settings, 
-  LogOut,
   Edit3,
   Save,
   X,
   Eye,
   EyeOff,
-  Camera,
   Bell,
   Shield,
   Award,
@@ -22,10 +20,13 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useEnrollmentStore } from '../store/enrollmentStore';
-// import { useToast } from '../contexts/ToastContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import ProgressVisualization from '../components/ui/ProgressVisualization';
+import AccountSidebar from '../components/account/AccountSidebar';
+import ActivityTab from '../components/account/ActivityTab';
+import NotificationsTab from '../components/account/NotificationsTab';
+import PrivacyTab from '../components/account/PrivacyTab';
 
 const Account: React.FC = () => {
   const { user, signOut, updateUserProfile, updateUserPassword, sendEmailVerification, isEmailVerified } = useAuth();
@@ -201,70 +202,15 @@ const Account: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="lg:col-span-1"
           >
-            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card shadow-card p-6">
-              {/* User Info */}
-              <div className="text-center mb-6">
-                <div className="relative w-20 h-20 mx-auto mb-4">
-                  <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center overflow-hidden">
-                    {profileImage ? (
-                      <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
-                    ) : (
-                      <User className="h-10 w-10 text-white" />
-                    )}
-                  </div>
-                  <button className="absolute bottom-0 right-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
-                    <Camera className="h-3 w-3 text-white" />
-                  </button>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                  {user?.displayName || 'User'}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  {user?.email}
-                </p>
-                <div className="flex items-center justify-center space-x-2 mt-2">
-                  <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                    {learningStats.completedCourses} completed
-                  </span>
-                  <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    {learningStats.totalHours}h learned
-                  </span>
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
-                  Member since {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently'}
-                </p>
-              </div>
-
-              {/* Navigation Tabs */}
-              <nav className="space-y-2">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                        activeTab === tab.id
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
-                      }`}
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
-
-              {/* Sign Out Button */}
-              <button
-                onClick={handleSignOut}
-                className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-red-600 hover:bg-red-50 transition-colors mt-6"
-              >
-                <LogOut className="h-5 w-5" />
-                <span className="font-medium">Sign Out</span>
-              </button>
-            </div>
+            <AccountSidebar
+              user={user}
+              tabs={tabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              onSignOut={handleSignOut}
+              learningStats={learningStats}
+              profileImage={profileImage}
+            />
           </motion.div>
 
           {/* Main Content */}
@@ -593,144 +539,24 @@ const Account: React.FC = () => {
 
               {/* Activity Tab */}
               {activeTab === 'activity' && (
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Recent Activity</h2>
-                  
-                  <div className="space-y-4">
-                    {recentActivity.map((activity, index) => {
-                      const Icon = activity.icon;
-                      return (
-                        <motion.div
-                          key={activity.id}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center space-x-4"
-                        >
-                          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
-                            <Icon className="h-5 w-5 text-blue-600" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-gray-900 dark:text-gray-100 font-medium">{activity.title}</p>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">{activity.time}</p>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
+                <ActivityTab activities={recentActivity} />
               )}
 
               {/* Notifications Tab */}
               {activeTab === 'notifications' && (
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Notification Settings</h2>
-                  
-                  <div className="space-y-6">
-                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Email Notifications</h3>
-                      <div className="space-y-4">
-                        {Object.entries(notifications).map(([key, value]) => (
-                          <div key={key} className="flex items-center justify-between">
-                            <div>
-                              <p className="text-gray-900 dark:text-gray-100 font-medium capitalize">
-                                {key.replace(/([A-Z])/g, ' $1').trim()}
-                              </p>
-                              <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                {key === 'email' && 'Receive notifications via email'}
-                                {key === 'push' && 'Receive push notifications'}
-                                {key === 'marketing' && 'Receive marketing emails and promotions'}
-                                {key === 'courseUpdates' && 'Get notified about course updates'}
-                                {key === 'announcements' && 'Receive platform announcements'}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() => setNotifications(prev => ({ ...prev, [key]: !value }))}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                value ? 'bg-blue-600' : 'bg-gray-200'
-                              }`}
-                            >
-                              <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  value ? 'translate-x-6' : 'translate-x-1'
-                                }`}
-                              />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <NotificationsTab
+                  notifications={notifications}
+                  onToggle={(key) => setNotifications(prev => ({ ...prev, [key]: !prev[key] }))}
+                />
               )}
 
               {/* Privacy Tab */}
               {activeTab === 'privacy' && (
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Privacy Settings</h2>
-                  
-                  <div className="space-y-6">
-                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Profile Visibility</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
-                            Profile Visibility
-                          </label>
-                          <select
-                            value={privacy.profileVisibility}
-                            onChange={(e) => setPrivacy(prev => ({ ...prev, profileVisibility: e.target.value }))}
-                            className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                          >
-                            <option value="public">Public</option>
-                            <option value="friends">Friends Only</option>
-                            <option value="private">Private</option>
-                          </select>
-                        </div>
-                        
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-gray-900 dark:text-gray-100 font-medium">Show Email Address</p>
-                              <p className="text-gray-600 dark:text-gray-400 text-sm">Allow others to see your email</p>
-                            </div>
-                            <button
-                              onClick={() => setPrivacy(prev => ({ ...prev, showEmail: !prev.showEmail }))}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                privacy.showEmail ? 'bg-blue-600' : 'bg-gray-200'
-                              }`}
-                            >
-                              <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  privacy.showEmail ? 'translate-x-6' : 'translate-x-1'
-                                }`}
-                              />
-                            </button>
-                          </div>
-                          
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-gray-900 dark:text-gray-100 font-medium">Show Enrolled Courses</p>
-                              <p className="text-gray-600 dark:text-gray-400 text-sm">Display your course progress to others</p>
-                            </div>
-                            <button
-                              onClick={() => setPrivacy(prev => ({ ...prev, showCourses: !prev.showCourses }))}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                privacy.showCourses ? 'bg-blue-600' : 'bg-gray-200'
-                              }`}
-                            >
-                              <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  privacy.showCourses ? 'translate-x-6' : 'translate-x-1'
-                                }`}
-                              />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <PrivacyTab
+                  privacy={privacy}
+                  onVisibilityChange={(value) => setPrivacy(prev => ({ ...prev, profileVisibility: value }))}
+                  onToggle={(key) => setPrivacy(prev => ({ ...prev, [key]: !prev[key] }))}
+                />
               )}
             </div>
           </motion.div>
