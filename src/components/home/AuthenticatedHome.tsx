@@ -21,11 +21,11 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
   const recommendedCourses = getFeaturedCourses(3);
 
   return (
-    <>
+    <div className="w-full">
       {/* Personalized Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-20 text-white">
+      <section className="relative w-full bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-20 text-white">
         <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div 
               className="space-y-8"
@@ -562,7 +562,7 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

@@ -7,10 +7,10 @@ import { getFeaturedCourses } from '../../data/courseData';
 
 const UnauthenticatedHome: React.FC = () => {
   return (
-    <>
+    <div className="w-full">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-yellow-200 via-yellow-100 to-green-200 py-12 sm:py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full bg-gradient-to-r from-yellow-200 via-yellow-100 to-green-200 py-12 sm:py-16 lg:py-20">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
             <motion.div 
               className="space-y-6 sm:space-y-8"
@@ -569,7 +569,7 @@ const UnauthenticatedHome: React.FC = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

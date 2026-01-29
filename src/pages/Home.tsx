@@ -19,7 +19,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="w-full bg-white dark:bg-gray-900">
       {isAuthenticated && user ? (
         <AuthenticatedHome user={user} />
       ) : (

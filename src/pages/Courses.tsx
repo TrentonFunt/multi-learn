@@ -88,6 +88,7 @@ const Courses: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState<string>('All levels');
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const hasProcessedInitialSearch = useRef(false);
+  const hasProcessedInitialCategory = useRef(false);
 
   // Build filter sections with real data
   const [filters, setFilters] = useState<FilterSection[]>(() => {
@@ -129,8 +130,10 @@ const Courses: React.FC = () => {
     ];
   });
 
-  // Get category from URL parameters
+  // Get category from URL parameters - only on initial load
   useEffect(() => {
+    if (hasProcessedInitialCategory.current) return;
+    
     const categoryParam = searchParams.get('category');
     
     if (categoryParam) {
@@ -148,10 +151,9 @@ const Courses: React.FC = () => {
             : section
         )
       );
-    } else {
-      setSelectedCategory('');
     }
-  }, [searchParams]);
+    hasProcessedInitialCategory.current = true;
+  }, []);
 
   // Handle search parameter from URL only on initial load
   useEffect(() => {
@@ -310,8 +312,8 @@ const Courses: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-800">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
