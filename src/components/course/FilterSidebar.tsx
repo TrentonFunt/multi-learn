@@ -38,7 +38,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, onFilterChange }
         <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
           <button
             onClick={clearAllFilters}
-            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            className="text-sm text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
           >
             Clear All Filters
           </button>
@@ -65,7 +65,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, onFilterChange }
                   />
                   <div className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-colors ${
                     option.checked 
-                      ? 'bg-blue-600 border-blue-600' 
+                      ? 'bg-orange-500 border-orange-500' 
                       : 'border-gray-300 hover:border-gray-400'
                   }`}>
                     {option.checked && <Check className="w-3 h-3 text-white" />}

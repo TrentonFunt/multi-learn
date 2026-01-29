@@ -28,25 +28,25 @@ const Footer: React.FC = () => {
 
             {/* Get Help */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">GET HELP</h3>
+              <h3 className="text-lg font-semibold text-white">GET HELP</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/contact" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/contact" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Contact Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blog" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/blog" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Latest Articles
                   </Link>
                 </li>
                 <li>
-                  <Link to="/faq" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/faq" className="text-gray-400 hover:text-orange-400 transition-colors">
                     FAQ
                   </Link>
                 </li>
                 <li>
-                  <Link to="/languages" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/languages" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Languages
                   </Link>
                 </li>
@@ -55,30 +55,30 @@ const Footer: React.FC = () => {
 
             {/* Programs */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">PROGRAMS</h3>
+              <h3 className="text-lg font-semibold text-white">PROGRAMS</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/categories/art-design" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/categories/art-design" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Art & Design
                   </Link>
                 </li>
                 <li>
-                  <Link to="/categories/business" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/categories/business" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Business
                   </Link>
                 </li>
                 <li>
-                  <Link to="/categories/it-software" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/categories/it-software" className="text-gray-400 hover:text-orange-400 transition-colors">
                     IT & Software
                   </Link>
                 </li>
                 <li>
-                  <Link to="/categories/languages" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/categories/languages" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Languages
                   </Link>
                 </li>
                 <li>
-                  <Link to="/categories/programming" className="text-gray-400 hover:text-white transition-colors">
+                  <Link to="/categories/programming" className="text-gray-400 hover:text-orange-400 transition-colors">
                     Programming
                   </Link>
                 </li>
@@ -87,34 +87,34 @@ const Footer: React.FC = () => {
 
             {/* Contact Us */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">CONTACT US</h3>
+              <h3 className="text-lg font-semibold text-white">CONTACT US</h3>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
+                  <MapPin className="w-5 h-5 text-orange-400 mt-0.5" />
                   <span className="text-gray-400 text-sm">
                     Address: 2321 New Design Str, Lorem Ipsum 10 Hudson Yards, USA
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Phone className="w-5 h-5 text-gray-400" />
+                  <Phone className="w-5 h-5 text-orange-400" />
                   <span className="text-gray-400 text-sm">Tel: +(123) 2300 567 8988</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5 text-gray-400" />
+                  <Mail className="w-5 h-5 text-orange-400" />
                   <span className="text-gray-400 text-sm">Mail: support@gmail.com</span>
                 </div>
               </div>
               <div className="flex space-x-4 pt-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
                   <FaFacebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
                   <FaTwitter className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
                   <FaInstagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
                   <FaLinkedin className="w-5 h-5" />
                 </a>
               </div>
@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
 
             {/* Newsletter */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Stay Updated</h3>
+              <h3 className="text-lg font-semibold text-white">Stay Updated</h3>
               <NewsletterSubscription
                 title=""
                 description="Get the latest courses and updates delivered to your inbox."
@@ -145,7 +145,7 @@ const Footer: React.FC = () => {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-6 right-6 bg-gray-900 text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition-colors z-50"
+        className="fixed bottom-6 right-6 bg-orange-500 text-white p-3 rounded-full shadow-lg hover:bg-orange-600 transition-colors z-50"
       >
         <FaArrowUp className="w-6 h-6" />
       </button>

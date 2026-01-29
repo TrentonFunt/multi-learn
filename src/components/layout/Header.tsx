@@ -91,56 +91,56 @@ const Header: React.FC = () => {
               to="/" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/' 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20'
               }`}
             >
               <span className="relative z-10">Home</span>
               {location.pathname !== '/' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/courses" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/courses' 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20'
               }`}
             >
               <span className="relative z-10">Courses</span>
               {location.pathname !== '/courses' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/blog" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/blog' 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20'
               }`}
             >
               <span className="relative z-10">Blog</span>
               {location.pathname !== '/blog' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <Link 
               to="/favorites" 
               className={`group relative font-medium transition-all duration-300 px-4 py-2 rounded-md overflow-hidden ${
                 location.pathname === '/favorites' 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/20' 
-                  : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
+                  ? 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/20' 
+                  : 'text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20'
               }`}
             >
               <span className="relative z-10">Favorites</span>
               {location.pathname !== '/favorites' && (
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"></div>
               )}
             </Link>
             <div className="relative group">
-              <button className="flex items-center space-x-1 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+              <button className="flex items-center space-x-1 text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20 font-medium transition-colors px-3 py-2 rounded-md">
                 <span>More</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
@@ -182,9 +182,9 @@ const Header: React.FC = () => {
                       <div className="relative user-menu-container">
                         <button
                           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                          className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md"
+                          className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20 font-medium transition-colors px-3 py-2 rounded-md"
                         >
-                          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                             <User className="h-4 w-4 text-white" />
                           </div>
                           <span className="hidden lg:inline">{user.displayName || 'User'}</span>
@@ -261,16 +261,16 @@ const Header: React.FC = () => {
                       <>
                         {loading ? (
                           <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                            <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
                             <span className="text-gray-600 dark:text-gray-400 text-sm">Loading...</span>
                           </div>
                         ) : (
                           <>
-                            <Link to="/login" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                            <Link to="/login" className="text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20 font-medium transition-colors px-3 py-2 rounded-md">
                               Login
                             </Link>
                             <span className="text-gray-600 dark:text-gray-400">/</span>
-                            <Link to="/register" className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20 font-medium transition-colors px-3 py-2 rounded-md">
+                            <Link to="/register" className="text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/20 font-medium transition-colors px-3 py-2 rounded-md">
                               Register
                             </Link>
                           </>
@@ -291,7 +291,7 @@ const Header: React.FC = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-md text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
+            className="md:hidden p-2 rounded-md text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -333,8 +333,8 @@ const Header: React.FC = () => {
                         to={item.to}
                         className={`font-medium transition-colors py-2 px-2 min-h-10 flex items-center ${
                           location.pathname === item.to
-                            ? 'text-blue-600 dark:text-blue-400 bg-blue-600/10'
-                            : 'text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-600/5'
+                            ? 'text-orange-600 dark:text-orange-400 bg-orange-500/10'
+                            : 'text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-500/5'
                         }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -369,7 +369,7 @@ const Header: React.FC = () => {
                       >
                         <Link
                           to={item.to}
-                          className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-1 px-2 min-h-9 rounded-md hover:bg-blue-600/5 transition-colors"
+                          className="block text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium mb-1 py-1 px-2 min-h-9 rounded-md hover:bg-orange-500/5 transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           {item.label}
@@ -394,7 +394,7 @@ const Header: React.FC = () => {
                         transition={{ duration: 0.3, delay: 0.5 }}
                         className="flex items-center space-x-3 mb-2"
                       >
-                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                        <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
                           <User className="h-5 w-5 text-white" />
                         </div>
                         <div>
@@ -421,7 +421,7 @@ const Header: React.FC = () => {
                         >
                           <Link
                             to={item.to}
-                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-1 py-2 px-2 min-h-9 rounded-md hover:bg-blue-600/5 transition-colors"
+                            className="flex items-center space-x-2 text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 font-medium mb-1 py-2 px-2 min-h-9 rounded-md hover:bg-orange-500/5 transition-colors"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             <item.icon className="h-4 w-4" />
@@ -453,7 +453,7 @@ const Header: React.FC = () => {
                           transition={{ duration: 0.3, delay: 0.5 }}
                           className="flex items-center space-x-2 py-2 px-2"
                         >
-                          <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                          <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
                           <span className="text-gray-600 dark:text-gray-400 text-sm">Loading...</span>
                         </motion.div>
                       ) : (
@@ -471,7 +471,7 @@ const Header: React.FC = () => {
                             >
                               <Link
                                 to={item.to}
-                                className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium block mb-1 py-2 px-2 min-h-9 rounded-md hover:bg-blue-600/5 transition-colors"
+                                className="text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 font-medium block mb-1 py-2 px-2 min-h-9 rounded-md hover:bg-orange-500/5 transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 {item.label}
