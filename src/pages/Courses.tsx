@@ -377,17 +377,19 @@ const Courses: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
-          {/* Filter Sidebar - appears first in DOM for mobile, positioned right on desktop */}
-          <div className="order-first lg:order-last lg:col-span-1">
-            <FilterSidebar
-              filters={filters}
-              onFilterChange={handleFilterChange}
-            />
-          </div>
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          {/* Filter Sidebar - Left side on desktop, collapsible on mobile */}
+          <aside className="w-full lg:w-64 lg:flex-shrink-0">
+            <div className="lg:sticky lg:top-4">
+              <FilterSidebar
+                filters={filters}
+                onFilterChange={handleFilterChange}
+              />
+            </div>
+          </aside>
 
           {/* Course Listings */}
-          <div className="order-last lg:order-first lg:col-span-3">
+          <div className="flex-1 min-w-0">
             <div className={`grid gap-4 sm:gap-6 ${
               viewMode === 'grid' 
                 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
