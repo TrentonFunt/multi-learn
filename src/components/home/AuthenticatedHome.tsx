@@ -23,8 +23,9 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
   return (
     <div className="w-full">
       {/* Personalized Hero Section */}
-      <section className="relative w-full bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-20 text-white">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
+      <section className="relative w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-20 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-500/20 via-transparent to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div 
@@ -41,7 +42,7 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
                   Welcome back, {user.displayName?.split(' ')[0] || 'Student'}! 👋
                 </h1>
-                <p className="text-lg sm:text-xl text-blue-100 leading-relaxed">
+                <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
                   Ready to continue your learning journey? Let's pick up where you left off.
                 </p>
               </motion.div>
@@ -52,21 +53,21 @@ const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               >
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold">{learningStats.totalCourses}</div>
-                  <div className="text-sm text-blue-100">Courses Enrolled</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+                  <div className="text-2xl font-bold text-orange-400">{learningStats.totalCourses}</div>
+                  <div className="text-sm text-gray-300">Courses Enrolled</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold">{learningStats.completedCourses}</div>
-                  <div className="text-sm text-blue-100">Courses Completed</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+                  <div className="text-2xl font-bold text-orange-400">{learningStats.completedCourses}</div>
+                  <div className="text-sm text-gray-300">Courses Completed</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold">{learningStats.totalHours}h</div>
-                  <div className="text-sm text-blue-100">Hours Learned</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+                  <div className="text-2xl font-bold text-orange-400">{learningStats.totalHours}h</div>
+                  <div className="text-sm text-gray-300">Hours Learned</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold">{learningStats.averageProgress}%</div>
-                  <div className="text-sm text-blue-100">Avg Progress</div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+                  <div className="text-2xl font-bold text-orange-400">{learningStats.averageProgress}%</div>
+                  <div className="text-sm text-gray-300">Avg Progress</div>
                 </div>
               </motion.div>
 

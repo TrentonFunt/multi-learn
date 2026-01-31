@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Search, Grid, List } from 'lucide-react';
+import { Search, Grid, List, SlidersHorizontal, X } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import CourseCard from '../components/course/CourseCard';
 import FilterSidebar from '../components/course/FilterSidebar';
 import Pagination from '../components/ui/Pagination';
@@ -87,6 +88,7 @@ const Courses: React.FC = () => {
   const [selectedPrice, setSelectedPrice] = useState<string>('All');
   const [selectedLevel, setSelectedLevel] = useState<string>('All levels');
   const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const hasProcessedInitialSearch = useRef(false);
   const hasProcessedInitialCategory = useRef(false);
 
@@ -372,27 +374,35 @@ const Courses: React.FC = () => {
               >
                 <List className="w-5 h-5" />
               </button>
+              
+              {/* Filter Toggle Button */}
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className={`p-2 rounded-lg transition-colors flex items-center gap-2 ${
+                  isFilterOpen || hasActiveFilters
+                    ? 'bg-orange-500 text-white' 
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+              >
+                <SlidersHorizontal className="w-5 h-5" />
+                <span className="hidden sm:inline text-sm font-medium">Filters</span>
+                {hasActiveFilters && (
+                  <span className="bg-white text-orange-500 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                    {selectedCategories.length + selectedInstructors.length + (selectedPrice !== 'All' ? 1 : 0) + (selectedLevel !== 'All levels' ? 1 : 0) + (selectedRating > 0 ? 1 : 0)}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Filter Sidebar - Left side on desktop, collapsible on mobile */}
-          <aside className="w-full lg:w-64 lg:flex-shrink-0">
-            <div className="lg:sticky lg:top-4">
-              <FilterSidebar
-                filters={filters}
-                onFilterChange={handleFilterChange}
-              />
-            </div>
-          </aside>
-
+        {/* Main Content with Sliding Filter Panel */}
+        <div className="relative">
           {/* Course Listings */}
-          <div className="flex-1 min-w-0">
+          <div className="w-full">
             <div className={`grid gap-4 sm:gap-6 ${
               viewMode === 'grid' 
-                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
+                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
                 : 'grid-cols-1'
             }`}>
               {paginatedCourses.map((course) => (
@@ -416,6 +426,18 @@ const Courses: React.FC = () => {
               ))}
             </div>
             
+            {filteredCourses.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500 dark:text-gray-400 text-lg">No courses found matching your filters.</p>
+                <button
+                  onClick={clearAllFilters}
+                  className="mt-4 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            )}
+            
             {/* Pagination */}
             {totalPages > 1 && (
               <Pagination
@@ -425,6 +447,63 @@ const Courses: React.FC = () => {
               />
             )}
           </div>
+
+          {/* Sliding Filter Sidebar from Right */}
+          <AnimatePresence>
+            {isFilterOpen && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+                  onClick={() => setIsFilterOpen(false)}
+                />
+                
+                {/* Sidebar Panel */}
+                <motion.aside
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                  className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-gray-50 dark:bg-gray-900 shadow-2xl z-50 overflow-hidden"
+                >
+                  <div className="flex flex-col h-full">
+                    {/* Sidebar Header */}
+                    <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Filters</h2>
+                      <button
+                        onClick={() => setIsFilterOpen(false)}
+                        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                    
+                    {/* Sidebar Content */}
+                    <div className="flex-1 overflow-y-auto p-4">
+                      <FilterSidebar
+                        filters={filters}
+                        onFilterChange={handleFilterChange}
+                      />
+                    </div>
+                    
+                    {/* Sidebar Footer */}
+                    <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                      <button
+                        onClick={() => setIsFilterOpen(false)}
+                        className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+                      >
+                        Show {filteredCourses.length} Course{filteredCourses.length !== 1 ? 's' : ''}
+                      </button>
+                    </div>
+                  </div>
+                </motion.aside>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

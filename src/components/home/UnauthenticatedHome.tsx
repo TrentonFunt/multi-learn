@@ -9,17 +9,18 @@ const UnauthenticatedHome: React.FC = () => {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="relative w-full bg-gradient-to-r from-yellow-200 via-yellow-100 to-green-200 py-12 sm:py-16 lg:py-20">
+      <section className="relative w-full bg-gradient-to-br from-gray-50 via-orange-50/50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-orange-100/50 via-transparent to-transparent dark:from-orange-500/10"></div>
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
             <motion.div 
-              className="space-y-6 sm:space-y-8"
+              className="space-y-6 sm:space-y-8 relative z-10"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <motion.h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -27,7 +28,7 @@ const UnauthenticatedHome: React.FC = () => {
                 Learn. Grow. Dominate.
               </motion.h1>
               <motion.p 
-                className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl"
+                className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
@@ -54,12 +55,10 @@ const UnauthenticatedHome: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             >
               <div className="relative z-10">
-                <motion.img
+                <img
                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=600&fit=crop&crop=face"
                   alt="Student learning"
                   className="w-full h-auto rounded-lg shadow-2xl"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
                 />
               </div>
               <motion.div 
